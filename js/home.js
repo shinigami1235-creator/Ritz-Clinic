@@ -30,8 +30,8 @@ function boardPages() {
     ],
     feature.map((b) => [t('bDoctors'), `${bname(b)}: ${doctors(SCHEDULE[b.id][d])}`, t('bUntil', { t: b.close }), isOpen(b)]),
     [
-      [t('bReview'), t('bFilm'), 'Friend of The Ritz'],
-      [t('bReview'), t('bBeer'), 'Friend of The Ritz'],
+      [t('bReview'), t('bFilm'), 'Friends of The Ritz'],
+      [t('bReview'), t('bBeer'), 'Friends of The Ritz'],
       [t('bNew'), 'Personalized IV Therapy', 'Vitality Lab'],
       ['Call Center', '088-892-2666', 'LINE @theritzclinic'],
     ],

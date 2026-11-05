@@ -184,7 +184,7 @@ export const SERVICES = [
 // WordPress posts we left out on purpose because they repeat a service above.
 export const SERVICE_SKIP = [516296, 557518];
 
-// "Friend of The Ritz" reviews (review_slider in WordPress), translated from Thai.
+// "Friends of The Ritz" reviews (review_slider in WordPress), translated from Thai.
 export const REVIEWS = [
   { id: 234698, program: 'New Thermage FLX', cat: 'lift', who: 'ภัสรนันท์ อัษฎมงคล (เบียร์)', whoEn: 'Patsaranan Atsadamongkol (Beer)', img: UP + '2023/11/เบียร์-300x300.jpg', textEn: 'This is my second year of New Thermage FLX at THE RITZ CLINIC. The results are very clear. My face feels firm, the facial fat I worried about is gone and my jawline is sharper. I will be back for more.', text: 'เบียร์ทำ New Thermage FLX ที่ THE RITZ CLINIC เข้าปีที่ 2 แล้ว หลังทำเห็นผลลัพธ์ชัดเจนมาก ๆ รู้สึกเลยว่าหน้าเฟิร์มกระชับ ไขมันบนใบหน้าที่กังวลก็หาย กรอบหน้าชัด บอกเลยว่ากลับมาทำซ้ำอีกแน่นอนค่ะ' },
   { id: 234777, program: 'Ulthera SPT', cat: 'lift', who: 'ธนภัทร กาลวิละ (ฟิล์ม)', whoEn: 'Thanapat Kanwila (Film)', img: UP + '2023/11/ฟิล์ม-300x300.jpg', textEn: 'I trust Ulthera SPT at THE RITZ CLINIC. The results are very clear, and on camera for my dramas I feel confident from every angle. One session lasts a whole year, so it is worth it.', text: 'ผมมั่นใจ Ulthera SPT ที่เดอะริทซ์คลินิก เห็นผลลัพธ์ชัดเจนมาก ๆ ครับ เวลาออกกล้องถ่ายละครก็มั่นใจมากขึ้น ไม่ว่ามุมไหนผมก็รอด ที่สำคัญทำ 1 ครั้งอยู่นานถึง 1 ปี คุ้มค่ามากครับ' },

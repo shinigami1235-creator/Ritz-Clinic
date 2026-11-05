@@ -12,7 +12,7 @@ English for now. To switch to Thai, open `js/i18n.js` and change `LANG` to `'th'
 | Treatments | `treatments.html` | Programmes, showroom, the elevator, a directory board of all 30 treatments with a lit pedestal, Ask Dr. Ritz, promotions |
 | One treatment | `treatment.html?id=…` | The render on its plinth, the clinic's full article, real results, related treatments |
 | Doctors | `doctors.html` | Founder, 16 doctors with where each one works this week, duty board |
-| Reviews | `reviews.html` | Friend of The Ritz wall with filters, and every before-and-after result at the mirror |
+| Reviews | `reviews.html` | Friends of The Ritz wall with filters, and every before-and-after result at the mirror |
 | Articles | `journal.html` | All 260 articles with search, categories and load more |
 | One article | `article.html?id=…` | The full article, saved with the site |
 | Branches | `branches.html` | Map, address, hours, phone, directions and doctors today for all 12 branches |
