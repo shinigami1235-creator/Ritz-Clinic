@@ -9,9 +9,9 @@ import { LANG, t } from './i18n.js';
 import { $, $$, esc, renderOf, ritzSay, reduced, sendToLine } from './core.js';
 
 // which way each machine faces in its picture: F front, L turned to the viewer's left, R to the right
-const FACE = { 682515: 'F', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'R', 509437: 'F', 557783: 'L', 515783: 'F', 4211: 'L' };
+const FACE = { 682515: 'F', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'R', 509437: 'F', 557783: 'L', 515783: 'L', 4211: 'L' };
 // machines with no readable lettering can be mirrored; the rest carry their names and stay as shot
-const FLIP_OK = new Set([509619, 516098]);
+const FLIP_OK = new Set([509619, 516098, 515783]);   // Elite 4D's lettering is too small to read mirrored
 // boxes, vials and small hand pieces stand on slim columns at eye level instead of floor plinths
 const SMALL = new Set([395323, 395880, 395018, 557139, 746481, 746484, 746486, 746488]);
 // angles around the half circle for 1 to 5 pieces, 0 is the back middle
@@ -153,12 +153,23 @@ export function mountBooth(host) {
     const fx = pan.scrollLeft + (phone ? W / 2 : (W - card.offsetWidth - 18) / 2), fy = H * 0.5;
     cam.style.transform = `translate3d(${fx - sx * z}px,${fy - sy * z}px,0) scale(${z})`;
   }
-  function go(i) {
+  // the programmes are bays along one long showroom: changing programme trucks the camera
+  // sideways to the next bay, in the direction of travel, however far apart they are on the list
+  let running = [];
+  function go(i, dir) {
     close(false);
-    const old = rooms[cur];
-    cur = (i + rooms.length) % rooms.length;
-    if (old !== rooms[cur]) { old.classList.remove('here'); old.classList.add('gone'); setTimeout(() => old.classList.remove('gone'), 900); }
-    rooms[cur].classList.add('here');
+    const next = (i + rooms.length) % rooms.length, old = rooms[cur], neu = rooms[next];
+    running.forEach((a) => a.finish()); running = [];
+    if (old !== neu && !reduced && host.dataset.ready) {
+      const d = dir || Math.sign(next - cur) || 1, D = 1400, opt = { duration: 1150, easing: 'cubic-bezier(.62,0,.32,1)' };
+      old.classList.add('moving'); neu.classList.add('here'); old.classList.remove('here');
+      running = [
+        $('.world', old).animate([{ transform: 'translateX(0)' }, { transform: `translateX(${-d * D}px)` }], opt),
+        $('.world', neu).animate([{ transform: `translateX(${d * D}px)` }, { transform: 'translateX(0)' }], opt),
+      ];
+      running[0].onfinish = () => old.classList.remove('moving');
+    } else { old.classList.remove('here'); neu.classList.add('here'); }
+    cur = next;
     tabs.forEach((x, k) => x.setAttribute('aria-selected', String(k === cur)));
     tabs[cur].scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduced ? 'auto' : 'smooth' });
     fit();
@@ -198,7 +209,7 @@ export function mountBooth(host) {
     const tab = e.target.closest('.booth-tabs button'); if (tab) { go(+tab.dataset.i); return; }
     const it = e.target.closest('.it');
     if (it) { focus?.el === it ? close() : open(it); return; }
-    if (e.target.closest('.booth-nav')) { go(cur + (e.target.closest('.next') ? 1 : -1)); return; }
+    if (e.target.closest('.booth-nav')) { const d = e.target.closest('.next') ? 1 : -1; go(cur + d, d); return; }
     if (e.target.closest('.bc-close')) { close(); return; }
     if (e.target.closest('.bc-prev')) { step(-1); return; }
     if (e.target.closest('.bc-next')) { step(1); return; }
@@ -208,7 +219,7 @@ export function mountBooth(host) {
   host.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && focus) { close(); return; }
     if (focus && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { e.preventDefault(); step(e.key === 'ArrowRight' ? 1 : -1); }
-    else if (e.target.closest('.booth-tabs') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { e.preventDefault(); go(cur + (e.key === 'ArrowRight' ? 1 : -1)); tabs[cur].focus(); }
+    else if (e.target.closest('.booth-tabs') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { e.preventDefault(); const d = e.key === 'ArrowRight' ? 1 : -1; go(cur + d, d); tabs[cur].focus(); }
   });
   // the room leans a little toward the pointer, as if you shifted where you stand
   view.addEventListener('pointermove', (e) => {
@@ -219,6 +230,6 @@ export function mountBooth(host) {
   });
   view.addEventListener('pointerleave', () => { host.style.setProperty('--lx', 0); host.style.setProperty('--ly', 0); });
   addEventListener('resize', () => { fit(); aim(false); });
-  go(0);
+  go(0); host.dataset.ready = '1';
   new IntersectionObserver((es, io) => { if (es[0].isIntersecting) { io.disconnect(); host.classList.add('lit'); } }, { threshold: 0.3 }).observe(host);
 }
