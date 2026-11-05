@@ -6,7 +6,7 @@ import { $, reduced, bname, bangkokNow, todayIdx, hhmm, isOpen, doctors, flip, e
 import { mountElevator } from './elevator.js';
 import { mountConcierge } from './concierge.js';
 import { mountDuty } from './duty.js';
-import { mountShelf } from './showroom.js';
+import { mountBooth } from './booth.js';
 import { mountMirror } from './mirror.js';
 import { mountGmap } from './gmap.js';
 import { mountLounge } from './lounge.js';
@@ -84,7 +84,7 @@ $('#deskBell').addEventListener('click', (e) => {
   bubble._t = setTimeout(() => { bubble.hidden = true; }, 6000);
 });
 
-mountShelf($('#shelf'));
+mountBooth($('#booth'));
 mountElevator();
 mountConcierge();
 mountMirror($('[data-mirror]'));

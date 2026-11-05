@@ -54,7 +54,7 @@ export const STR = {
     bFloor: 'Concierge', bTitle: 'Branches', bLede: '12 branches in Bangkok, Nonthaburi, Pathum Thani and Samut Prakan.',
 
     deskNote: 'Ring the bell for Dr. Ritz', bNewTag: 'New',
-    showKicker: 'The showroom', showTitle: 'Machines and medicines we trust', showLede: 'The genuine machines and medicines used at every branch. Pick one to see what it treats and how.', showHint: 'Drag or scroll sideways to see more',
+    showKicker: 'The showroom', showTitle: 'Machines and medicines we trust', showLede: 'The genuine machines and medicines used at every branch, set out by programme. Tap one to look closer.', showHint: 'Drag or scroll sideways to see more',
     floorsKicker: 'The 5-Layer Lift', conciergeKicker: 'Concierge desk', step1: 'Pick the area', step2: 'Pick what bothers you', step3: 'Send your key card to a doctor on LINE',
     resultsKicker: 'Real results', resultsTitle: 'Before and after, at the vanity mirror', resultsLede: 'Real cases from THE RITZ CLINIC. Drag the handle across the mirror to compare.', seeResults: 'See every result',
     resultsNote: 'Real cases published by THE RITZ CLINIC. Results vary from person to person.', viewCard: 'View the original card', caseOf: 'Case {n} of {total}', rFilter: 'Filter by treatment',

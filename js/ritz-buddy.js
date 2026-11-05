@@ -329,6 +329,17 @@ function hitsText(el, x, y) {
   }
   return false;
 }
+// a panel, card or picture between him and the page background counts as taken
+function boxed(el) {
+  for (let e = el; e && e !== document.body; e = e.parentElement) {
+    if (e.getBoundingClientRect().width >= innerWidth * 0.95) return false;     // reached a full-width section
+    const cs = getComputedStyle(e);
+    const bg = cs.backgroundColor.match(/[\d.]+/g);
+    if (bg && (bg.length < 4 || +bg[3] > 0.05)) return true;
+    if (cs.backgroundImage !== 'none' || parseFloat(cs.borderTopWidth) > 0 && cs.borderTopStyle !== 'none') return true;
+  }
+  return false;
+}
 function isClear(x, y) {
   const w = W(), h = H();
   for (const fx of [0.3, 0.5, 0.7]) for (const fy of [0.12, 0.35, 0.6, 0.85]) {
@@ -339,8 +350,8 @@ function isClear(x, y) {
       if (cs.pointerEvents === 'none' && el.tagName === 'CANVAS') continue;   // the gold dust
       if (SOLID.test(el.tagName) || el.closest('svg') || el.closest('.float-ask')) return false;
       if (hitsText(el, px, py)) return false;
-      if (/url\("?(?!data:)/.test(cs.backgroundImage)) return false;   // photos, not the deco pattern
-      break;                                                              // a plain box: look no deeper
+      if (boxed(el)) return false;
+      break;                                                              // the page background: look no deeper
     }
   }
   return true;

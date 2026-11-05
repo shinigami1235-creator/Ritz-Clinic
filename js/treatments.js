@@ -6,13 +6,13 @@ import { LANG, t } from './i18n.js';
 import { $, $$, esc, sendToLine, renderOf, ritzSay, reduced } from './core.js';
 import { mountElevator } from './elevator.js';
 import { mountConcierge } from './concierge.js';
-import { mountShelf } from './showroom.js';
+import { mountBooth } from './booth.js';
 import { mountPromos } from './promos.js';
 import { wp, media, text } from './wp.js';
 
 mountElevator();
 mountConcierge();
-mountShelf($('#shelf'));
+mountBooth($('#booth'));
 mountPromos($('#placards'));
 
 const catName = (c) => (LANG === 'en' ? c.en : c.th);
