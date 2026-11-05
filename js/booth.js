@@ -9,7 +9,7 @@ import { LANG, t } from './i18n.js';
 import { $, $$, esc, renderOf, ritzSay, reduced, sendToLine } from './core.js';
 
 // which way each machine faces in its picture: F front, L turned to the viewer's left, R to the right
-const FACE = { 682515: 'F', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'R', 509437: 'F', 557783: 'L', 515783: 'L', 4211: 'L' };
+const FACE = { 682515: 'F', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'R', 509437: 'F', 557783: 'F', 515783: 'L', 4211: 'L' };
 // machines with no readable lettering can be mirrored; the rest carry their names and stay as shot
 const FLIP_OK = new Set([509619, 516098, 515783]);   // Elite 4D's lettering is too small to read mirrored
 // boxes, vials and small hand pieces stand on slim columns at eye level instead of floor plinths
@@ -93,7 +93,7 @@ function room(c, b) {
   return `<section class="room" data-i="${b}" aria-label="${esc(nameOf(c))}">
     <div class="world">
       <div class="floor"></div>
-      <div class="dais"></div>
+      ${n ? '<div class="dais"></div>' : ''}
       <div class="rwall back"><i class="trim"></i><i class="dado"></i><i class="led"></i>
         <p class="room-sign"><small>${String(b + 1).padStart(2, '0')}</small>${esc(nameOf(c))}</p>
         ${[150, 378, 606].map((x) => `<i class="fixture" style="left:${x}px"></i>`).join('')}
@@ -102,7 +102,6 @@ function room(c, b) {
       </div>
       ${wing('l')}${wing('r')}
       ${arc}
-      ${n ? '' : `<span class="stand" style="left:${600 - 120}px;top:${FLOOR_Y - 18 - 70}px;transform:translateZ(40px)">${box({ w: 240, d: 150, h: 70, front: `<span class="plaque"><b>${esc(nameOf(c))}</b><small>${t('progCount', { n: items.length })}</small></span>` })}</span>`}
     </div>
   </section>`;
 }
@@ -151,11 +150,17 @@ export function mountBooth(host) {
     const m = new DOMMatrix(getComputedStyle(cam).transform === 'none' ? undefined : getComputedStyle(cam).transform);
     const p = m.inverse().transformPoint(new DOMPoint(r.left + r.width / 2 - base.left, r.top + r.height / 2 - base.top));
     const W = view.clientWidth, H = view.clientHeight, phone = W < 700, z = phone ? 1.4 : 1.65;
-    const fx = pan.scrollLeft + (phone ? W / 2 : (W - card.offsetWidth - 18) / 2), fy = H * 0.5;
-    // keep the room filling the frame: never pull past its edges
     const sw = stage.offsetWidth, sh = stage.offsetHeight;
-    const edge = phone ? W : W - card.offsetWidth - 18;           // the card may cover the room's far edge
-    const tx = Math.min(pan.scrollLeft, Math.max(edge + pan.scrollLeft - sw * z, fx - p.x * z));
+    // the card goes on the side away from the item, so an item near either wall can still be centred
+    const left = !phone && p.x > sw / 2;
+    card.classList.toggle('left', left);
+    const cw = phone ? 0 : card.offsetWidth + 18;
+    const a = left ? cw : 0, b = left ? W : W - cw;                  // the open part of the view
+    const fx = pan.scrollLeft + (a + b) / 2, fy = H * 0.5;
+    // keep the room filling the open part: never pull past its edges
+    // the side walls run on past the frame's edges, so the camera may look a little way along them
+    const over = sw * 0.16;
+    const tx = Math.min(pan.scrollLeft + a + over * z, Math.max(pan.scrollLeft + b - (sw + over) * z, fx - p.x * z));
     const ty = Math.min(0, Math.max(H - sh * z, fy - p.y * z));
     cam.style.transform = `translate3d(${tx}px,${ty}px,0) scale(${z})`;
   }

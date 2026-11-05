@@ -16,7 +16,7 @@
 .booth-cam.still { transition: none; }
 
 /* a room */
-.room { position: absolute; left: 0; top: 0; width: 1200px; height: 660px; transform: scale(var(--s)); transform-origin: 0 0; overflow: hidden;
+.room { position: absolute; left: 0; top: 0; width: 1200px; height: 660px; transform: scale(var(--s)); transform-origin: 0 0; overflow: visible;
   perspective: 1000px; perspective-origin: calc(600px + var(--lx) * 60px) calc(300px + var(--ly) * 30px); transition: perspective-origin .8s var(--ease-out);
   visibility: hidden; }
 .room.here, .room.moving { visibility: visible; }
@@ -134,6 +134,7 @@
 
 /* the card */
 .booth-card { position: absolute; z-index: 5; right: 18px; top: 18px; bottom: 18px; width: min(360px, 40%); overflow: auto; padding: 26px 24px 20px; border-radius: 18px; color: var(--gold-pale); background: linear-gradient(170deg, rgba(61,50,41,.94), rgba(23,18,15,.96)); border: 1px solid rgba(200,178,140,.45); box-shadow: 0 30px 60px -20px rgba(0,0,0,.7); backdrop-filter: blur(10px); transform: translateX(40px); opacity: 0; transition: transform .6s var(--ease-out), opacity .4s; display: flex; flex-direction: column; }
+.booth-card.left { right: auto; left: 18px; transform: translateX(-40px); }
 .booth-card.in { transform: none; opacity: 1; transition-delay: .35s; }
 .bc-close { position: absolute; right: 12px; top: 10px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(255,255,255,.08); color: var(--gold-pale); font-size: 22px; cursor: pointer; }
 .bc-cat { margin: 0; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
