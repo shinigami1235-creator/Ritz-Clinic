@@ -32,6 +32,7 @@
   --g-blush: radial-gradient(90% 70% at 100% 0%, #FBE9DC 0%, rgba(251,233,220,0) 60%), linear-gradient(165deg, #FBF5EE 0%, #F4E4D6 100%);
   --g-cream: linear-gradient(180deg, #F7EFE2 0%, #F1E5D2 100%);
   --foil: linear-gradient(100deg, #957D55 0%, #EBDCC2 22%, #AC9359 40%, #F7EFE2 52%, #A48B63 66%, #DCC6A2 84%, #957D55 100%);
+  --foil-ink: linear-gradient(100deg, #6E5A3A 0%, #A48B63 24%, #7E6845 42%, #B89E72 54%, #6E5A3A 70%, #9A8462 86%, #6E5A3A 100%);
   --ease-out: cubic-bezier(.22, 1, .36, 1);
   --spring: cubic-bezier(.34, 1.56, .64, 1);
   --r: 20px;
@@ -241,9 +242,9 @@ section { padding: clamp(72px, 10vw, 130px) clamp(16px, 5vw, 64px); scroll-margi
   .programs { flex-direction: column; height: auto; --open-w: 100%; }
   .pg { flex: none; height: 74px; transition: height .7s var(--ease-out), transform .9s var(--spring) calc(var(--i) * 70ms), opacity .6s ease calc(var(--i) * 70ms); }
   .pg-door { flex-direction: row; align-items: center; }
-  .pg-strip { position: absolute; inset: 0; height: auto; }
-  .pg-strip::after { background: linear-gradient(90deg, rgba(23,18,15,.88) 30%, rgba(23,18,15,.35)); }
-  .pg-strip img { width: 100%; margin-left: 0; object-position: right center; }
+  .pg-strip { position: absolute; right: 10px; top: 9px; width: 56px; height: 56px; border-radius: 12px; border: 1px solid rgba(200,178,140,.5); }
+  .pg-strip::after { display: none; }
+  .pg-strip img { width: 100%; height: 100%; margin-left: 0; object-fit: cover; object-position: 14% 30%; filter: none; }
   .pg-kit:empty { display: none; }
   .pg-tag { position: relative; flex-direction: row; gap: 14px; padding: 0 18px; }
   .pg-tag b { writing-mode: horizontal-tb; transform: none; }
@@ -379,6 +380,7 @@ section { padding: clamp(72px, 10vw, 130px) clamp(16px, 5vw, 64px); scroll-margi
 .placard .pbody { padding: 26px 24px; display: flex; flex-direction: column; }
 .placard-kicker { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
 .placard h3 { font-size: clamp(21px, 2.2vw, 26px); margin-top: 8px; }
+.placard .price.foil { background-image: var(--foil-ink); }
 .placard .price { font-family: var(--display); font-size: clamp(40px, 5vw, 60px); line-height: 1.1; margin-top: auto; padding-top: 18px; }
 .placard .price small { display: block; font-family: var(--text); font-size: 14px; color: var(--muted); }
 .placard .price span { font-size: .4em; margin-left: 4px; color: var(--brown-2); }
