@@ -35,7 +35,9 @@ Drop him in the middle of the screen and he pulls out a mic and sings.
 
 ## Stories and Facebook
 
-Facebook's own page window needs third-party cookies, which Chrome, Brave and in-app browsers block, so it shows blank for many visitors. The lounge draws the feed and an Instagram stories row in the site's own design instead. They read `data/social.json`, which `tools/social.py` writes from Meta's API once the clinic's admin connects the Facebook page and the six Instagram accounts (setup steps are at the top of the script). Until then both use the clinic's own website content and say so.
+Facebook's own page window needs third-party cookies, which Chrome, Brave and in-app browsers block, so it shows blank for many visitors. The lounge draws the feed and an Instagram stories row in the site's own design instead. They read `data/social.json`, which `tools/social.py` writes from Meta's API once the clinic's admin connects the Facebook page and the six Instagram accounts (setup steps are at the top of the script). Until then the stories use the clinic's own website content and say so.
+
+The Facebook box works the way the CICM site does. Facebook still fills single-post embeds when it blanks the page window, so `data/facebook.json` holds a list of post links and the lounge embeds the first 6 in a row you can swipe. To add a new post, open it on Facebook, copy its link (Share, then Copy link, or the photo's address) and paste it at the top of the `posts` list. If a visitor's browser blocks Facebook altogether, the box falls back to the newest articles from the website after 10 seconds. Reels don't embed reliably, so stick to photo and text posts.
 
 ## Maps
 
