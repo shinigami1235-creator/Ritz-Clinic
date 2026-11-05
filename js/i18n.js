@@ -1,0 +1,118 @@
+// Change LANG to 'th' to switch the whole site to Thai.
+export const LANG = 'en';
+
+export const STR = {
+  en: {
+    skip: 'Skip to content', topHours: 'Open daily 10:00 to 20:30', topBranches: '12 branches in Bangkok and nearby',
+    navHome: 'Lobby', navTreat: 'Treatments', navDoctors: 'Doctors', navReviews: 'Reviews', navJournal: 'Articles', navBranches: 'Branches',
+    lineBtn: 'Ask a doctor on LINE', boardSub: 'Aesthetic clinic', bhType: 'Type', bhDetail: 'Details', bhStatus: 'Status',
+    motto: 'More than skin and beauty care.<br>We care about service and keep standards you can trust.',
+    founder: 'Founded by Dr. Rueangrit Siripanich (Dr. Ritz), medical license 56975',
+    bubble: 'Hello! Would you like me to suggest a treatment? <a href="#concierge">Let Dr. Ritz help you choose</a>',
+    floorsTitle: 'The 5-Layer Lift', floorsLede: 'Skin is built in layers, and each treatment works at a different depth. Pick a floor to see what treats that layer.',
+    floorOf: 'Floor {n} of 5', keysLabel: 'Treatments on this floor', roomCta: 'Not sure which floor? Let Dr. Ritz help you choose',
+    conciergeTitle: 'Ask Dr. Ritz', conciergeLede: 'Answer two questions to get the treatments that match what you want to treat. A doctor assesses you again before any treatment.',
+    q1: '1. Which area?', face: 'Face', body: 'Body and skin', q2: '2. What would you like to treat?', hint: 'Answer question 1 first',
+    keycardLabel: 'Recommended treatments', sendLine: 'Send this list to a doctor on LINE', copied: 'Message copied. Paste it into the LINE chat.',
+    floorShort: 'Floor {n}', lineMsg: 'Hello, I would like advice about {c}.\nTreatments I looked at: {list}',
+    dutyTitle: 'Doctors on duty', dutyLede: 'From the November 2026 doctor schedule. Schedules can change, so please confirm with the branch before your visit.',
+    today: ' (today)', noDoctor: 'No doctor scheduled', dr: 'Dr. ',
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    daysShort: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    specialsKicker: 'Promotion this month', baht: 'THB',
+    gbTitle: 'Friend of The Ritz', gbLede: 'Reviews from people who trust THE RITZ CLINIC, translated from Thai', prev: 'Previous', next: 'Next',
+    journalTitle: 'Latest articles', journalLede: 'Written by the doctors of THE RITZ CLINIC', more: 'Read all articles',
+    dirTitle: '12 branches', openNow: 'It is {t} now and {n} branches are open.', mapNote: 'Approximate map', to: ' to ',
+    loungeTitle: 'Follow us', loungeLede: "The latest posts from the clinic's Facebook page, updating on their own whenever the page posts.", fbFallback: 'Open THE RITZ on Facebook',
+    igMain: 'THE RITZ CLINIC', igLift: 'Lifting', igSkin: 'Skin and laser', igFiller: 'Filler and Botox', igResize: 'Body contouring', igHair: 'Hair removal',
+    address: 'Head office: 345/6 Headquarters Ekkamai-Ladprao, Soi Ladprao 94 (Panjamit), Phlapphla, Wang Thonglang, Bangkok 10310',
+    permit: 'Advertising permit ฆสพ.สบส 1827/2566', float: 'Ask a doctor',
+    bPromo: 'Promotion', bBranches: 'Branches', bArticle: 'New article', bDoctors: 'Doctors', bReview: 'Review', bNew: 'New treatment',
+    bLift: '5-Layer Face Lift, 9,900 a month on average', bUlthera: 'Ultherapy Prime 300 Shots 39,000', bFree: 'MPT 100 lines free', bToday: 'Today',
+    bOpen: '{n} of 12 branches open now', bIsOpen: 'Open', bClosed: 'Closed', bUntil: 'Until {t}', bDate: '21 Oct',
+    bFilm: 'Thanapat (Film) on Ulthera SPT', bBeer: 'Patsaranan (Beer) on New Thermage FLX',
+    seeAllTreat: 'See all 30 treatments', seeDoctors: 'Meet the doctors', seeReviews: 'Read every review', seeBranches: 'Addresses and directions',
+
+    // treatments page
+    tFloor: 'Floors 1 to 5', tTitle: 'Treatments', tLede: 'Every treatment at THE RITZ CLINIC, from lifting to wellness.',
+    dirBoard: 'Directory', dirSearch: 'Find a treatment', dirSearchPh: 'Type a name, like Pico or filler', dirNone: 'Nothing matches that name. Try a shorter word.',
+    dirFloor: 'Floor {n}', dirNoFloor: 'Custom', layerLabel: 'Works on', layerNone: 'Planned for you by a doctor', readGuide: 'Read the full guide', askThis: 'Ask about this on LINE',
+    newFromSite: 'New on the website', thaiOnly: 'In Thai',
+    // doctors page
+    dFloor: 'The staff', dTitle: 'Our doctors', dLede: '17 doctors across 12 branches. Pick a doctor to see where they work this week.',
+    dToday: 'Today at {b}', dOff: 'Not on the schedule today', dAppt: 'By appointment', dWeek: 'This week', dBook: 'Book with {n} on LINE',
+    dFounderNote: 'Founder of THE RITZ CLINIC', dBookMsg: 'Hello, I would like to book with {n}.', dClose: 'Close',
+    // reviews page
+    rFloor: 'Guest book', rTitle: 'Friend of The Ritz', rLede: 'Ten guests on the treatments they came back for. Translated from Thai.',
+    rAll: 'All', mirrorTitle: 'Before and after', mirrorLede: 'Drag the handle across the mirror to compare. This is a demo with our chibi Dr. Ritz.',
+    mirrorDemo: 'Demo only. Real cases go here once the clinic sends photos approved for advertising.', before: 'Before', after: 'After', handle: 'Drag to compare before and after',
+    // journal page
+    jFloor: 'Reading room', jTitle: 'Articles', jLede: 'Guides and news from the doctors of THE RITZ CLINIC. New articles appear here as soon as they are posted.',
+    jAll: 'All', jNews: 'Update and News', jTips: 'Tips and Trick', jSearchPh: 'Search articles', jSearch: 'Search', jMore: 'Load more articles',
+    jCount: '{n} articles', jEmpty: 'No articles match that search.', jThai: 'Articles are written in Thai.', jOffline: 'Showing saved articles. The live list loads on the real website.', jLoading: 'Loading articles',
+    // branches page
+    bFloor: 'Concierge', bTitle: 'Branches', bLede: '12 branches in Bangkok, Nonthaburi, Pathum Thani and Samut Prakan.',
+    bOpenNowShort: 'Open now', bClosedNow: 'Closed now', bHours: 'Hours', bPhone: 'Phone', bGetThere: 'Getting there', bMaps: 'Open in Google Maps', bDocsToday: 'Doctors today', bCall: 'Call {p}',
+  },
+  th: {
+    skip: 'ข้ามไปยังเนื้อหา', topHours: 'เปิดทุกวัน 10:00 ถึง 20:30', topBranches: '12 สาขาในกรุงเทพฯ และปริมณฑล',
+    navHome: 'ล็อบบี้', navTreat: 'ทรีตเมนต์', navDoctors: 'แพทย์', navReviews: 'รีวิว', navJournal: 'บทความ', navBranches: 'สาขา',
+    lineBtn: 'ถามหมอทาง LINE', boardSub: 'เดอะริทซ์ คลินิก', bhType: 'หมวด', bhDetail: 'รายละเอียด', bhStatus: 'สถานะ',
+    motto: 'มากกว่าการดูแลผิวพรรณและความงาม<br>เราใส่ใจบริการและรักษามาตรฐานให้ทุกท่านไว้วางใจ',
+    founder: 'ก่อตั้งโดย นพ.เรืองฤทธิ์ ศิริพานิช (หมอริท) ว.56975',
+    bubble: 'สวัสดีครับ อยากให้ผมช่วยแนะนำทรีตเมนต์ไหมครับ <a href="#concierge">ให้หมอริทช่วยเลือก</a>',
+    floorsTitle: 'ยกหน้า 5 ชั้น', floorsLede: 'ผิวของเราซ้อนกันเป็นชั้น และแต่ละทรีตเมนต์ทำงานที่ความลึกต่างกัน เลือกชั้นเพื่อดูว่าชั้นนั้นดูแลด้วยอะไร',
+    floorOf: 'ชั้น {n} จาก 5', keysLabel: 'ทรีตเมนต์ในชั้นนี้', roomCta: 'ไม่แน่ใจว่าต้องชั้นไหน ให้หมอริทช่วยเลือก',
+    conciergeTitle: 'ปรึกษาเบื้องต้นกับหมอริท', conciergeLede: 'ตอบสองข้อ แล้วรับรายชื่อทรีตเมนต์ที่ตรงกับเรื่องที่อยากดูแล แพทย์จะประเมินอีกครั้งก่อนทำทุกครั้ง',
+    q1: '1. อยากดูแลส่วนไหน', face: 'ใบหน้า', body: 'รูปร่างและผิวกาย', q2: '2. เรื่องที่อยากแก้', hint: 'เลือกข้อ 1 ก่อน',
+    keycardLabel: 'ทรีตเมนต์ที่แนะนำ', sendLine: 'ส่งรายการนี้ให้หมอทาง LINE', copied: 'คัดลอกข้อความแล้ว วางในแชท LINE ได้เลย',
+    floorShort: 'ชั้น {n}', lineMsg: 'สวัสดีครับ สนใจปรึกษาเรื่อง{c}\nทรีตเมนต์ที่ดูไว้: {list}',
+    dutyTitle: 'แพทย์ประจำสาขา', dutyLede: 'จากตารางแพทย์เดือนพฤศจิกายน 2569 ตารางอาจมีการเปลี่ยนแปลง โปรดยืนยันกับสาขาก่อนเข้ารับบริการ',
+    today: ' (วันนี้)', noDoctor: 'ไม่มีตารางแพทย์', dr: 'หมอ',
+    days: ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์'],
+    daysShort: ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'],
+    specialsKicker: 'โปรโมชั่นเดือนนี้', baht: 'บาท',
+    gbTitle: 'Friend of The Ritz', gbLede: 'รีวิวจากผู้ที่ไว้วางใจ THE RITZ CLINIC', prev: 'ก่อนหน้า', next: 'ถัดไป',
+    journalTitle: 'บทความล่าสุด', journalLede: 'เขียนโดยทีมแพทย์ THE RITZ CLINIC', more: 'อ่านบทความทั้งหมด',
+    dirTitle: '12 สาขา', openNow: 'ตอนนี้ {t} น. เปิดอยู่ {n} สาขา', mapNote: 'แผนที่โดยประมาณ', to: ' ถึง ',
+    loungeTitle: 'ติดตามเรา', loungeLede: 'โพสต์ล่าสุดจากเพจ Facebook ของคลินิก อัปเดตเองทุกครั้งที่มีโพสต์ใหม่', fbFallback: 'เปิดเพจ THE RITZ บน Facebook',
+    igMain: 'THE RITZ CLINIC', igLift: 'ยกกระชับ', igSkin: 'ผิวและเลเซอร์', igFiller: 'ฟิลเลอร์และโบท็อกซ์', igResize: 'ปรับรูปร่าง', igHair: 'กำจัดขน',
+    address: 'สำนักงานใหญ่ 345/6 โครงการ Headquarters เอกมัย-ลาดพร้าว ซอยลาดพร้าว 94 (ปัญจมิตร) แขวงพลับพลา เขตวังทองหลาง กรุงเทพฯ 10310',
+    permit: 'เลขอนุญาตโฆษณา ฆสพ.สบส 1827/2566', float: 'ถามหมอได้เลยครับ',
+    bPromo: 'โปรโมชั่น', bBranches: 'สาขา', bArticle: 'บทความใหม่', bDoctors: 'แพทย์', bReview: 'รีวิว', bNew: 'ทรีตเมนต์ใหม่',
+    bLift: 'โปรแกรมยกหน้า 5 ชั้น เฉลี่ยเดือนละ 9,900', bUlthera: 'Ultherapy Prime 300 Shots 39,000', bFree: 'แถม MPT 100 lines', bToday: 'วันนี้',
+    bOpen: 'เปิดอยู่ตอนนี้ {n} จาก 12 สาขา', bIsOpen: 'เปิดอยู่', bClosed: 'ปิดแล้ว', bUntil: 'ถึง {t}', bDate: '21 ต.ค.',
+    bFilm: 'ธนภัทร (ฟิล์ม) กับ Ulthera SPT', bBeer: 'ภัสรนันท์ (เบียร์) กับ New Thermage FLX',
+    seeAllTreat: 'ดูทรีตเมนต์ทั้ง 30 รายการ', seeDoctors: 'รู้จักทีมแพทย์', seeReviews: 'อ่านรีวิวทั้งหมด', seeBranches: 'ที่อยู่และการเดินทาง',
+
+    tFloor: 'ชั้น 1 ถึง 5', tTitle: 'ทรีตเมนต์', tLede: 'ทรีตเมนต์ทั้งหมดของ THE RITZ CLINIC ตั้งแต่ยกกระชับจนถึงเวลเนส',
+    dirBoard: 'ป้ายบอกทาง', dirSearch: 'ค้นหาทรีตเมนต์', dirSearchPh: 'พิมพ์ชื่อ เช่น Pico หรือ filler', dirNone: 'ไม่พบชื่อนี้ ลองพิมพ์ให้สั้นลง',
+    dirFloor: 'ชั้น {n}', dirNoFloor: 'เฉพาะบุคคล', layerLabel: 'ทำงานที่', layerNone: 'แพทย์วางแผนเฉพาะคุณ', readGuide: 'อ่านรายละเอียดทั้งหมด', askThis: 'ถามเรื่องนี้ทาง LINE',
+    newFromSite: 'ใหม่บนเว็บไซต์', thaiOnly: 'ภาษาไทย',
+    dFloor: 'ทีมงาน', dTitle: 'ทีมแพทย์', dLede: 'แพทย์ 17 ท่านใน 12 สาขา เลือกแพทย์เพื่อดูว่าสัปดาห์นี้ประจำสาขาไหน',
+    dToday: 'วันนี้อยู่ที่ {b}', dOff: 'วันนี้ไม่มีตาราง', dAppt: 'นัดหมายล่วงหน้า', dWeek: 'สัปดาห์นี้', dBook: 'จองคิว{n}ทาง LINE',
+    dFounderNote: 'ผู้ก่อตั้ง THE RITZ CLINIC', dBookMsg: 'สวัสดีครับ ต้องการจองคิว{n}', dClose: 'ปิด',
+    rFloor: 'สมุดเยี่ยม', rTitle: 'Friend of The Ritz', rLede: 'สิบเสียงจากผู้ที่กลับมาทำซ้ำ',
+    rAll: 'ทั้งหมด', mirrorTitle: 'ก่อนและหลัง', mirrorLede: 'ลากที่จับบนกระจกเพื่อเปรียบเทียบ ตัวอย่างนี้ใช้หมอริทเวอร์ชันการ์ตูน',
+    mirrorDemo: 'ตัวอย่างเท่านั้น เคสจริงจะแสดงเมื่อคลินิกส่งภาพที่ได้รับอนุญาตโฆษณาแล้ว', before: 'ก่อน', after: 'หลัง', handle: 'ลากเพื่อเปรียบเทียบก่อนและหลัง',
+    jFloor: 'ห้องอ่านหนังสือ', jTitle: 'บทความ', jLede: 'ความรู้และข่าวสารจากทีมแพทย์ THE RITZ CLINIC บทความใหม่ขึ้นที่นี่ทันทีที่โพสต์',
+    jAll: 'ทั้งหมด', jNews: 'Update and News', jTips: 'Tips and Trick', jSearchPh: 'ค้นหาบทความ', jSearch: 'ค้นหา', jMore: 'โหลดบทความเพิ่ม',
+    jCount: '{n} บทความ', jEmpty: 'ไม่พบบทความที่ตรงกับคำค้น', jThai: '', jOffline: 'แสดงบทความที่บันทึกไว้ รายการสดจะโหลดบนเว็บไซต์จริง', jLoading: 'กำลังโหลดบทความ',
+    bFloor: 'คอนเซียร์จ', bTitle: 'สาขา', bLede: '12 สาขาในกรุงเทพฯ นนทบุรี ปทุมธานี และสมุทรปราการ',
+    bOpenNowShort: 'เปิดอยู่', bClosedNow: 'ปิดแล้ว', bHours: 'เวลาเปิด', bPhone: 'โทร', bGetThere: 'การเดินทาง', bMaps: 'เปิดใน Google Maps', bDocsToday: 'แพทย์วันนี้', bCall: 'โทร {p}',
+  },
+};
+
+export const t = (key, vars = {}) => {
+  let s = STR[LANG][key] ?? STR.en[key] ?? key;
+  if (typeof s === 'string') for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, v);
+  return s;
+};
+// Picks the English field (titleEn) when LANG is 'en', else the Thai field (title).
+export const pick = (obj, field) => (LANG === 'en' ? obj[field + 'En'] ?? obj[field] : obj[field]);
+
+export function applyStatic() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-t]').forEach((el) => { el.innerHTML = t(el.dataset.t); });
+  document.querySelectorAll('[data-tp]').forEach((el) => { el.placeholder = t(el.dataset.tp); });
+}
