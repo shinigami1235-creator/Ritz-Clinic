@@ -41,7 +41,7 @@ const M = {
 };
 const blush = `<ellipse cx="${G.eyeL[0] - 8}" cy="${G.eyeL[1] + 22}" rx="11" ry="6" fill="#F59AA6" opacity=".55"/><ellipse cx="${G.eyeR[0] + 8}" cy="${G.eyeR[1] + 22}" rx="11" ry="6" fill="#F59AA6" opacity=".55"/>`;
 const sweat = `<path d="M232 108c6 9 8 14 4 18s-11 1-10-5c1-4 4-8 6-13z" fill="#9FD3F2" stroke="#4A90C2" stroke-width="1.5"/>`;
-const sparkle = (x, y, s = 1) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0-9 2-2 9 0 2 2 0 9-2 2-9 0-2-2z" fill="#F4D27A"/>`;
+const sparkle = (x, y, s = 1) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0-9 2-2 9 0 2 2 0 9-2 2-9 0-2-2z" fill="#E2CCA5"/>`;
 
 function faceSVG(expr) {
   const L = G.eyeL, R = G.eyeR;

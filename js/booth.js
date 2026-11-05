@@ -1,31 +1,49 @@
-// The showroom: one small room per programme, built in real 3D with CSS. A back wall with lit
-// niches (or the programme's poster), two side walls angled toward you with screens on
-// cabinets, and plinths on the floor. Each machine stands on a plinth turned the same way
-// the machine was photographed, so a machine shot from its side faces the middle of the room.
-// Tap anything and the camera moves in on it while a card slides out with what it is.
+// The showroom: one small room per programme, built in real 3D with CSS. Every room is laid out
+// symmetrically: the machines and products stand in a half circle on a raised dais, the ones at
+// the back raised higher so nothing hides behind anything, and each turned toward the middle.
+// Treatment photos hang as framed portraits on the side walls. Tap anything and the camera moves
+// in on it while a card slides out with what it is.
 import { SERVICES, CATS, FLOORS } from './data.js';
 import { CAT_BANNERS } from './media.js';
 import { LANG, t } from './i18n.js';
 import { $, $$, esc, renderOf, ritzSay, reduced, sendToLine } from './core.js';
 
 // which way each machine faces in its picture: F front, L turned to the viewer's left, R to the right
-const FACE = { 682515: 'L', 509619: 'F', 516098: 'R', 4341: 'R', 562000: 'L', 509437: 'F', 557783: 'L', 515783: 'L', 4211: 'R' };
-// boxes, vials and small hand pieces go on shelves; the rest stand on the floor
-// machines with no readable lettering can be mirrored to face the other way; Accure, Moveo and
-// Pico Laser carry their names on the body, so they keep their own side
-const FLIP_OK = new Set([682515, 509619, 516098, 562000, 509437, 515783]);
+const FACE = { 682515: 'L', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'L', 509437: 'F', 557783: 'L', 515783: 'F', 4211: 'L' };
+// machines with no readable lettering can be mirrored; the rest carry their names and stay as shot
+const FLIP_OK = new Set([682515, 509619, 516098]);
+// boxes, vials and small hand pieces stand on slim columns at eye level instead of floor plinths
 const SMALL = new Set([395323, 395880, 395018, 557139, 746481, 746484, 746486, 746488]);
-
-const HERO = new Set([746484, 557139]);
-const FLOOR_Y = 510;                       // world y of the floor
-const SLOTS = {                            // floor plinths: x, z, plinth size, turn
-  C: { x: 600, z: 40, w: 210, d: 150, h: 64, a: 0, ih: 250 },
-  L: { x: 335, z: -40, w: 170, d: 130, h: 104, a: 30, ih: 230 },
-  R: { x: 865, z: -40, w: 170, d: 130, h: 92, a: -30, ih: 230 },
-  BL: { x: 470, z: -250, w: 140, d: 110, h: 132, a: 16, ih: 190 },
-  BR: { x: 730, z: -250, w: 140, d: 110, h: 120, a: -16, ih: 190 },
-};
+// angles around the half circle for 1 to 5 pieces, 0 is the back middle
+const ARC = { 1: [0], 2: [-38, 38], 3: [-58, 0, 58], 4: [-68, -22, 22, 68], 5: [-74, -37, 0, 37, 74] };
+const FLOOR_Y = 510;
 const nameOf = (c) => (LANG === 'en' ? c.en : c.th);
+
+// the best way to seat pieces around the arc: on the left they should face right, on the right
+// face left, in the middle face front. Tries every order (at most 5 pieces) and every allowed mirror.
+function seat(pieces, angles) {
+  const cost = (deg, f) => {
+    if (deg === 0) return f === 'F' ? 0 : 1;
+    const want = deg < 0 ? 'R' : 'L';
+    return f === want ? 0 : f === 'F' ? 1 : 4;
+  };
+  let best = null;
+  const perm = (rest, done) => {
+    if (!rest.length) {
+      let total = 0; const out = [];
+      done.forEach((p, i) => {
+        const f = FACE[p.id] || 'F', alt = f === 'L' ? 'R' : f === 'R' ? 'L' : 'F';
+        const a = cost(angles[i], f), b = FLIP_OK.has(p.id) ? cost(angles[i], alt) : Infinity;
+        total += Math.min(a, b); out.push([p, b < a]);
+      });
+      if (!best || total < best.total) best = { total, out };
+      return;
+    }
+    rest.forEach((p, i) => perm([...rest.slice(0, i), ...rest.slice(i + 1)], [...done, p]));
+  };
+  perm(pieces, []);
+  return best ? best.out : [];
+}
 
 function box({ w, d, h, cls = '', front = '' }) {
   return `<span class="bx ${cls}" style="width:${w}px;height:${h}px">
@@ -39,70 +57,52 @@ const plate = (s) => `<span class="plate">${esc(s.name)}</span>`;
 
 function room(c, b) {
   const items = SERVICES.filter((s) => s.cat === c.id && renderOf(s.id));
-  const prods = items.filter((s) => renderOf(s.id).kind === 'product');
-  let devices = prods.filter((s) => !SMALL.has(s.id)), smalls = prods.filter((s) => SMALL.has(s.id));
+  const pieces = items.filter((s) => renderOf(s.id).kind === 'product');
   const photos = items.filter((s) => renderOf(s.id).kind !== 'product');
-  if (!devices.length && smalls.length) {                              // a shelf-only room puts its showpiece on the podium
-    const hero = smalls.find((s) => HERO.has(s.id)) || smalls[0];
-    devices = [hero]; smalls = smalls.filter((s) => s !== hero);
-  }
-
-  // devices to floor slots by the way they face. Machines that can't be mirrored pick first; the
-  // rest take their own side if it's free, or get mirrored to the other side. When the back row is
-  // needed, a mirrored machine goes behind the emptier side instead of hiding behind its neighbour.
-  const free = new Set(Object.keys(SLOTS)), floor = [];
-  const side = { L: ['R', 'BR'], R: ['L', 'BL'], F: ['C'] };
-  const mirror = { L: 'R', R: 'L', F: 'F' };
-  const order = [...devices].sort((a, b) => FLIP_OK.has(a.id) - FLIP_OK.has(b.id));
-  for (const s of order) {
-    const f = FACE[s.id] || 'F', can = FLIP_OK.has(s.id) && f !== 'F';
-    const tries = [[side[f][0], false], ...(can ? [[side[mirror[f]][0], true], [side[mirror[f]][1], true]] : []), [side[f][1], false], ['C', false], ['L', false], ['R', false], ['BL', false], ['BR', false]];
-    const hit = tries.find(([k]) => k && free.has(k));
-    if (hit) { free.delete(hit[0]); floor.push([hit[0], s, hit[1]]); }
-  }
-  const plaque = !floor.some(([k]) => k === 'C');
-
-  // photos to the screens on the side walls, back slot first
-  const wings = { l: [], r: [] };
-  photos.forEach((s, i) => (i % 2 ? wings.r : wings.l).push(s));
+  const n = Math.min(pieces.length, 5), angles = ARC[n] || [];
+  const seated = seat(pieces.slice(0, 5), angles);
   const slotBtn = (s, inner, cls, style) => `<button type="button" class="it ${cls}" data-id="${s.id}" aria-label="${esc(s.name)}" style="${style}">${inner}</button>`;
 
-  const wing = (side, list) => {
-    const xs = side === 'l' ? [300, 90] : [50, 260];
-    const cab = list.length ? box({ w: 460, d: 70, h: 120, cls: 'cab', front: list.map((s, i) => `<span class="plate" style="left:${xs[i] - 30 + 85 - 45}px">${esc(s.name)}</span>`).join('') }) : '';
-    return `<div class="rwall wing wing-${side}">
-      <i class="trim"></i><i class="led"></i>
-      ${list.length ? list.map((s, i) => `<i class="pool" style="left:${xs[i] - 40}px;top:120px;width:250px;height:300px"></i>` + slotBtn(s, `<span class="screen"><img src="${renderOf(s.id).src}" alt="" loading="lazy" draggable="false"></span>`, 'on-wing', `left:${xs[i]}px;top:262px`)).join('')
-        : `<span class="emblem"><img src="assets/brand/r-mark.svg" alt=""></span>`}
-      ${cab ? `<span class="cab-wrap" style="left:30px;top:510px">${cab}</span>` : ''}
+  // the half circle on the dais
+  const arc = seated.map(([s, flip], i) => {
+    const deg = angles[i], r = (deg * Math.PI) / 180, small = SMALL.has(s.id);
+    const x = 600 + 360 * Math.sin(r), z = -200 + 240 * (1 - Math.cos(r)), cos = Math.cos(r);
+    const w = small ? 92 : 180, d = small ? 92 : 130;
+    const h = Math.round(small ? 150 + 80 * cos : 46 + 100 * cos * cos);
+    const ih = small ? 140 : 228, iw = small ? 160 : 260;
+    const top = FLOOR_Y - 18 - h;                       // the dais lifts everything 18
+    return `<i class="cone" style="left:${x - 150}px;top:-120px;height:${top - ih + 150}px;transform:translateZ(${z}px)"></i>
+      <span class="stand" style="left:${x - w / 2}px;top:${top}px;transform:translateZ(${z}px) rotateY(${(-deg * 0.55).toFixed(1)}deg)">${box({ w, d, h, cls: small ? 'col' : '', front: `<span class="plate">${esc(s.name)}</span>` })}</span>
+      ${slotBtn(s, `<img class="prod${flip ? ' flip' : ''}" src="${renderOf(s.id).src}" alt="" loading="lazy" draggable="false">`, small ? 'on-col' : 'on-floor', `left:${x - iw / 2}px;width:${iw}px;top:${top - ih}px;height:${ih}px;transform:translateZ(${z}px);--k:${i}`)}`;
+  }).join('');
+
+  // portraits: the same number on each side wall, an odd one goes in the middle of the back wall
+  const per = Math.floor(photos.length / 2), mid = photos.length % 2 ? photos[photos.length - 1] : null;
+  const frame = (s, style) => slotBtn(s, `<i class="pic-light"></i><span class="frame"><img src="${renderOf(s.id).src}" alt="" loading="lazy" draggable="false"></span><span class="plate">${esc(s.name)}</span>`, 'portrait', style);
+  const wing = (side) => {
+    const list = side === 'l' ? photos.slice(0, per) : photos.slice(per, per * 2);
+    const xs = list.length === 1 ? [190] : [100, 290];
+    return `<div class="rwall wing wing-${side}"><i class="trim"></i><i class="dado"></i><i class="led"></i>
+      ${list.length ? list.map((s, i) => frame(s, `left:${side === 'l' ? xs[i] : 520 - 140 - xs[i]}px;top:226px`)).join('') : '<span class="emblem"><img src="assets/brand/r-mark.svg" alt=""></span>'}
     </div>`;
   };
-
-  // the back wall: niches with shelves for the small things, or the programme poster
-  const shelfItems = smalls.slice(0, 8);
-  const back = shelfItems.length ? `
-      ${[0, 1].map((n) => `<span class="niche" style="left:${n ? 500 : 46}px"><i class="niche-light"></i>
-        ${[0, 1].map((r) => `<i class="nshelf" style="top:${r ? 412 : 182}px"></i>`).join('')}
-        ${((list) => list.map((s, j) => { const two = list.length <= 2, x = two ? 60 : (j % 2) * 100 + 10, up = two ? j === 0 : j < 2; return slotBtn(s, `<img class="prod" src="${renderOf(s.id).src}" alt="" loading="lazy" draggable="false">${plate(s)}`, 'on-shelf', `left:${x}px;bottom:${up ? 250 : 20}px;--k:${j}`); }).join(''))(shelfItems.filter((_, i) => i % 2 === n))}
-      </span>`).join('')}`
-    : `<span class="poster"><i class="pool" style="left:-40px;top:-80px;width:560px;height:360px"></i><img src="${CAT_BANNERS[c.id]}" alt="" loading="lazy"></span>`;
+  const centre = mid ? frame(mid, 'left:308px;top:226px')
+    : n <= 2 ? `<span class="poster"><img src="${CAT_BANNERS[c.id]}" alt="" loading="lazy"></span>`
+    : '<span class="flutes"><img src="assets/brand/r-mark.svg" alt=""></span>';
 
   return `<section class="room" data-i="${b}" aria-label="${esc(nameOf(c))}">
     <div class="world">
       <div class="floor"></div>
-      <div class="rwall back"><i class="trim"></i><i class="led"></i>
+      <div class="dais"></div>
+      <div class="rwall back"><i class="trim"></i><i class="dado"></i><i class="led"></i>
         <p class="room-sign"><small>${String(b + 1).padStart(2, '0')}</small>${esc(nameOf(c))}</p>
         ${[150, 378, 606].map((x) => `<i class="fixture" style="left:${x}px"></i>`).join('')}
-        ${back}
+        <i class="pool" style="left:128px;top:120px;width:500px;height:380px"></i>
+        ${centre}
       </div>
-      ${wing('l', wings.l)}${wing('r', wings.r)}
-      ${floor.map(([k, s, flip], n) => {
-        const p = SLOTS[k], src = renderOf(s.id).src;
-        return `<i class="cone" style="left:${p.x - 150}px;top:-120px;height:${FLOOR_Y - p.h - p.ih + 140}px;transform:translateZ(${p.z}px)"></i>
-          <span class="stand" style="left:${p.x - p.w / 2}px;top:${FLOOR_Y - p.h}px;transform:translateZ(${p.z}px) rotateY(${p.a}deg)">${box({ w: p.w, d: p.d, h: p.h, front: plate(s) })}</span>
-          ${slotBtn(s, `<img class="prod${flip ? ' flip' : ''}" src="${src}" alt="" loading="lazy" draggable="false">`, 'on-floor', `left:${p.x - 130}px;top:${FLOOR_Y - p.h - p.ih}px;height:${p.ih}px;transform:translateZ(${p.z}px);--k:${n}`)}`;
-      }).join('')}
-      ${plaque ? `<span class="stand" style="left:${600 - 120}px;top:${FLOOR_Y - 70}px;transform:translateZ(40px)">${box({ w: 240, d: 150, h: 70, front: `<span class="plaque"><b>${esc(nameOf(c))}</b><small>${t('progCount', { n: items.length })}</small></span>` })}</span>` : ''}
+      ${wing('l')}${wing('r')}
+      ${arc}
+      ${n ? '' : `<span class="stand" style="left:${600 - 120}px;top:${FLOOR_Y - 18 - 70}px;transform:translateZ(40px)">${box({ w: 240, d: 150, h: 70, front: `<span class="plaque"><b>${esc(nameOf(c))}</b><small>${t('progCount', { n: items.length })}</small></span>` })}</span>`}
     </div>
   </section>`;
 }

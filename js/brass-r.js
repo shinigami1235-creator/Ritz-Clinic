@@ -21,7 +21,7 @@ export async function mountBrassR(host, { still = false } = {}) {
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
   camera.position.set(0, 0, 7.2);
 
-  const brass = new THREE.MeshPhysicalMaterial({ color: 0xD8B46A, metalness: 1, roughness: 0.3, clearcoat: 0.5, clearcoatRoughness: 0.25 });
+  const brass = new THREE.MeshPhysicalMaterial({ color: 0xC9B08C, metalness: 1, roughness: 0.3, clearcoat: 0.5, clearcoatRoughness: 0.25 });
   const group = new THREE.Group();
   const geoms = [];
   for (const p of data.paths) {

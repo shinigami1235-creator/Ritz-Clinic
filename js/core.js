@@ -73,7 +73,7 @@ function dust(canvas) {
       d.y -= d.s; d.a += 0.01; d.x += Math.sin(d.a) * 0.15;
       if (d.y < -4) { d.y = h + 4; d.x = Math.random() * w; }
       ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 7);
-      ctx.fillStyle = `rgba(240,214,150,${0.25 + 0.35 * Math.abs(Math.sin(d.a))})`; ctx.fill();
+      ctx.fillStyle = `rgba(232,218,190,${0.25 + 0.35 * Math.abs(Math.sin(d.a))})`; ctx.fill();
     }
   })();
 }

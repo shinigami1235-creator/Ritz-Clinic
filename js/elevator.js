@@ -4,7 +4,7 @@ import { LANG, t, pick } from './i18n.js';
 import { $, reduced, renderImg, ritzSay } from './core.js';
 
 const ANG = (n) => -64 + (n - 1) * 32;
-const LAYER_COLORS = ['#F6DECB', '#EBC3AA', '#F1E2B5', '#D8C6B6', '#C98A7C'];
+const LAYER_COLORS = ['#F6DECB', '#EBC3AA', '#EBDFC9', '#D8C6B6', '#C98A7C'];
 
 export function mountElevator(root = document) {
   const shaft = $('.lift-shaft', root);

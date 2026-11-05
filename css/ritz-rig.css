@@ -15,13 +15,13 @@
 .buddy > * { pointer-events: auto; }
 .buddy-turn { position: relative; transform-origin: 50% 100%; transition: transform .18s ease-out; }
 .buddy-turn.flip { transform: scaleX(-1); }
-.buddy-turn::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -3px; height: 9px; border-radius: 50%; background: radial-gradient(closest-side, rgba(18,31,56,.28), transparent); z-index: -1; transition: opacity .6s; }
+.buddy-turn::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: -3px; height: 9px; border-radius: 50%; background: radial-gradient(closest-side, rgba(43,35,30,.28), transparent); z-index: -1; transition: opacity .6s; }
 .buddy.bubbled .buddy-turn::after, .buddy.away .buddy-turn::after { opacity: 0; }
 .buddy-body { display: block; padding: 0; border: 0; background: none; cursor: grab; transform-origin: 50% 92%; touch-action: none; -webkit-tap-highlight-color: transparent; }
 .buddy-body:active { cursor: grabbing; }
 .buddy-body:focus { outline: none; }
 .buddy-body:focus-visible .rz { filter: drop-shadow(0 0 3px var(--gold, #AC9359)); }
-.buddy-art { display: block; filter: drop-shadow(0 6px 10px rgba(18,31,56,.18)); }
+.buddy-art { display: block; filter: drop-shadow(0 6px 10px rgba(43,35,30,.18)); }
 .buddy-nap { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity .4s; }
 .buddy.napping .buddy-nap { opacity: 1; }
 .buddy-nap b { position: absolute; left: 66%; top: 2%; font: 700 15px/1 "Tenor Sans", serif; color: #AC9359; opacity: 0; animation: buddy-z 3s ease-out infinite; }
@@ -30,8 +30,8 @@
 @keyframes buddy-z { 0% { opacity: 0; transform: translate(0, 6px) rotate(-10deg); } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(18px, -30px) rotate(12deg); } }
 .buddy-float { position: absolute; left: 50%; top: 50%; width: 170%; aspect-ratio: 1; margin: -85% 0 0 -85%; border-radius: 50%; pointer-events: none; opacity: 0; transform: scale(.15); transform-origin: 50% 60%;
   background: radial-gradient(circle at 30% 26%, rgba(255,255,255,.95) 0 6%, rgba(255,255,255,0) 14%), radial-gradient(circle at 70% 78%, rgba(255,255,255,.5) 0 3%, rgba(255,255,255,0) 8%),
-    radial-gradient(circle, rgba(255,255,255,0) 56%, rgba(239,227,196,.35) 72%, rgba(222,190,115,.35) 86%, rgba(172,147,89,.6) 100%);
-  box-shadow: inset 0 0 0 1.5px rgba(222,190,115,.7), 0 6px 18px rgba(18,31,56,.12); transition: transform 1.4s cubic-bezier(.3,1.3,.5,1), opacity .6s; }
+    radial-gradient(circle, rgba(255,255,255,0) 56%, rgba(239,227,196,.35) 72%, rgba(200,178,140,.35) 86%, rgba(172,147,89,.6) 100%);
+  box-shadow: inset 0 0 0 1.5px rgba(200,178,140,.7), 0 6px 18px rgba(43,35,30,.12); transition: transform 1.4s cubic-bezier(.3,1.3,.5,1), opacity .6s; }
 .buddy.bubbled .buddy-float { opacity: 1; transform: scale(1); pointer-events: auto; cursor: pointer; animation: buddy-floatwob 3.2s ease-in-out 1.4s infinite; }
 @keyframes buddy-floatwob { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.04, .97); } }
 .buddy.pop .buddy-float { opacity: 0; transform: scale(1.35); transition: transform .35s ease-out, opacity .35s ease-out; animation: none; }
@@ -66,14 +66,14 @@
 .buddy-hehe { position: absolute; left: 62%; top: -6px; font: 700 15px/1 "Jost", "Noto Sans Thai", sans-serif; color: #AC9359; pointer-events: none; animation: buddy-hehe 1.1s ease-out forwards; }
 @keyframes buddy-hehe { 0% { opacity: 0; transform: translateY(6px) scale(.8); } 20% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-24px) rotate(-8deg); } }
 .buddy-say { position: absolute; left: 84px; bottom: calc(100% - 26px); margin: 0; width: max-content; max-width: 220px; padding: 9px 14px; border-radius: 16px 16px 16px 4px;
-  background: linear-gradient(160deg, #FFFDF8, #F6ECD6); border: 1px solid #DEBE73; box-shadow: 0 10px 24px -10px rgba(18,31,56,.35);
-  font: 500 14px/1.4 "Jost", "Noto Sans Thai", sans-serif; color: #121F38; opacity: 0; transform: translateY(6px) scale(.96); transform-origin: 0 100%; transition: opacity .25s, transform .35s cubic-bezier(.22,1,.36,1); pointer-events: none; }
+  background: linear-gradient(160deg, #FFFDF8, #F6ECD6); border: 1px solid #D2BC92; box-shadow: 0 10px 24px -10px rgba(43,35,30,.35);
+  font: 500 14px/1.4 "Jost", "Noto Sans Thai", sans-serif; color: #2B231E; opacity: 0; transform: translateY(6px) scale(.96); transform-origin: 0 100%; transition: opacity .25s, transform .35s cubic-bezier(.22,1,.36,1); pointer-events: none; }
 .buddy.say-left .buddy-say { left: auto; right: 84px; border-radius: 16px 16px 4px 16px; transform-origin: 100% 100%; }
 .buddy.talking .buddy-say { opacity: 1; transform: none; }
-.buddy-x { position: absolute; left: -6px; top: -4px; width: 24px; height: 24px; border-radius: 50%; border: 1px solid #DEBE73; background: #FFFDF8; color: #6A5C52; font: 500 15px/1 sans-serif; cursor: pointer; opacity: 0; transition: opacity .2s; }
+.buddy-x { position: absolute; left: -6px; top: -4px; width: 24px; height: 24px; border-radius: 50%; border: 1px solid #D2BC92; background: #FFFDF8; color: #6A5C52; font: 500 15px/1 sans-serif; cursor: pointer; opacity: 0; transition: opacity .2s; }
 .buddy:hover .buddy-x, .buddy-x:focus-visible { opacity: 1; }
 .buddy.away { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .3s, visibility .3s; }
-.buddy-peek { position: fixed; left: 18px; bottom: 0; z-index: 45; width: 48px; height: 22px; border: 1px solid #DEBE73; border-bottom: 0; border-radius: 24px 24px 0 0; background: linear-gradient(135deg, #F1DFA9, #A8884A); cursor: pointer; transform: translateY(100%); transition: transform .35s cubic-bezier(.22,1,.36,1); }
+.buddy-peek { position: fixed; left: 18px; bottom: 0; z-index: 45; width: 48px; height: 22px; border: 1px solid #D2BC92; border-bottom: 0; border-radius: 24px 24px 0 0; background: linear-gradient(135deg, #E9DBC0, #9A8462); cursor: pointer; transform: translateY(100%); transition: transform .35s cubic-bezier(.22,1,.36,1); }
 .buddy-peek.on { transform: none; }
 @media (max-width: 759px) {
   .buddy-say { left: 60px; max-width: 180px; font-size: 13px; }
@@ -87,7 +87,7 @@
 .rz-singing .rz-torso { animation: rz-sway 1.1s ease-in-out infinite; transform-origin: 150px 470px; }
 @keyframes rz-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
 .buddy-notes { position: absolute; left: 50%; top: 10%; width: 0; height: 0; pointer-events: none; }
-.buddy-notes i { position: absolute; left: 0; top: 0; font-style: normal; font: 700 22px/1 serif; color: #C9A55C; text-shadow: 0 0 8px rgba(233,207,142,.9), 0 2px 4px rgba(18,31,56,.4); animation: buddy-note 2.4s ease-out forwards; }
+.buddy-notes i { position: absolute; left: 0; top: 0; font-style: normal; font: 700 22px/1 serif; color: #AC9359; text-shadow: 0 0 8px rgba(216,195,160,.9), 0 2px 4px rgba(43,35,30,.4); animation: buddy-note 2.4s ease-out forwards; }
 @keyframes buddy-note { 0% { opacity: 0; transform: translate(0, 10px) scale(.6) rotate(-10deg); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--x), -110px) scale(1.15) rotate(12deg); } }
 .buddy.singing .buddy-say { font-style: italic; }
 .buddy-body.m-hops { animation: buddy-hops .42s cubic-bezier(.3,.7,.4,1) infinite; }
