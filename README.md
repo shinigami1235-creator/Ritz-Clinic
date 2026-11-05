@@ -31,7 +31,7 @@ Every page keeps a saved copy in `js/data.js`, so nothing breaks if WordPress is
 
 He is the chibi from Gemini, cut into layers in `assets/chibi/rig/`: one head with the eyes and mouth painted out, a body per pose and two legs. `js/ritz-rig.js` draws his face live, so he blinks, looks at the cursor and changes expression on any pose. `js/ritz-buddy.js` is the same engine as Nong Tape on the Apex Slim site: he walks to the perch next to whatever you're reading, fidgets, yawns, falls asleep and floats off in a bubble, reacts to taps, and can be picked up and dropped. Pages tell him what happened with `ritzSay('card')` and similar.
 
-Drop him in the middle of the screen and he pulls out a mic and sings.
+Drop him in the middle of the screen and he pulls out a mic and sings. The words come from `data/song.txt`, one speech bubble per line, about 3 seconds each, and the song lasts as long as the lyrics do. Lines starting with `#` are skipped. Tapping him stops the song.
 
 ## Stories and Facebook
 

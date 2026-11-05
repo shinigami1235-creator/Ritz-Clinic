@@ -1,0 +1,4 @@
+# Dr. Ritz's song for the easter egg. Each line below shows as one speech bubble, about 3 seconds each.
+# Lines starting with # are ignored. Delete the two lines under this note and paste the lyrics in their place.
+Care with a smile
+La la la

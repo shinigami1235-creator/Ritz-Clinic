@@ -403,7 +403,7 @@ addEventListener('pointermove', (e) => {
   if (grab.id !== e.pointerId) return;
   if (!grab.moved && Math.hypot(e.clientX - grab.sx, e.clientY - grab.sy) < 7) return;
   if (!grab.moved) {                     // picked up
-    if (mode === 'sing') { clearInterval(mouthT); clearInterval(noteT); clearTimeout(singT); root.classList.remove('singing'); root.querySelector('.buddy-notes')?.remove(); }
+    if (mode === 'sing') { clearInterval(mouthT); clearInterval(noteT); clearTimeout(singT); clearInterval(lineT); root.classList.remove('singing'); root.querySelector('.buddy-notes')?.remove(); }
     grab.moved = true; mode = 'drag'; run = null; flying = false; body.classList.remove('m-glide', 'm-run', 'm-sleep', 'm-hops');
     if (asleep) popBubble();
     clearTimeout(bubbleT); root.classList.remove('bubbled');
@@ -481,8 +481,14 @@ function runStep(dt, tx, floor) {
 }
 
 /* easter egg: drop him in the middle of the screen and he sings */
-const SONG = TH ? ['♪ ดูแลผิว ด้วยใจ ♪', '♪ ลา ลา ลา ♪'] : ['♪ Care with a smile ♪', '♪ La la la ♪'];
-let singT = 0, noteT = 0, mouthT = 0;
+// The words come from data/song.txt, one bubble per line. Empty file = the default hum.
+let SONG = TH ? ['ดูแลผิว ด้วยใจ', 'ลา ลา ลา'] : ['Care with a smile', 'La la la'];
+const LINE_MS = 3200;
+fetch(new URL('../data/song.txt', import.meta.url), { cache: 'no-store' })
+  .then((r) => (r.ok ? r.text() : ''))
+  .then((txt) => { const l = txt.split(/\r?\n/).map((x) => x.trim()).filter((x) => x && !x.startsWith('#')); if (l.length) SONG = l; })
+  .catch(() => {});
+let singT = 0, noteT = 0, mouthT = 0, lineT = 0;
 function sing() {
   mode = 'sing'; stopFidget(); clearTimeout(actTimer); busyUntil = Infinity; root.classList.add('singing');
   setFace(1); lean = 0; draw(); rig.look(0, -0.2);
@@ -496,11 +502,12 @@ function sing() {
     n.style.setProperty('--x', `${(Math.random() * 2 - 1) * 60}px`); n.style.left = `${(Math.random() * 2 - 1) * 24}px`;
     notes.append(n); setTimeout(() => n.remove(), 2400);
   }, 420);
-  speak(SONG[0]); setTimeout(() => { if (mode === 'sing') speak(SONG[1]); }, 3600);
-  singT = setTimeout(stopSinging, 7400);
+  speak(`♪ ${SONG[0]} ♪`);
+  lineT = setInterval(() => { line++; if (mode === 'sing' && line < SONG.length) speak(`♪ ${SONG[line]} ♪`); }, LINE_MS);
+  singT = setTimeout(stopSinging, SONG.length * LINE_MS + 400);
 }
 function stopSinging() {
-  clearInterval(mouthT); clearInterval(noteT); clearTimeout(singT);
+  clearInterval(mouthT); clearInterval(noteT); clearTimeout(singT); clearInterval(lineT);
   root.classList.remove('singing'); root.querySelector('.buddy-notes')?.remove(); root.classList.remove('talking');
   rig.set({ pose: 'wai', expr: 'proud', ms: 300 }); move('bob');
   setTimeout(() => { if (mode === 'sing') { mode = 'fall'; vel.x = 0; vel.y = -80; rig.set({ pose: 'hop', expr: 'happy' }); } }, 1300);
