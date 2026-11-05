@@ -1,7 +1,7 @@
 // One treatment: the render on its plinth, the clinic's full article, real results and related treatments.
 import { SERVICES, CATS, FLOORS } from './data.js';
 import { LANG, t } from './i18n.js';
-import { $, esc, renderOf, sendToLine } from './core.js';
+import { $, $$, esc, renderOf, sendToLine } from './core.js';
 import { mountMirror } from './mirror.js';
 import { mountShelf } from './showroom.js';
 import { fmtDate } from './posts.js';
@@ -13,11 +13,33 @@ const catName = (c) => (LANG === 'en' ? c.en : c.th);
 
 if (r) $('#tStage').insertAdjacentHTML('afterbegin', r.kind === 'product' ? `<img class="prod" src="${r.src}" alt="">` : `<img class="ph" src="${r.src}" alt="">`);
 
+// a contents list beside the article: the clinic's own headings, the current one lit as you read
+function contents() {
+  const heads = $$('#tArticle h2');
+  if (heads.length < 3) return;
+  const art = $('#about .article');
+  const wrap = document.createElement('div'); wrap.className = 'article-wrap';
+  art.before(wrap); wrap.append(art);
+  const nav = document.createElement('nav'); nav.className = 'toc'; nav.setAttribute('aria-label', t('tContents'));
+  nav.innerHTML = `<p class="toc-title">${t('tContents')}</p><i class="toc-bar"><b></b></i><ol>${heads.map((h, i) => { h.id = h.id || `sec-${i + 1}`; return `<li><a href="#${h.id}">${esc(h.textContent.trim())}</a></li>`; }).join('')}</ol>`;
+  wrap.prepend(nav);
+  const links = $$('a', nav), bar = $('.toc-bar b', nav);
+  const io = new IntersectionObserver((es) => {
+    for (const e of es) if (e.isIntersecting) { const i = heads.indexOf(e.target); links.forEach((a, k) => a.classList.toggle('on', k === i)); }
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  heads.forEach((h) => io.observe(h));
+  addEventListener('scroll', () => {
+    const r = art.getBoundingClientRect();
+    bar.style.height = `${Math.min(100, Math.max(0, (innerHeight * 0.3 - r.top) / r.height * 100))}%`;
+  }, { passive: true });
+}
+
 async function article() {
   try {
     const d = await (await fetch(`data/services/${id}.json`)).json();
     if (!s) { $('#page-title').textContent = d.title; document.title = `${d.title} | THE RITZ CLINIC`; }
     $('#tArticle').innerHTML = d.html;
+    contents();
     $('#tMeta').innerHTML = `${t('tUpdated', { d: fmtDate(d.modified) })}${t('tThaiNote') ? ` · <span class="lang-note">${t('tThaiNote')}</span>` : ''}`;
   } catch {
     $('#tArticle').innerHTML = `<p>${t('tNotFound')}</p>`;
