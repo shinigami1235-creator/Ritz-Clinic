@@ -95,6 +95,7 @@
 .it:hover .prod, .it:focus-visible .prod { transform: translateY(-10px) scale(1.04); }
 .on-floor { width: 260px; }
 .on-floor .prod { height: 100%; }
+.prod.flip { scale: -1 1; }
 .on-shelf { width: 90px; height: 175px; }
 .on-shelf .prod { height: 150px; animation: none; }
 .on-shelf .plate { position: absolute; bottom: -24px; max-width: 110px; font-size: 9px; padding: 2px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

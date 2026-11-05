@@ -11,6 +11,9 @@ import { $, $$, esc, renderOf, ritzSay, reduced, sendToLine } from './core.js';
 // which way each machine faces in its picture: F front, L turned to the viewer's left, R to the right
 const FACE = { 682515: 'L', 509619: 'F', 516098: 'R', 4341: 'R', 562000: 'L', 509437: 'F', 557783: 'L', 515783: 'L', 4211: 'R' };
 // boxes, vials and small hand pieces go on shelves; the rest stand on the floor
+// machines with no readable lettering can be mirrored to face the other way; Accure, Moveo and
+// Pico Laser carry their names on the body, so they keep their own side
+const FLIP_OK = new Set([682515, 509619, 516098, 562000, 509437, 515783]);
 const SMALL = new Set([395323, 395880, 395018, 557139, 746481, 746484, 746486, 746488]);
 
 const HERO = new Set([746484, 557139]);
@@ -44,13 +47,18 @@ function room(c, b) {
     devices = [hero]; smalls = smalls.filter((s) => s !== hero);
   }
 
-  // devices to floor slots by the way they face
+  // devices to floor slots by the way they face. Machines that can't be mirrored pick first; the
+  // rest take their own side if it's free, or get mirrored to the other side. When the back row is
+  // needed, a mirrored machine goes behind the emptier side instead of hiding behind its neighbour.
   const free = new Set(Object.keys(SLOTS)), floor = [];
-  const take = (pref) => { for (const k of pref) if (free.has(k)) { free.delete(k); return k; } return null; };
-  for (const s of devices) {
-    const f = FACE[s.id] || 'F';
-    const k = take(f === 'L' ? ['R', 'BR', 'C', 'L', 'BL'] : f === 'R' ? ['L', 'BL', 'C', 'R', 'BR'] : ['C', 'L', 'R', 'BL', 'BR']);
-    if (k) floor.push([k, s]);
+  const side = { L: ['R', 'BR'], R: ['L', 'BL'], F: ['C'] };
+  const mirror = { L: 'R', R: 'L', F: 'F' };
+  const order = [...devices].sort((a, b) => FLIP_OK.has(a.id) - FLIP_OK.has(b.id));
+  for (const s of order) {
+    const f = FACE[s.id] || 'F', can = FLIP_OK.has(s.id) && f !== 'F';
+    const tries = [[side[f][0], false], ...(can ? [[side[mirror[f]][0], true], [side[mirror[f]][1], true]] : []), [side[f][1], false], ['C', false], ['L', false], ['R', false], ['BL', false], ['BR', false]];
+    const hit = tries.find(([k]) => k && free.has(k));
+    if (hit) { free.delete(hit[0]); floor.push([hit[0], s, hit[1]]); }
   }
   const plaque = !floor.some(([k]) => k === 'C');
 
@@ -88,11 +96,11 @@ function room(c, b) {
         ${back}
       </div>
       ${wing('l', wings.l)}${wing('r', wings.r)}
-      ${floor.map(([k, s], n) => {
+      ${floor.map(([k, s, flip], n) => {
         const p = SLOTS[k], src = renderOf(s.id).src;
         return `<i class="cone" style="left:${p.x - 150}px;top:-120px;height:${FLOOR_Y - p.h - p.ih + 140}px;transform:translateZ(${p.z}px)"></i>
           <span class="stand" style="left:${p.x - p.w / 2}px;top:${FLOOR_Y - p.h}px;transform:translateZ(${p.z}px) rotateY(${p.a}deg)">${box({ w: p.w, d: p.d, h: p.h, front: plate(s) })}</span>
-          ${slotBtn(s, `<img class="prod" src="${src}" alt="" loading="lazy" draggable="false">`, 'on-floor', `left:${p.x - 130}px;top:${FLOOR_Y - p.h - p.ih}px;height:${p.ih}px;transform:translateZ(${p.z}px);--k:${n}`)}`;
+          ${slotBtn(s, `<img class="prod${flip ? ' flip' : ''}" src="${src}" alt="" loading="lazy" draggable="false">`, 'on-floor', `left:${p.x - 130}px;top:${FLOOR_Y - p.h - p.ih}px;height:${p.ih}px;transform:translateZ(${p.z}px);--k:${n}`)}`;
       }).join('')}
       ${plaque ? `<span class="stand" style="left:${600 - 120}px;top:${FLOOR_Y - 70}px;transform:translateZ(40px)">${box({ w: 240, d: 150, h: 70, front: `<span class="plaque"><b>${esc(nameOf(c))}</b><small>${t('progCount', { n: items.length })}</small></span>` })}</span>` : ''}
     </div>
