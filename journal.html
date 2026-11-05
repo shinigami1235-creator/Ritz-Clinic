@@ -9,6 +9,7 @@
 <link rel="preload" href="assets/fonts/TenorSans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="assets/brand/r-mark.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/ritz-rig.css">
 </head>
 <body class="page-journal">
 
@@ -45,25 +46,26 @@
     <h1 id="page-title" data-t="jTitle">Articles</h1>
     <p class="sign-lede" data-t="jLede">Guides and news from the doctors of THE RITZ CLINIC. New articles appear here as soon as they are posted.</p>
   </div>
-  <div class="chibi chibi-sign" data-pose="think" role="img" aria-label="Dr. Ritz thinking"></div>
 </section>
 
-<section class="reading" aria-label="Articles">
-  <div class="reading-tools">
-    <div class="chips" id="jCats" role="group" aria-label="Category">
-      <button type="button" data-cat="" aria-pressed="true" data-t="jAll">All</button>
-      <button type="button" data-cat="1" aria-pressed="false" data-t="jNews">Update and News</button>
-      <button type="button" data-cat="44" aria-pressed="false" data-t="jTips">Tips and Trick</button>
+<section class="sec-ivory reading-sec" aria-label="Articles">
+  <div class="reading">
+    <div class="reading-tools">
+      <div class="chips" id="jCats" role="group" aria-label="Category">
+        <button type="button" data-cat="" aria-pressed="true" data-t="jAll">All</button>
+        <button type="button" data-cat="Update and News" aria-pressed="false" data-t="jNews">Update and News</button>
+        <button type="button" data-cat="Tips and Trick" aria-pressed="false" data-t="jTips">Tips and Trick</button>
+      </div>
+      <form class="j-search" id="jSearch" role="search">
+        <input type="search" id="jQ" data-tp="jSearchPh" placeholder="Search articles" aria-label="Search articles">
+        <button type="submit" data-t="jSearch">Search</button>
+      </form>
     </div>
-    <form class="j-search" id="jSearch" role="search">
-      <input type="search" id="jQ" data-tp="jSearchPh" placeholder="Search articles" aria-label="Search articles">
-      <button type="submit" data-t="jSearch">Search</button>
-    </form>
+    <p class="j-status" id="jStatus" role="status"></p>
+    <div class="j-feature" id="jFeature"></div>
+    <ol class="j-grid" id="jGrid"></ol>
+    <button type="button" class="j-more" id="jMore" hidden data-t="jMore">Load more articles</button>
   </div>
-  <p class="j-status" id="jStatus" role="status"></p>
-  <div class="j-feature" id="jFeature"></div>
-  <ol class="j-grid" id="jGrid"></ol>
-  <button type="button" class="j-more" id="jMore" hidden data-t="jMore">Load more articles</button>
 </section>
 
 </main>
@@ -71,9 +73,9 @@
 <!-- shell:foot -->
 <footer class="foot">
   <div class="foot-inner">
-    <div class="chibi chibi-wai" data-pose="wai" role="img" aria-label="Dr. Ritz giving a wai"></div>
+    <img class="foot-r" src="assets/brand/r-mark.svg" alt="" width="100" height="119">
     <div>
-      <p class="foot-brand">THE RITZ CLINIC</p>
+      <p class="foot-brand foil">THE RITZ CLINIC</p>
       <p data-t="address">Head office: 345/6 Headquarters Ekkamai-Ladprao, Soi Ladprao 94 (Panjamit), Phlapphla, Wang Thonglang, Bangkok 10310</p>
       <p>Call Center <a href="tel:0888922666">088-892-2666</a> &nbsp; LINE <a href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener">@theritzclinic</a></p>
       <nav class="foot-nav" aria-label="Footer menu">

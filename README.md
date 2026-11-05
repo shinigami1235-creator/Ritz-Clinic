@@ -1,6 +1,6 @@
 # THE RITZ CLINIC website concept
 
-A redesign concept for theritzclinic.com, built as a grand hotel. The lobby has a flip board, treatments live on five floors of an elevator, doctors wear brass name plates, reviews sit in a guest book and Dr. Ritz walks around the site as a chibi concierge.
+A redesign concept for theritzclinic.com, built as a grand hotel. The lobby has a flip board, the clinic's machines float in a showroom, treatments live on five floors of an elevator, real before-and-after cases sit in a vanity mirror, doctors wear brass name plates and Dr. Ritz walks around every page as a chibi concierge you can tap, pick up and drop.
 
 English for now. To switch to Thai, open `js/i18n.js` and change `LANG` to `'th'`.
 
@@ -9,10 +9,12 @@ English for now. To switch to Thai, open `js/i18n.js` and change `LANG` to `'th'
 | Page | File | What it does |
 | --- | --- | --- |
 | Lobby | `index.html` | Flip board, 5-Layer Lift, Ask Dr. Ritz, doctors on duty, promotions, guest book, latest articles, branch map, Facebook window |
-| Treatments | `treatments.html` | The elevator, a directory board of all 30 treatments, Ask Dr. Ritz, promotions |
+| Treatments | `treatments.html` | Programmes, showroom, the elevator, a directory board of all 30 treatments with a lit pedestal, Ask Dr. Ritz, promotions |
+| One treatment | `treatment.html?id=…` | The render on its plinth, the clinic's full article, real results, related treatments |
 | Doctors | `doctors.html` | Founder, 16 doctors with where each one works this week, duty board |
-| Reviews | `reviews.html` | Friend of The Ritz wall with filters, before and after mirror (demo) |
-| Articles | `journal.html` | Every article from the clinic's WordPress, with search, categories and load more |
+| Reviews | `reviews.html` | Friend of The Ritz wall with filters, and every before-and-after result at the mirror |
+| Articles | `journal.html` | All 260 articles with search, categories and load more |
+| One article | `article.html?id=…` | The full article, saved with the site |
 | Branches | `branches.html` | Map, address, hours, phone, directions and doctors today for all 12 branches |
 
 ## Live content
@@ -25,6 +27,14 @@ The site reads the clinic's WordPress at `theritzclinic.com/wp-json/wp/v2/`, so 
 
 Every page keeps a saved copy in `js/data.js`, so nothing breaks if WordPress is down.
 
+## Dr. Ritz, the concierge
+
+He is the chibi from Gemini, cut into layers in `assets/chibi/rig/`: one head with the eyes and mouth painted out, a body per pose and two legs. `js/ritz-rig.js` draws his face live, so he blinks, looks at the cursor and changes expression on any pose. `js/ritz-buddy.js` is the same engine as Nong Tape on the Apex Slim site: he walks to the perch next to whatever you're reading, fidgets, yawns, falls asleep and floats off in a bubble, reacts to taps, and can be picked up and dropped. Pages tell him what happened with `ritzSay('card')` and similar.
+
+## Content from theritzclinic.com
+
+Every image and piece of content was copied from the clinic's public WordPress on 5 Nov 2026: 32 service articles, 17 doctors with their profile cards, 10 reviews, 335 before-and-after cards (split into before and after photos for the mirror), promotion posters, category banners, brand logos and 260 articles. The images are in `assets/site/`, the text in `data/`. `tools/media.py` is the script that converted them.
+
 ## Editing
 
 - Text for both languages: `js/i18n.js`
@@ -36,6 +46,6 @@ No build step. Any static host works, including GitHub Pages.
 
 ## Still needed from the clinic
 
-- Before and after photos approved for advertising (the mirror uses chibi Dr. Ritz as a demo)
+- Confirm the before-and-after cases can be shown this way (they are the clinic's own published cards, split into two photos)
 - Check the English spelling of the doctors' nicknames and the treatment to layer placement
 - PDPA cookie banner and privacy page before going live

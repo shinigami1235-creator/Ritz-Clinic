@@ -1,7 +1,7 @@
 // The 5-Layer Lift: brass panel, dial needle and doors that close and open between floors.
 import { FLOORS, T } from './data.js';
 import { LANG, t, pick } from './i18n.js';
-import { $, reduced } from './core.js';
+import { $, reduced, renderImg, ritzSay } from './core.js';
 
 const ANG = (n) => -64 + (n - 1) * 32;
 const LAYER_COLORS = ['#F6DECB', '#EBC3AA', '#F1E2B5', '#D8C6B6', '#C98A7C'];
@@ -21,7 +21,7 @@ export function mountElevator(root = document) {
     const b = document.createElement('button');
     b.className = 'lift-btn'; b.type = 'button'; b.setAttribute('role', 'tab'); b.dataset.n = f.n;
     b.innerHTML = LANG === 'en' ? `<span class="num">${f.n}</span><span class="lbl">${f.en}</span>` : `<span class="num">${f.n}</span><span class="lbl">${f.th}<small>${f.en}</small></span>`;
-    b.addEventListener('click', () => goFloor(f.n));
+    b.addEventListener('click', () => { goFloor(f.n); ritzSay('floor'); });
     btnWrap.appendChild(b);
   });
 
@@ -31,7 +31,7 @@ export function mountElevator(root = document) {
     $('#roomFloor', root).textContent = t('floorOf', { n: f.n });
     $('#roomTitle', root).innerHTML = LANG === 'en' ? f.en : `${f.th}<small>${f.en}</small>`;
     $('#roomNote', root).textContent = pick(f, 'note');
-    $('#roomKeys', root).innerHTML = f.items.map((k, i) => `<li style="transition-delay:${120 + i * 50}ms"><a href="${T[k].url}">${T[k].name}</a></li>`).join('');
+    $('#roomKeys', root).innerHTML = f.items.map((k, i) => `<li style="transition-delay:${140 + i * 60}ms"><a href="${T[k].url}"><span class="thumb">${renderImg(T[k].id)}</span><b>${T[k].name}</b></a></li>`).join('');
     [...$('#layers', root).children].forEach((el, i) => el.classList.toggle('on', i === n - 1));
     [...btnWrap.children].forEach((b) => b.setAttribute('aria-selected', String(+b.dataset.n === n)));
     $('#needle', root).style.transform = `rotate(${ANG(n)}deg)`;

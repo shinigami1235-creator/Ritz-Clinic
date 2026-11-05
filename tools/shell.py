@@ -18,7 +18,8 @@ PAGES = [
 def nav(current):
     links = []
     for href, key, label in PAGES[1:]:
-        cur = ' aria-current="page"' if href == current else ''
+        parent = {'treatment.html': 'treatments.html', 'article.html': 'journal.html'}.get(current, current)
+        cur = ' aria-current="page"' if href == parent else ''
         links.append(f'    <a href="{href}" data-t="{key}"{cur}>{label}</a>')
     return '\n'.join(links)
 
@@ -43,9 +44,9 @@ TOP = '''<a class="skip" href="#main" data-t="skip">Skip to content</a>
 
 FOOT = '''<footer class="foot">
   <div class="foot-inner">
-    <div class="chibi chibi-wai" data-pose="wai" role="img" aria-label="Dr. Ritz giving a wai"></div>
+    <img class="foot-r" src="assets/brand/r-mark.svg" alt="" width="100" height="119">
     <div>
-      <p class="foot-brand">THE RITZ CLINIC</p>
+      <p class="foot-brand foil">THE RITZ CLINIC</p>
       <p data-t="address">Head office: 345/6 Headquarters Ekkamai-Ladprao, Soi Ladprao 94 (Panjamit), Phlapphla, Wang Thonglang, Bangkok 10310</p>
       <p>Call Center <a href="tel:0888922666">088-892-2666</a> &nbsp; LINE <a href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener">@theritzclinic</a></p>
       <nav class="foot-nav" aria-label="Footer menu">
@@ -64,9 +65,9 @@ FOOT = '''<footer class="foot">
 </a>'''
 
 root = pathlib.Path(__file__).resolve().parent.parent
-for href, _, _ in PAGES:
-    p = root / href
-    if not p.exists():
+for p in sorted(root.glob('*.html')):
+    href = p.name
+    if href == 'rig-sheet.html':
         continue
     s = p.read_text(encoding='utf-8')
     top = TOP.replace('{nav}', nav(href))

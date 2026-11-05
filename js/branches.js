@@ -14,7 +14,7 @@ function render() {
   list.innerHTML = BRANCHES.map((b, i) => {
     const a = ADDR[b.id]; const open = isOpen(b);
     const go = pick(a, 'go');
-    return `<li class="br-card${open ? ' open' : ''}${b.id === picked ? ' on' : ''}" id="br-${b.id}" tabindex="-1">
+    return `<li class="br-card glass${open ? ' open' : ''}${b.id === picked ? ' on' : ''}" id="br-${b.id}" tabindex="-1">
       <span class="br-tag" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span>
       <div class="br-body">
         <h2>${esc(bname(b))} <span class="br-state">${open ? t('bOpenNowShort') : t('bClosedNow')}</span></h2>

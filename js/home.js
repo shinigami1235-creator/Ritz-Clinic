@@ -1,12 +1,15 @@
 // The lobby (index.html).
-import { BRANCHES, SCHEDULE, PROMOS, REVIEWS, ARTICLES } from './data.js';
+import { BRANCHES, SCHEDULE, PROMOS, REVIEWS } from './data.js';
+import { BRANDS, PROMO_POSTERS, REVIEW_PHOTOS } from './media.js';
 import { LANG, t, pick } from './i18n.js';
-import { $, reduced, bname, bangkokNow, todayIdx, hhmm, isOpen, doctors, flip, blinkLoop, esc } from './core.js';
+import { $, reduced, bname, bangkokNow, todayIdx, hhmm, isOpen, doctors, flip, esc, ritzSay } from './core.js';
 import { mountElevator } from './elevator.js';
 import { mountConcierge } from './concierge.js';
 import { mountDuty } from './duty.js';
+import { mountShelf } from './showroom.js';
+import { mountMirror } from './mirror.js';
 import { drawMap } from './branchmap.js';
-import { wp, text } from './wp.js';
+import { loadPosts, postHref, fmtDate } from './posts.js';
 
 const DAYS = t('days');
 
@@ -22,7 +25,7 @@ function boardPages() {
       [t('bPromo'), t('bLift'), t('bToday')],
       [t('bPromo'), t('bUlthera'), t('bFree')],
       [t('bBranches'), t('bOpen', { n: open }), open ? t('bIsOpen') : t('bClosed'), !!open],
-      [t('bArticle'), esc(latestTitle), t('bDate')],
+      [t('bArticle'), esc(latestTitle), t('bNewTag')],
     ],
     feature.map((b) => [t('bDoctors'), `${bname(b)}: ${doctors(SCHEDULE[b.id][d])}`, t('bUntil', { t: b.close }), isOpen(b)]),
     [
@@ -62,37 +65,40 @@ tickClock(); setInterval(tickClock, 15000);
 /* sunburst rays */
 (function rays() {
   let s = '';
-  for (let a = 10; a <= 170; a += 8) {
-    const r = a * Math.PI / 180;
-    s += `<line x1="${(200 + Math.cos(r) * 150).toFixed(1)}" y1="${(200 - Math.sin(r) * 150).toFixed(1)}" x2="${(200 + Math.cos(r) * 178).toFixed(1)}" y2="${(200 - Math.sin(r) * 178).toFixed(1)}"/>`;
+  for (let a = 10; a <= 170; a += 6) {
+    const r = a * Math.PI / 180, long = a % 12 === 4 ? 186 : 176;
+    s += `<line x1="${(200 + Math.cos(r) * 150).toFixed(1)}" y1="${(200 - Math.sin(r) * 150).toFixed(1)}" x2="${(200 + Math.cos(r) * long).toFixed(1)}" y2="${(200 - Math.sin(r) * long).toFixed(1)}"/>`;
   }
   $('.sunburst .rays').innerHTML = s;
 })();
 
-/* concierge stand in the lobby */
-const chibiLobby = $('#chibiLobby');
+/* the desk bell calls Dr. Ritz */
 const bubble = $('#lobbyBubble');
-setTimeout(() => chibiLobby.setPose('stand'), reduced ? 0 : 2600);
-blinkLoop(chibiLobby);
-$('#deskBell').addEventListener('click', () => {
-  chibiLobby.setPose('wai');
+$('#deskBell').addEventListener('click', (e) => {
+  const b = e.currentTarget; b.classList.remove('ring'); void b.offsetWidth; b.classList.add('ring');
+  ritzSay('bell');
   bubble.hidden = false;
   bubble.innerHTML = t('bubble');
   clearTimeout(bubble._t);
-  bubble._t = setTimeout(() => { chibiLobby.setPose('stand'); bubble.hidden = true; }, 6000);
+  bubble._t = setTimeout(() => { bubble.hidden = true; }, 6000);
 });
 
+mountShelf($('#shelf'));
 mountElevator();
 mountConcierge();
+mountMirror($('[data-mirror]'));
 mountDuty();
 
-/* ---------- specials ---------- */
-$('#placards').innerHTML = PROMOS.map((p) => `
-  <a class="placard" href="${p.url}">
-    <p class="placard-kicker">${t('specialsKicker')}</p>
-    <h3>${pick(p, 'title')}</h3>
-    <p class="price"><small>${pick(p, 'unit')}</small>${p.price}<span>${t('baht')}</span></p>
-    <p class="n">${pick(p, 'note')}</p>
+/* ---------- specials, with the clinic's own posters ---------- */
+$('#placards').innerHTML = PROMOS.map((p, i) => `
+  <a class="placard glass reveal in" href="${p.url}">
+    <span class="poster">${PROMO_POSTERS[i] ? `<img src="${PROMO_POSTERS[i]}" alt="" loading="lazy">` : ''}</span>
+    <span class="pbody">
+      <span class="placard-kicker">${t('specialsKicker')}</span>
+      <h3>${pick(p, 'title')}</h3>
+      <p class="n">${pick(p, 'note')}</p>
+      <span class="price foil"><small>${pick(p, 'unit')}</small>${p.price}<span>${t('baht')}</span></span>
+    </span>
   </a>`).join('');
 
 /* ---------- guest book ---------- */
@@ -101,7 +107,7 @@ const book = $('.book');
 function showReview(i) {
   rv = (i + REVIEWS.length) % REVIEWS.length;
   const r = REVIEWS[rv];
-  $('#bookImg').src = r.img;
+  $('#bookImg').src = REVIEW_PHOTOS[r.id] || r.img;
   $('#bookProgram').textContent = r.program;
   $('#bookWho').textContent = pick(r, 'who');
   $('#bookText').textContent = pick(r, 'text');
@@ -110,30 +116,34 @@ function showReview(i) {
 }
 showReview(0);
 $('#bookPrev').addEventListener('click', () => showReview(rv - 1));
-$('#bookNext').addEventListener('click', () => showReview(rv + 1));
+$('#bookNext').addEventListener('click', () => { showReview(rv + 1); ritzSay('review'); });
 
-/* ---------- journal: the three newest posts, live ---------- */
+/* ---------- brands belt (twice, so it loops) ---------- */
+const chips = BRANDS.map((b) => `<span class="brand-chip"><img src="${b}" alt="${esc(b.split('/').pop().replace('.webp', ''))}" loading="lazy"></span>`).join('');
+$('#brandBelt').innerHTML = chips + chips;
+
+/* ---------- journal: the three newest posts ---------- */
 const jl = $('#journalList');
-const fmt = (iso) => new Date(iso).toLocaleDateString(LANG === 'en' ? 'en-GB' : 'th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
-jl.innerHTML = ARTICLES.map((a) => `<li><a href="${a.url}"><time>${pick(a, 'date')}</time><b>${pick(a, 'title')}</b></a></li>`).join('');
-wp('posts', { per_page: 3, _fields: 'title,date,link' }).then(({ items, total }) => {
-  if (!items.length) return;
-  latestTitle = text(items[0].title.rendered);
-  jl.innerHTML = items.map((p) => `<li><a href="${esc(p.link)}"><time>${fmt(p.date)}</time><b>${esc(text(p.title.rendered))}</b></a></li>`).join('');
-  if (total) $('#journalCount').textContent = t('jCount', { n: total });
-}).catch(() => {});
+loadPosts().then(({ posts, total }) => {
+  if (!posts.length) return;
+  latestTitle = posts[0].title;
+  jl.innerHTML = posts.slice(0, 3).map((p, i) => `<li class="jcard reveal in" style="--d:${i * 0.1}s"><a class="glass" href="${postHref(p)}">
+    <span class="j-img">${p.image ? `<img src="${p.image}" alt="" loading="lazy">` : ''}</span>
+    <span class="jb"><time>${fmtDate(p.date)}</time><b>${esc(p.title)}</b></span></a></li>`).join('');
+  $('#journalCount').textContent = '· ' + t('jCount', { n: total });
+});
 
 /* ---------- directory ---------- */
 const map = drawMap($('#map'));
 const list = $('#branchList');
-const d = bangkokNow();
-$('#openNowLine').textContent = t('openNow', { t: hhmm(d), n: BRANCHES.filter(isOpen).length });
+$('#openNowLine').textContent = t('openNow', { t: hhmm(bangkokNow()), n: BRANCHES.filter(isOpen).length });
 list.innerHTML = BRANCHES.map((b) => `<li class="${isOpen(b) ? 'open' : ''}"><button type="button" data-id="${b.id}" aria-pressed="false"><span class="dot"></span><span><b>${bname(b)}</b><span class="meta">${b.open}${t('to')}${b.close} &nbsp; ${b.phone}</span></span></button></li>`).join('');
 list.addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
   const on = b.getAttribute('aria-pressed') !== 'true';
   list.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(on && x === b)));
   map.highlight(on ? b.dataset.id : null);
+  if (on) ritzSay('branch');
 });
 
 /* ---------- Facebook window: preview hosts block it ---------- */

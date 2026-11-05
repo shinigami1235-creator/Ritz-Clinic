@@ -1,0 +1,107 @@
+{
+"brands": [
+{
+"name": "CE",
+"src": "assets/site/brands/CE.webp"
+},
+{
+"name": "FDA",
+"src": "assets/site/brands/FDA.webp"
+},
+{
+"name": "korea-fda",
+"src": "assets/site/brands/korea-fda.webp"
+},
+{
+"name": "thai-fda",
+"src": "assets/site/brands/thai-fda.webp"
+},
+{
+"name": "belotero",
+"src": "assets/site/brands/belotero.webp"
+},
+{
+"name": "Botox",
+"src": "assets/site/brands/Botox.webp"
+},
+{
+"name": "dysport",
+"src": "assets/site/brands/dysport.webp"
+},
+{
+"name": "juvedern",
+"src": "assets/site/brands/juvedern.webp"
+},
+{
+"name": "moveo",
+"src": "assets/site/brands/moveo.webp"
+},
+{
+"name": "mpt",
+"src": "assets/site/brands/mpt.webp"
+},
+{
+"name": "nabota",
+"src": "assets/site/brands/nabota.webp"
+},
+{
+"name": "nctf",
+"src": "assets/site/brands/nctf.webp"
+},
+{
+"name": "pico",
+"src": "assets/site/brands/pico.webp"
+},
+{
+"name": "rejuran",
+"src": "assets/site/brands/rejuran.webp"
+},
+{
+"name": "restylane-logo",
+"src": "assets/site/brands/restylane-logo.webp"
+},
+{
+"name": "sculptra-1",
+"src": "assets/site/brands/sculptra-1.webp"
+},
+{
+"name": "spt",
+"src": "assets/site/brands/spt.webp"
+},
+{
+"name": "termage",
+"src": "assets/site/brands/termage.webp"
+},
+{
+"name": "xeomin",
+"src": "assets/site/brands/xeomin.webp"
+}
+],
+"banners": {
+"Hoempage-banner-1": "assets/site/banners/349228e0.webp",
+"Banner-WELLNESS": "assets/site/banners/fea13f7f.webp",
+"services-01": "assets/site/banners/4035b398.webp",
+"services-05": "assets/site/banners/1efcfb37.webp",
+"services-09": "assets/site/banners/60ef2353.webp",
+"services-10": "assets/site/banners/4f1488c6.webp",
+"services-02": "assets/site/banners/04dc9a4b.webp",
+"services-06": "assets/site/banners/cd1f26a9.webp",
+"services-03": "assets/site/banners/0fac5bda.webp",
+"services-04": "assets/site/banners/d6ba1cb2.webp",
+"services-07": "assets/site/banners/c75388ed.webp",
+"services-11": "assets/site/banners/207c51e8.webp",
+"Personalized-Vitamin1": "assets/site/banners/3d8782ed.webp",
+"Personalized-IV-Therapy1": "assets/site/banners/0e4a5c9a.webp",
+"Website-Program-VitilityDNAcode": "assets/site/banners/3f9ba73e.webp",
+"cover-1900x1200-1": "assets/site/banners/3ccefcea.webp",
+"ประวัติ-1900x1200-1": "assets/site/banners/251e0fa0.webp"
+},
+"promos": {
+"Promotion-1040-1040": "assets/site/promos/30a7f6b2.webp",
+"UltheraPrime-จองวันนี้": "assets/site/promos/083b86c5.webp"
+},
+"founder": [
+"assets/site/doctors/founder-0.webp",
+"assets/site/doctors/founder-1.webp"
+]
+}

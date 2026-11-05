@@ -8,8 +8,8 @@ export const STR = {
     lineBtn: 'Ask a doctor on LINE', boardSub: 'Aesthetic clinic', bhType: 'Type', bhDetail: 'Details', bhStatus: 'Status',
     motto: 'More than skin and beauty care.<br>We care about service and keep standards you can trust.',
     founder: 'Founded by Dr. Rueangrit Siripanich (Dr. Ritz), medical license 56975',
-    bubble: 'Hello! Would you like me to suggest a treatment? <a href="#concierge">Let Dr. Ritz help you choose</a>',
-    floorsTitle: 'The 5-Layer Lift', floorsLede: 'Skin is built in layers, and each treatment works at a different depth. Pick a floor to see what treats that layer.',
+    bubble: 'Ding! Not sure where to start? <a href="#concierge">Let Dr. Ritz help you choose</a>',
+    floorsTitle: 'Five floors, five layers of skin', floorsLede: 'Skin is built in layers, and each treatment works at a different depth. Pick a floor to see what treats that layer.',
     floorOf: 'Floor {n} of 5', keysLabel: 'Treatments on this floor', roomCta: 'Not sure which floor? Let Dr. Ritz help you choose',
     conciergeTitle: 'Ask Dr. Ritz', conciergeLede: 'Answer two questions to get the treatments that match what you want to treat. A doctor assesses you again before any treatment.',
     q1: '1. Which area?', face: 'Face', body: 'Body and skin', q2: '2. What would you like to treat?', hint: 'Answer question 1 first',
@@ -35,7 +35,7 @@ export const STR = {
 
     // treatments page
     tFloor: 'Floors 1 to 5', tTitle: 'Treatments', tLede: 'Every treatment at THE RITZ CLINIC, from lifting to wellness.',
-    dirBoard: 'Directory', dirSearch: 'Find a treatment', dirSearchPh: 'Type a name, like Pico or filler', dirNone: 'Nothing matches that name. Try a shorter word.',
+    dirKicker2: 'Lobby directory', dirBoard: 'Directory', dirSearch: 'Find a treatment', dirSearchPh: 'Type a name, like Pico or filler', dirNone: 'Nothing matches that name. Try a shorter word.',
     dirFloor: 'Floor {n}', dirNoFloor: 'Custom', layerLabel: 'Works on', layerNone: 'Planned for you by a doctor', readGuide: 'Read the full guide', askThis: 'Ask about this on LINE',
     newFromSite: 'New on the website', thaiOnly: 'In Thai',
     // doctors page
@@ -52,6 +52,17 @@ export const STR = {
     jCount: '{n} articles', jEmpty: 'No articles match that search.', jThai: 'Articles are written in Thai.', jOffline: 'Showing saved articles. The live list loads on the real website.', jLoading: 'Loading articles',
     // branches page
     bFloor: 'Concierge', bTitle: 'Branches', bLede: '12 branches in Bangkok, Nonthaburi, Pathum Thani and Samut Prakan.',
+
+    deskNote: 'Ring the bell for Dr. Ritz', bNewTag: 'New',
+    showKicker: 'The showroom', showTitle: 'Machines and medicines we trust', showLede: 'The genuine machines and medicines used at every branch. Pick one to see what it treats and how.', showHint: 'Drag or scroll sideways to see more',
+    floorsKicker: 'The 5-Layer Lift', conciergeKicker: 'Concierge desk', step1: 'Pick the area', step2: 'Pick what bothers you', step3: 'Send your key card to a doctor on LINE',
+    resultsKicker: 'Real results', resultsTitle: 'Before and after, at the vanity mirror', resultsLede: 'Real cases from THE RITZ CLINIC. Drag the handle across the mirror to compare.', seeResults: 'See every result',
+    resultsNote: 'Real cases published by THE RITZ CLINIC. Results vary from person to person.', viewCard: 'View the original card', caseOf: 'Case {n} of {total}', rFilter: 'Filter by treatment',
+    dutyKicker: 'Front desk', specialsTitle: 'This month at THE RITZ', gbKicker: 'Guest book', brandsTitle: 'Brands and certifications we work with', journalKicker: 'Reading room', dirKicker: 'Concierge map', loungeKicker: 'The lounge',
+    programsKicker: 'Programmes', programsTitle: 'Every programme at THE RITZ', programsLede: 'Tap a programme to jump to its treatments on the directory board.',
+    tAbout: 'About this treatment', tResults: 'Results with this treatment', tSameFloor: 'More on the same floor', tSameCat: 'More in this programme', tBack: 'All treatments', tSource: 'From the article on theritzclinic.com', tThaiNote: 'The article is in Thai, as published by the clinic.', tUpdated: 'Updated {d}', tNotFound: 'We could not find that treatment.',
+    aBack: 'All articles', aOriginal: 'Read it on theritzclinic.com', aMore: 'More articles', aNotFound: 'We could not find that article.',
+    dProfile: 'Profile', dLicense: 'Medical license', dSchedule: 'The full November 2026 schedule', rResultsKicker: 'Before and after', rResultsTitle: 'Every result, by treatment',
     bOpenNowShort: 'Open now', bClosedNow: 'Closed now', bHours: 'Hours', bPhone: 'Phone', bGetThere: 'Getting there', bMaps: 'Open in Google Maps', bDocsToday: 'Doctors today', bCall: 'Call {p}',
   },
   th: {
@@ -61,7 +72,7 @@ export const STR = {
     motto: 'มากกว่าการดูแลผิวพรรณและความงาม<br>เราใส่ใจบริการและรักษามาตรฐานให้ทุกท่านไว้วางใจ',
     founder: 'ก่อตั้งโดย นพ.เรืองฤทธิ์ ศิริพานิช (หมอริท) ว.56975',
     bubble: 'สวัสดีครับ อยากให้ผมช่วยแนะนำทรีตเมนต์ไหมครับ <a href="#concierge">ให้หมอริทช่วยเลือก</a>',
-    floorsTitle: 'ยกหน้า 5 ชั้น', floorsLede: 'ผิวของเราซ้อนกันเป็นชั้น และแต่ละทรีตเมนต์ทำงานที่ความลึกต่างกัน เลือกชั้นเพื่อดูว่าชั้นนั้นดูแลด้วยอะไร',
+    floorsTitle: 'ห้าชั้น ห้าชั้นผิว', floorsLede: 'ผิวของเราซ้อนกันเป็นชั้น และแต่ละทรีตเมนต์ทำงานที่ความลึกต่างกัน เลือกชั้นเพื่อดูว่าชั้นนั้นดูแลด้วยอะไร',
     floorOf: 'ชั้น {n} จาก 5', keysLabel: 'ทรีตเมนต์ในชั้นนี้', roomCta: 'ไม่แน่ใจว่าต้องชั้นไหน ให้หมอริทช่วยเลือก',
     conciergeTitle: 'ปรึกษาเบื้องต้นกับหมอริท', conciergeLede: 'ตอบสองข้อ แล้วรับรายชื่อทรีตเมนต์ที่ตรงกับเรื่องที่อยากดูแล แพทย์จะประเมินอีกครั้งก่อนทำทุกครั้ง',
     q1: '1. อยากดูแลส่วนไหน', face: 'ใบหน้า', body: 'รูปร่างและผิวกาย', q2: '2. เรื่องที่อยากแก้', hint: 'เลือกข้อ 1 ก่อน',
@@ -86,7 +97,7 @@ export const STR = {
     seeAllTreat: 'ดูทรีตเมนต์ทั้ง 30 รายการ', seeDoctors: 'รู้จักทีมแพทย์', seeReviews: 'อ่านรีวิวทั้งหมด', seeBranches: 'ที่อยู่และการเดินทาง',
 
     tFloor: 'ชั้น 1 ถึง 5', tTitle: 'ทรีตเมนต์', tLede: 'ทรีตเมนต์ทั้งหมดของ THE RITZ CLINIC ตั้งแต่ยกกระชับจนถึงเวลเนส',
-    dirBoard: 'ป้ายบอกทาง', dirSearch: 'ค้นหาทรีตเมนต์', dirSearchPh: 'พิมพ์ชื่อ เช่น Pico หรือ filler', dirNone: 'ไม่พบชื่อนี้ ลองพิมพ์ให้สั้นลง',
+    dirKicker2: 'ป้ายบอกทางล็อบบี้', dirBoard: 'ป้ายบอกทาง', dirSearch: 'ค้นหาทรีตเมนต์', dirSearchPh: 'พิมพ์ชื่อ เช่น Pico หรือ filler', dirNone: 'ไม่พบชื่อนี้ ลองพิมพ์ให้สั้นลง',
     dirFloor: 'ชั้น {n}', dirNoFloor: 'เฉพาะบุคคล', layerLabel: 'ทำงานที่', layerNone: 'แพทย์วางแผนเฉพาะคุณ', readGuide: 'อ่านรายละเอียดทั้งหมด', askThis: 'ถามเรื่องนี้ทาง LINE',
     newFromSite: 'ใหม่บนเว็บไซต์', thaiOnly: 'ภาษาไทย',
     dFloor: 'ทีมงาน', dTitle: 'ทีมแพทย์', dLede: 'แพทย์ 17 ท่านใน 12 สาขา เลือกแพทย์เพื่อดูว่าสัปดาห์นี้ประจำสาขาไหน',
@@ -99,6 +110,17 @@ export const STR = {
     jAll: 'ทั้งหมด', jNews: 'Update and News', jTips: 'Tips and Trick', jSearchPh: 'ค้นหาบทความ', jSearch: 'ค้นหา', jMore: 'โหลดบทความเพิ่ม',
     jCount: '{n} บทความ', jEmpty: 'ไม่พบบทความที่ตรงกับคำค้น', jThai: '', jOffline: 'แสดงบทความที่บันทึกไว้ รายการสดจะโหลดบนเว็บไซต์จริง', jLoading: 'กำลังโหลดบทความ',
     bFloor: 'คอนเซียร์จ', bTitle: 'สาขา', bLede: '12 สาขาในกรุงเทพฯ นนทบุรี ปทุมธานี และสมุทรปราการ',
+
+    deskNote: 'กดกระดิ่งเรียกหมอริท', bNewTag: 'ใหม่',
+    showKicker: 'โชว์รูม', showTitle: 'เครื่องมือและยาที่เราไว้ใจ', showLede: 'เครื่องมือและผลิตภัณฑ์ของแท้ที่ใช้ทุกสาขา เลือกเพื่อดูว่าช่วยดูแลเรื่องอะไร', showHint: 'ลากหรือเลื่อนไปด้านข้างเพื่อดูเพิ่ม',
+    floorsKicker: 'ยกหน้า 5 ชั้น', conciergeKicker: 'เคาน์เตอร์คอนเซียร์จ', step1: 'เลือกส่วนที่อยากดูแล', step2: 'เลือกเรื่องที่กังวล', step3: 'ส่งคีย์การ์ดให้หมอทาง LINE',
+    resultsKicker: 'ผลลัพธ์จริง', resultsTitle: 'ก่อนและหลัง ที่กระจกแต่งตัว', resultsLede: 'เคสจริงจาก THE RITZ CLINIC ลากที่จับบนกระจกเพื่อเปรียบเทียบ', seeResults: 'ดูผลลัพธ์ทั้งหมด',
+    resultsNote: 'เคสจริงที่ THE RITZ CLINIC เผยแพร่ ผลลัพธ์ขึ้นอยู่กับแต่ละบุคคล', viewCard: 'ดูภาพต้นฉบับ', caseOf: 'เคส {n} จาก {total}', rFilter: 'กรองตามทรีตเมนต์',
+    dutyKicker: 'เคาน์เตอร์ต้อนรับ', specialsTitle: 'เดือนนี้ที่เดอะริทซ์', gbKicker: 'สมุดเยี่ยม', brandsTitle: 'แบรนด์และมาตรฐานที่เราใช้', journalKicker: 'ห้องอ่านหนังสือ', dirKicker: 'แผนที่คอนเซียร์จ', loungeKicker: 'เลานจ์',
+    programsKicker: 'โปรแกรม', programsTitle: 'ทุกโปรแกรมของเดอะริทซ์', programsLede: 'แตะโปรแกรมเพื่อไปที่ทรีตเมนต์บนป้ายบอกทาง',
+    tAbout: 'เกี่ยวกับทรีตเมนต์นี้', tResults: 'ผลลัพธ์จากทรีตเมนต์นี้', tSameFloor: 'ทรีตเมนต์ชั้นเดียวกัน', tSameCat: 'ในโปรแกรมเดียวกัน', tBack: 'ทรีตเมนต์ทั้งหมด', tSource: 'จากบทความบน theritzclinic.com', tThaiNote: '', tUpdated: 'อัปเดต {d}', tNotFound: 'ไม่พบทรีตเมนต์นี้',
+    aBack: 'บทความทั้งหมด', aOriginal: 'อ่านบน theritzclinic.com', aMore: 'บทความอื่น', aNotFound: 'ไม่พบบทความนี้',
+    dProfile: 'ประวัติ', dLicense: 'เลขใบอนุญาต', dSchedule: 'ตารางแพทย์ฉบับเต็ม พฤศจิกายน 2569', rResultsKicker: 'ก่อนและหลัง', rResultsTitle: 'ผลลัพธ์ทั้งหมด แยกตามทรีตเมนต์',
     bOpenNowShort: 'เปิดอยู่', bClosedNow: 'ปิดแล้ว', bHours: 'เวลาเปิด', bPhone: 'โทร', bGetThere: 'การเดินทาง', bMaps: 'เปิดใน Google Maps', bDocsToday: 'แพทย์วันนี้', bCall: 'โทร {p}',
   },
 };

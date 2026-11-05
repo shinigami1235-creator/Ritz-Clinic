@@ -1,0 +1,141 @@
+{
+"doctors": [
+{
+"id": 13804,
+"th": "ริท",
+"full": "ดร.นพ.เรืองฤทธิ์ ศิริพานิช",
+"license": "ว.56975",
+"photo": "assets/site/doctors/13804.webp",
+"profile": "assets/site/doctors/profile-13804.webp"
+},
+{
+"id": 4104,
+"th": "อั๋น",
+"full": "นายแพทย์นพพล​ คุณาธาทร",
+"license": "ว.38513",
+"photo": "assets/site/doctors/4104.webp",
+"profile": "assets/site/doctors/profile-4104.webp"
+},
+{
+"id": 4087,
+"th": "นุ๊ก",
+"full": "นายแพทย์วงศธร เชวงทรัพย์",
+"license": "ว.69115",
+"photo": "assets/site/doctors/4087.webp",
+"profile": "assets/site/doctors/profile-4087.webp"
+},
+{
+"id": 565315,
+"th": "เบียร์",
+"full": "นายแพทย์ธนาธิป วิเชียรแสน",
+"license": "ว.56905",
+"photo": "assets/site/doctors/565315.webp",
+"profile": "assets/site/doctors/profile-565315.webp"
+},
+{
+"id": 1745,
+"th": "แพร",
+"full": "แพทย์หญิงปูริดา จารุฐิติ",
+"license": "ว.59659",
+"photo": "assets/site/doctors/1745.webp",
+"profile": "assets/site/doctors/profile-1745.webp"
+},
+{
+"id": 4097,
+"th": "ลิลลี่",
+"full": "แพทย์หญิงกุลรัตน์ นานาชัย",
+"license": "ว.63481",
+"photo": "assets/site/doctors/4097.webp",
+"profile": "assets/site/doctors/profile-4097.webp"
+},
+{
+"id": 4102,
+"th": "หงส์หยก",
+"full": "แพทย์หญิงบุญญรัตน์ มหัจฉริยะธีระ",
+"license": "ว.62868",
+"photo": "assets/site/doctors/4102.webp",
+"profile": "assets/site/doctors/profile-4102.webp"
+},
+{
+"id": 4108,
+"th": "อาอี้",
+"full": "แพทย์หญิงวรัญญา ทวีวรรณ",
+"license": "ว.63709",
+"photo": "assets/site/doctors/4108.webp",
+"profile": "assets/site/doctors/profile-4108.webp"
+},
+{
+"id": 4093,
+"th": "พลอย",
+"full": "แพทย์หญิงชุตินันท์ เชื้อชวลิต",
+"license": "ว.55051",
+"photo": "assets/site/doctors/4093.webp",
+"profile": "assets/site/doctors/profile-4093.webp"
+},
+{
+"id": 88074,
+"th": "น็อต",
+"full": "นายแพทย์ปฏิภาณ ตรัสขจรมงคล",
+"license": "ว.66126",
+"photo": "assets/site/doctors/88074.webp",
+"profile": "assets/site/doctors/profile-88074.webp"
+},
+{
+"id": 151031,
+"th": "โย่",
+"full": "นายแพทย์นิติรัฐ ศรีมันตะ",
+"license": "ว.57905",
+"photo": "assets/site/doctors/151031.webp",
+"profile": "assets/site/doctors/profile-151031.webp"
+},
+{
+"id": 228125,
+"th": "ปาล์ม",
+"full": "นายแพทย์พชรพล ศิลป์สัมฤทธิ์",
+"license": "ว.56007",
+"photo": "assets/site/doctors/228125.webp",
+"profile": "assets/site/doctors/profile-228125.webp"
+},
+{
+"id": 228145,
+"th": "แม็ก",
+"full": "นายแพทย์พิชา ธัญพิมล",
+"license": "ว.53251",
+"photo": "assets/site/doctors/228145.webp",
+"profile": "assets/site/doctors/profile-228145.webp"
+},
+{
+"id": 506697,
+"th": "เตย",
+"full": "แพทย์หญิงขวัญกมล ผิวอ่อน",
+"license": "ว.62239",
+"photo": "assets/site/doctors/506697.webp",
+"profile": "assets/site/doctors/profile-506697.webp"
+},
+{
+"id": 547062,
+"th": "พี",
+"full": "นายแพทย์พิชชากร ตั้งอารมณ์สุข",
+"license": "ว.68052",
+"photo": "assets/site/doctors/547062.webp",
+"profile": "assets/site/doctors/profile-547062.webp"
+},
+{
+"id": 571317,
+"th": "เพพ",
+"full": "แพทย์หญิงเฌอท์ฐลิชา วิไลสกุลยง",
+"license": "ว.66759",
+"photo": "assets/site/doctors/571317.webp",
+"profile": "assets/site/doctors/profile-571317.webp"
+},
+{
+"id": 746277,
+"th": "แพรแพร",
+"full": "แพทย์หญิงศุภรดา ปิยภิญโญภาพ",
+"license": "ว.62405",
+"photo": "assets/site/doctors/746277.webp",
+"profile": "assets/site/doctors/profile-746277.webp"
+}
+],
+"schedule": "assets/site/doctors/schedule-2026-11.webp"
+}

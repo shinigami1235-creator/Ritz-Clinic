@@ -1,7 +1,9 @@
-// Reviews page: the Friend of The Ritz wall and the before-and-after mirror.
+// Reviews page: the Friend of The Ritz wall and every before-and-after result at the mirror.
 import { REVIEWS } from './data.js';
-import { LANG, t, pick } from './i18n.js';
-import { $, $$, esc } from './core.js';
+import { REVIEW_PHOTOS } from './media.js';
+import { t, pick } from './i18n.js';
+import { $, esc, ritzSay } from './core.js';
+import { mountMirror } from './mirror.js';
 import { wp, media, text } from './wp.js';
 
 let reviews = [...REVIEWS];
@@ -12,8 +14,8 @@ function render() {
   $('#wallFilter').innerHTML = [`<button type="button" data-p="" aria-pressed="${!filter}">${t('rAll')}</button>`]
     .concat(programs.map((p) => `<button type="button" data-p="${esc(p)}" aria-pressed="${p === filter}">${esc(p)}</button>`)).join('');
   $('#wall').innerHTML = reviews.filter((r) => !filter || r.program === filter).map((r) => `
-    <li class="note-card">
-      <img src="${esc(r.img)}" alt="" width="300" height="300" loading="lazy">
+    <li class="note-card glass">
+      <img src="${esc(REVIEW_PHOTOS[r.id] || r.img)}" alt="" width="92" height="92" loading="lazy">
       <div class="note-body">
         <p class="note-program">${esc(r.program)}</p>
         <blockquote>${esc(pick(r, 'text'))}</blockquote>
@@ -24,8 +26,10 @@ function render() {
 render();
 $('#wallFilter').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
-  filter = b.dataset.p; render();
+  filter = b.dataset.p; render(); ritzSay('review');
 });
+
+mountMirror($('[data-mirror]'), { thumbs: 80 });
 
 // New reviews added in WordPress appear at the top, in Thai until someone translates them.
 const known = new Set(REVIEWS.map((r) => r.id));
@@ -38,27 +42,3 @@ Promise.all([wp('review_slider', { per_page: 100, _embed: 'wp:featuredmedia' }),
   reviews = [...fresh, ...reviews];
   render();
 }).catch(() => {});
-
-/* ---------- vanity mirror ---------- */
-const mirror = $('#mirror');
-const range = $('#mirrorRange');
-const set = (v) => mirror.style.setProperty('--cut', v + '%');
-range.addEventListener('input', () => set(range.value));
-set(range.value);
-// Let the handle follow a finger or mouse anywhere on the glass.
-mirror.addEventListener('pointerdown', (e) => {
-  const move = (ev) => {
-    const r = mirror.getBoundingClientRect();
-    const v = Math.max(0, Math.min(100, ((ev.clientX - r.left) / r.width) * 100));
-    range.value = v; set(v);
-  };
-  move(e);
-  mirror.setPointerCapture(e.pointerId);
-  mirror.addEventListener('pointermove', move);
-  mirror.addEventListener('pointerup', () => mirror.removeEventListener('pointermove', move), { once: true });
-});
-// bulbs around the mirror
-const bulbs = [];
-for (let i = 0; i < 7; i++) bulbs.push([10 + i * 80 / 6, 0]);
-for (let i = 0; i < 5; i++) { const y = 18 + i * 74 / 4; bulbs.push([0, y], [100, y]); }
-$('.bulbs').innerHTML = bulbs.map(([x, y], i) => `<i style="left:${x}%;top:${y}%;--d:${(i % 5) * 0.4}s"></i>`).join('');

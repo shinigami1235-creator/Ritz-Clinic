@@ -9,6 +9,7 @@
 <link rel="preload" href="assets/fonts/TenorSans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="assets/brand/r-mark.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/ritz-rig.css">
 </head>
 <body class="page-home">
 
@@ -40,7 +41,7 @@
 <main id="main">
 
 <!-- LOBBY -->
-<section class="lobby" id="top" aria-labelledby="lobby-title">
+<section class="lobby sec-night" id="top" aria-labelledby="lobby-title">
   <div class="crest" aria-hidden="true">
     <svg class="sunburst" viewBox="0 0 400 200" preserveAspectRatio="xMidYMax meet">
       <g fill="none" stroke="currentColor" stroke-width="1">
@@ -51,9 +52,10 @@
     </svg>
     <div class="brass-r" id="brassR"><img src="assets/brand/r-mark.svg" alt=""></div>
   </div>
+  <h1 id="lobby-title" class="lobby-title foil">THE RITZ CLINIC</h1>
+  <p class="lobby-sub" data-t="boardSub">Aesthetic clinic</p>
 
   <div class="board-frame">
-    <h1 id="lobby-title" class="board-title">THE RITZ CLINIC<span data-t="boardSub">Aesthetic clinic</span></h1>
     <div class="board" id="board" aria-live="polite">
       <div class="board-head" aria-hidden="true"><span data-t="bhType">Type</span><span data-t="bhDetail">Details</span><span data-t="bhStatus">Status</span></div>
       <div class="board-rows" id="boardRows"></div>
@@ -65,28 +67,39 @@
   </div>
 
   <div class="lobby-desk">
-    <blockquote class="motto">
+    <blockquote class="motto reveal">
       <p data-t="motto">More than skin and beauty care.<br>We care about service and keep standards you can trust.</p>
       <footer data-t="founder">Founded by Dr. Rueangrit Siripanich (Dr. Ritz), medical license 56975</footer>
     </blockquote>
-    <div class="concierge-stand">
-      <div class="chibi chibi-lobby" data-pose="wave" id="chibiLobby" role="img" aria-label="Dr. Ritz waving hello"></div>
+    <div class="desk reveal" style="--d:.15s">
       <button class="desk-bell" id="deskBell" type="button" aria-label="Ring the bell for Dr. Ritz">
-        <svg viewBox="0 0 64 44" aria-hidden="true"><path d="M8 36h48M32 8v4M14 36a18 18 0 0 1 36 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="7" r="3" fill="currentColor"/></svg>
+        <svg viewBox="0 0 64 44" aria-hidden="true"><defs><linearGradient id="bellg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#FBEFC6"/><stop offset=".5" stop-color="#C9A55C"/><stop offset="1" stop-color="#EBD497"/></linearGradient></defs><path d="M14 36a18 18 0 0 1 36 0z" fill="url(#bellg)"/><path d="M6 37h52v4H6z" fill="url(#bellg)"/><circle cx="32" cy="15" r="3" fill="url(#bellg)"/></svg>
       </button>
+      <p class="desk-note" data-t="deskNote">Ring the bell for Dr. Ritz</p>
       <p class="bubble" id="lobbyBubble" hidden></p>
     </div>
   </div>
 </section>
 
+<!-- SHOWROOM -->
+<section class="showroom sec-night" id="showroom" aria-labelledby="show-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="showKicker">The showroom</p>
+    <h2 id="show-title" data-t="showTitle">Machines and medicines we trust</h2>
+    <p data-t="showLede">Every machine here is the genuine model, certified for use in Thailand. Pick one to see what it treats.</p>
+  </div>
+  <div class="shelf" id="shelf"></div>
+  <p class="shelf-hint" data-t="showHint">Drag or scroll sideways to see more</p>
+</section>
+
 <!-- FLOORS -->
-<section class="floors" id="floors" aria-labelledby="floors-title">
-  <div class="section-head">
-    <h2 id="floors-title" data-t="floorsTitle">The 5-Layer Lift</h2>
+<section class="floors sec-ivory" id="floors" aria-labelledby="floors-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="floorsKicker">The 5-Layer Lift</p>
+    <h2 id="floors-title" data-t="floorsTitle">Five floors, five layers of skin</h2>
     <p data-t="floorsLede">Skin is built in layers, and each treatment works at a different depth. Pick a floor to see what treats that layer.</p>
   </div>
-
-  <div class="elevator">
+  <div class="elevator reveal">
     <div class="lift-panel">
       <svg class="dial" viewBox="0 0 220 124" aria-hidden="true">
         <path d="M14 116 A96 96 0 0 1 206 116" fill="none" stroke="currentColor" stroke-width="1.5"/>
@@ -95,9 +108,7 @@
         <circle cx="110" cy="116" r="7" fill="currentColor"/>
       </svg>
       <div class="lift-buttons" id="liftButtons" role="tablist" aria-label="Choose a floor"></div>
-      <div class="chibi chibi-point" data-pose="point" role="img" aria-label="Dr. Ritz pointing at the floor buttons"></div>
     </div>
-
     <div class="lift-shaft">
       <div class="lift-room" id="liftRoom" role="tabpanel" aria-live="polite">
         <div class="layers" id="layers" aria-hidden="true"></div>
@@ -118,60 +129,83 @@
 </section>
 
 <!-- CONCIERGE -->
-<section class="concierge" id="concierge" aria-labelledby="concierge-title">
-  <div class="concierge-desk">
-    <div class="chibi chibi-concierge" id="chibiConcierge" data-pose="think" role="img" aria-label="Dr. Ritz thinking"></div>
-  </div>
-  <div class="concierge-form">
-    <h2 id="concierge-title" data-t="conciergeTitle">Ask Dr. Ritz</h2>
-    <p class="lede" data-t="conciergeLede">Answer two questions to get the treatments that match what you want to treat. A doctor assesses you again before any treatment.</p>
-    <fieldset class="q">
-      <legend data-t="q1">1. Which area?</legend>
-      <div class="chips" id="qArea">
-        <button type="button" data-area="face" aria-pressed="false" data-t="face">Face</button>
-        <button type="button" data-area="body" aria-pressed="false" data-t="body">Body and skin</button>
-      </div>
-    </fieldset>
-    <fieldset class="q" id="qConcernWrap" disabled>
-      <legend data-t="q2">2. What would you like to treat?</legend>
-      <div class="chips" id="qConcern"><span class="hint" data-t="hint">Answer question 1 first</span></div>
-    </fieldset>
-    <div class="keycard" id="keycard" hidden>
-      <p class="keycard-label" data-t="keycardLabel">Recommended treatments</p>
-      <ul id="keycardList"></ul>
-      <div class="keycard-actions">
-        <button type="button" class="btn-gold" id="sendLine" data-t="sendLine">Send this list to a doctor on LINE</button>
-        <span class="copied" id="copied" role="status"></span>
+<section class="concierge sec-blush" id="concierge" aria-labelledby="concierge-title">
+  <div class="concierge-wrap">
+    <div class="concierge-intro reveal">
+      <p class="kicker" data-t="conciergeKicker">Concierge desk</p>
+      <h2 id="concierge-title" data-t="conciergeTitle">Ask Dr. Ritz</h2>
+      <p class="lede" data-t="conciergeLede">Answer two questions to get the treatments that match what you want to treat. A doctor assesses you again before any treatment.</p>
+      <ol class="steps">
+        <li><i>1</i><span data-t="step1">Pick the area</span></li>
+        <li><i>2</i><span data-t="step2">Pick what bothers you</span></li>
+        <li><i>3</i><span data-t="step3">Send your key card to a doctor on LINE</span></li>
+      </ol>
+    </div>
+    <div class="concierge-form glass reveal" style="--d:.1s">
+      <fieldset class="q">
+        <legend data-t="q1">1. Which area?</legend>
+        <div class="chips" id="qArea">
+          <button type="button" data-area="face" aria-pressed="false" data-t="face">Face</button>
+          <button type="button" data-area="body" aria-pressed="false" data-t="body">Body and skin</button>
+        </div>
+      </fieldset>
+      <fieldset class="q" id="qConcernWrap" disabled>
+        <legend data-t="q2">2. What would you like to treat?</legend>
+        <div class="chips" id="qConcern"><span class="hint" data-t="hint">Answer question 1 first</span></div>
+      </fieldset>
+      <div class="keycard" id="keycard" hidden>
+        <p class="keycard-label" data-t="keycardLabel">Recommended treatments</p>
+        <ul id="keycardList"></ul>
+        <div class="keycard-actions">
+          <button type="button" class="btn-gold" id="sendLine" data-t="sendLine">Send this list to a doctor on LINE</button>
+          <span class="copied" id="copied" role="status"></span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- RESULTS -->
+<section class="results sec-cream" id="results" aria-labelledby="results-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="resultsKicker">Real results</p>
+    <h2 id="results-title" data-t="resultsTitle">Before and after, at the vanity mirror</h2>
+    <p data-t="resultsLede">Real cases from THE RITZ CLINIC. Drag the handle across the mirror to compare.</p>
+  </div>
+  <div class="mirror-wrap" data-mirror></div>
+  <a class="more" href="reviews.html#results" data-t="seeResults">See every result</a>
+</section>
+
 <!-- DUTY BOARD -->
-<section class="duty" id="duty" aria-labelledby="duty-title">
-  <div class="section-head">
+<section class="duty sec-night" id="duty" aria-labelledby="duty-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="dutyKicker">Front desk</p>
     <h2 id="duty-title" data-t="dutyTitle">Doctors on duty</h2>
     <p data-t="dutyLede">From the November 2026 doctor schedule. Schedules can change, so please confirm with the branch before your visit.</p>
   </div>
   <div class="days" id="days" role="tablist" aria-label="Choose a day"></div>
-  <div class="duty-board" id="dutyBoard"></div>
+  <div class="duty-board glass-dark" id="dutyBoard"></div>
   <a class="more more-dark" href="doctors.html" data-t="seeDoctors">Meet the doctors</a>
 </section>
 
 <!-- SPECIALS -->
-<section class="specials" aria-labelledby="specials-title">
-  <h2 id="specials-title" class="visually-hidden">Promotions</h2>
+<section class="specials sec-ivory" id="specials" aria-labelledby="specials-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="specialsKicker">Promotion this month</p>
+    <h2 id="specials-title" data-t="specialsTitle">This month at THE RITZ</h2>
+  </div>
   <div class="placards" id="placards"></div>
 </section>
 
 <!-- GUEST BOOK -->
-<section class="guestbook" id="guestbook" aria-labelledby="guestbook-title">
-  <div class="section-head">
+<section class="guestbook sec-blush" id="guestbook" aria-labelledby="guestbook-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="gbKicker">Guest book</p>
     <h2 id="guestbook-title">Friend of The Ritz</h2>
     <p data-t="gbLede">Reviews from people who trust THE RITZ CLINIC, translated from Thai</p>
   </div>
-  <div class="book">
-    <div class="page page-left"><img class="book-img" id="bookImg" src="" alt="" width="120" height="120"><p class="book-program" id="bookProgram"></p><p class="book-who" id="bookWho"></p></div>
+  <div class="book glass reveal">
+    <div class="page page-left"><img class="book-img" id="bookImg" src="" alt="" width="130" height="130"><p class="book-program" id="bookProgram"></p><p class="book-who" id="bookWho"></p></div>
     <div class="page page-right"><blockquote id="bookText"></blockquote></div>
   </div>
   <div class="book-nav">
@@ -182,23 +216,33 @@
   <a class="more" href="reviews.html" data-t="seeReviews">Read every review</a>
 </section>
 
+<!-- BRANDS -->
+<section class="brands sec-ivory" aria-labelledby="brands-title">
+  <div class="brands-label">
+    <p class="kicker" id="brands-title" data-t="brandsTitle">Brands and certifications we work with</p>
+  </div>
+  <div class="brand-belt" id="brandBelt"></div>
+</section>
+
 <!-- JOURNAL -->
-<section class="journal" id="journal" aria-labelledby="journal-title">
-  <div class="section-head">
+<section class="journal sec-cream" id="journal" aria-labelledby="journal-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="journalKicker">Reading room</p>
     <h2 id="journal-title" data-t="journalTitle">Latest articles</h2>
     <p><span data-t="journalLede">Written by the doctors of THE RITZ CLINIC</span> <span id="journalCount"></span></p>
   </div>
-  <ol class="journal-list" id="journalList"></ol>
+  <ol class="journal-cards" id="journalList"></ol>
   <a class="more" href="journal.html" data-t="more">Read all articles</a>
 </section>
 
 <!-- DIRECTORY -->
-<section class="directory" id="directory" aria-labelledby="dir-title">
-  <div class="section-head">
+<section class="directory sec-ivory" id="directory" aria-labelledby="dir-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="dirKicker">Concierge map</p>
     <h2 id="dir-title" data-t="dirTitle">12 branches</h2>
     <p id="openNowLine"></p>
   </div>
-  <div class="dir-grid">
+  <div class="dir-grid reveal">
     <svg class="map" id="map" viewBox="0 0 400 440" role="img" aria-label="Approximate map of the branches in Bangkok"></svg>
     <ul class="branch-list" id="branchList"></ul>
   </div>
@@ -206,13 +250,14 @@
 </section>
 
 <!-- LOUNGE -->
-<section class="lounge" aria-labelledby="lounge-title">
-  <div class="section-head">
+<section class="lounge sec-blush" aria-labelledby="lounge-title">
+  <div class="section-head reveal">
+    <p class="kicker" data-t="loungeKicker">The lounge</p>
     <h2 id="lounge-title" data-t="loungeTitle">Follow us</h2>
     <p data-t="loungeLede">The latest posts from the clinic's Facebook page, updating on their own whenever the page posts.</p>
   </div>
   <div class="lounge-grid">
-    <div class="fb-window">
+    <div class="fb-window glass">
       <iframe title="Facebook THE RITZ" loading="lazy" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftheritzclinic&tabs=timeline&width=420&height=560&small_header=true&hide_cover=false&show_facepile=false" width="420" height="560" style="border:0;overflow:hidden" scrolling="no" allow="encrypted-media"></iframe>
       <div class="fb-demo" hidden><p class="fb-demo-title">THE RITZ on Facebook</p><p>The page's live feed shows here once the site runs on theritzclinic.com. This preview host blocks Facebook windows.</p></div>
       <a class="fb-fallback" href="https://www.facebook.com/theritzclinic" target="_blank" rel="noopener" data-t="fbFallback">Open THE RITZ on Facebook</a>
@@ -233,9 +278,9 @@
 <!-- shell:foot -->
 <footer class="foot">
   <div class="foot-inner">
-    <div class="chibi chibi-wai" data-pose="wai" role="img" aria-label="Dr. Ritz giving a wai"></div>
+    <img class="foot-r" src="assets/brand/r-mark.svg" alt="" width="100" height="119">
     <div>
-      <p class="foot-brand">THE RITZ CLINIC</p>
+      <p class="foot-brand foil">THE RITZ CLINIC</p>
       <p data-t="address">Head office: 345/6 Headquarters Ekkamai-Ladprao, Soi Ladprao 94 (Panjamit), Phlapphla, Wang Thonglang, Bangkok 10310</p>
       <p>Call Center <a href="tel:0888922666">088-892-2666</a> &nbsp; LINE <a href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener">@theritzclinic</a></p>
       <nav class="foot-nav" aria-label="Footer menu">
