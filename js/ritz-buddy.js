@@ -356,15 +356,20 @@ function isClear(x, y) {
   }
   return true;
 }
-let perch = null, perchEl = null, lastPick = 0, picked = null;
+let perch = null, perchEl = null, lastPick = 0, picked = null, lastScroll = 0;
+addEventListener('scroll', () => { lastScroll = performance.now(); }, { passive: true });
 function choose(vh) {
   // a full search (with the emptiness check) runs a few times a second; between runs he tracks the same perch
   const now = performance.now();
-  if (now - lastPick < 140 && picked !== undefined) {
+  // while the page is scrolling he keeps his perch and rides along; he only looks for a new one
+  // once scrolling settles, or when his perch leaves the screen
+  const scrolling = now - lastScroll < 500;
+  if ((now - lastPick < 140 || (scrolling && picked && picked.p)) && picked !== undefined) {
     if (!picked) return null;
     if (!picked.p) return picked;
     const s = spotFor(picked.p, picked.el, vh);
-    return s ? { ...picked, s } : null;
+    if (s) return { ...picked, s };
+    if (!scrolling) return null;                      // gone off screen mid-scroll: find another now
   }
   lastPick = now;
   picked = search(vh);
@@ -414,13 +419,15 @@ function frame(now) {
   if (mode !== 'follow') { physics(dt, tx, ty); return; }
   if (first || reduce) { pos.x = tx; pos.y = ty; vel.x = vel.y = 0; first = false; }
   else {
-    const k = 5.5;
-    vel.x += ((tx - pos.x) * k * k - vel.x * 2 * k) * dt;
-    vel.y += ((ty - pos.y) * k * k - vel.y * 2 * k) * dt;
+    // a soft, slightly over-damped spring with a top speed, so he drifts rather than darts
+    const k = 2.6, zeta = 1.15, top = 420;
+    vel.x += ((tx - pos.x) * k * k - vel.x * 2 * zeta * k) * dt;
+    vel.y += ((ty - pos.y) * k * k - vel.y * 2 * zeta * k) * dt;
+    const v = Math.hypot(vel.x, vel.y); if (v > top) { vel.x *= top / v; vel.y *= top / v; }
     pos.x += vel.x * dt; pos.y += vel.y * dt;
   }
   const speed = Math.hypot(vel.x, vel.y);
-  lean += ((reduce ? 0 : Math.max(-12, Math.min(12, vel.x * 0.02))) - lean) * Math.min(1, dt * 8);
+  lean += ((reduce ? 0 : Math.max(-8, Math.min(8, vel.x * 0.018))) - lean) * Math.min(1, dt * 4);
   draw();
 
   // travelling: legs scissor and he faces the way he goes; landing: the perch's own move

@@ -144,14 +144,20 @@ export function mountBooth(host) {
   function aim(animate = true) {
     cam.classList.toggle('still', !animate || reduced);
     if (!focus) { cam.style.transform = ''; return; }
-    // move in on the item: measure it with the camera at rest, then scale toward it
-    const prev = cam.style.transform; cam.style.transform = 'none';
-    const r = focus.el.getBoundingClientRect(), base = stage.getBoundingClientRect();
-    cam.style.transform = prev; void cam.offsetWidth;
-    const sx = r.left + r.width / 2 - base.left, sy = r.top + r.height * 0.55 - base.top;
-    const W = view.clientWidth, H = view.clientHeight, phone = W < 700, z = phone ? 1.3 : 1.7;
+    // where the item sits with the camera at rest: take what is drawn now and undo the camera's
+    // current move (it may be mid-glide), so stepping from one item to the next aims true
+    const target = $('.frame', focus.el) || $('img', focus.el) || focus.el;
+    const r = target.getBoundingClientRect(), base = stage.getBoundingClientRect();
+    const m = new DOMMatrix(getComputedStyle(cam).transform === 'none' ? undefined : getComputedStyle(cam).transform);
+    const p = m.inverse().transformPoint(new DOMPoint(r.left + r.width / 2 - base.left, r.top + r.height / 2 - base.top));
+    const W = view.clientWidth, H = view.clientHeight, phone = W < 700, z = phone ? 1.4 : 1.65;
     const fx = pan.scrollLeft + (phone ? W / 2 : (W - card.offsetWidth - 18) / 2), fy = H * 0.5;
-    cam.style.transform = `translate3d(${fx - sx * z}px,${fy - sy * z}px,0) scale(${z})`;
+    // keep the room filling the frame: never pull past its edges
+    const sw = stage.offsetWidth, sh = stage.offsetHeight;
+    const edge = phone ? W : W - card.offsetWidth - 18;           // the card may cover the room's far edge
+    const tx = Math.min(pan.scrollLeft, Math.max(edge + pan.scrollLeft - sw * z, fx - p.x * z));
+    const ty = Math.min(0, Math.max(H - sh * z, fy - p.y * z));
+    cam.style.transform = `translate3d(${tx}px,${ty}px,0) scale(${z})`;
   }
   // the programmes are bays along one long showroom: changing programme trucks the camera
   // sideways to the next bay, in the direction of travel, however far apart they are on the list
@@ -161,11 +167,11 @@ export function mountBooth(host) {
     const next = (i + rooms.length) % rooms.length, old = rooms[cur], neu = rooms[next];
     running.forEach((a) => a.finish()); running = [];
     if (old !== neu && !reduced && host.dataset.ready) {
-      const d = dir || Math.sign(next - cur) || 1, D = 1400, opt = { duration: 1150, easing: 'cubic-bezier(.62,0,.32,1)' };
+      const d = dir || Math.sign(next - cur) || 1, D = 1400, opt = { duration: 1700, easing: 'cubic-bezier(.45,0,.2,1)' };
       old.classList.add('moving'); neu.classList.add('here'); old.classList.remove('here');
       running = [
-        $('.world', old).animate([{ transform: 'translateX(0)' }, { transform: `translateX(${-d * D}px)` }], opt),
-        $('.world', neu).animate([{ transform: `translateX(${d * D}px)` }, { transform: 'translateX(0)' }], opt),
+        $('.world', old).animate([{ transform: 'translate3d(0,0,0)' }, { transform: `translate3d(${-d * D * 0.5}px,0,-90px)`, offset: 0.5 }, { transform: `translate3d(${-d * D}px,0,0)` }], opt),
+        $('.world', neu).animate([{ transform: `translate3d(${d * D}px,0,0)` }, { transform: `translate3d(${d * D * 0.5}px,0,-90px)`, offset: 0.5 }, { transform: 'translate3d(0,0,0)' }], opt),
       ];
       running[0].onfinish = () => old.classList.remove('moving');
     } else { old.classList.remove('here'); neu.classList.add('here'); }

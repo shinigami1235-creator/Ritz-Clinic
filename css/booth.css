@@ -12,7 +12,7 @@
 .booth-view { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid rgba(200,178,140,.35); background: radial-gradient(120% 80% at 50% 0%, #2a2522, #120f0e 70%), #191614; box-shadow: 0 40px 80px -40px rgba(0,0,0,.8); }
 .booth-pan { position: absolute; inset: 0; overflow: hidden; }
 .booth-stage { position: relative; }
-.booth-cam { position: absolute; inset: 0; transform-origin: 0 0; transition: transform 1.05s cubic-bezier(.65,0,.25,1); will-change: transform; }
+.booth-cam { position: absolute; inset: 0; transform-origin: 0 0; transition: transform 1.3s cubic-bezier(.45,0,.2,1); will-change: transform; }
 .booth-cam.still { transition: none; }
 
 /* a room */
