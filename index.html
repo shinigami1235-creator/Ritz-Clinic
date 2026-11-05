@@ -243,35 +243,41 @@
     <p id="openNowLine"></p>
   </div>
   <div class="dir-grid reveal">
-    <svg class="map" id="map" viewBox="0 0 400 440" role="img" aria-label="Approximate map of the branches in Bangkok"></svg>
+    <div class="gmap-wrap"><iframe class="gmap" id="gmap" title="THE RITZ CLINIC branches on Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe><button type="button" class="gmap-all btn-ghost" id="gmapAll" data-t="mapAll">All branches</button></div>
     <ul class="branch-list" id="branchList"></ul>
   </div>
   <a class="more" href="branches.html" data-t="seeBranches">Addresses and directions</a>
 </section>
 
 <!-- LOUNGE -->
-<section class="lounge sec-blush" aria-labelledby="lounge-title">
+<section class="lounge sec-blush" id="lounge" aria-labelledby="lounge-title">
   <div class="section-head reveal">
     <p class="kicker" data-t="loungeKicker">The lounge</p>
     <h2 id="lounge-title" data-t="loungeTitle">Follow us</h2>
-    <p data-t="loungeLede">The latest posts from the clinic's Facebook page, updating on their own whenever the page posts.</p>
+    <p data-t="loungeLede">Stories and posts from the clinic's Instagram and Facebook, updating on their own.</p>
   </div>
-  <div class="lounge-grid">
-    <div class="fb-window glass">
-      <iframe title="Facebook THE RITZ" loading="lazy" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftheritzclinic&tabs=timeline&width=420&height=560&small_header=true&hide_cover=false&show_facepile=false" width="420" height="560" style="border:0;overflow:hidden" scrolling="no" allow="encrypted-media"></iframe>
-      <div class="fb-demo" hidden><p class="fb-demo-title">THE RITZ on Facebook</p><p>The page's live feed shows here once the site runs on theritzclinic.com. This preview host blocks Facebook windows.</p></div>
-      <a class="fb-fallback" href="https://www.facebook.com/theritzclinic" target="_blank" rel="noopener" data-t="fbFallback">Open THE RITZ on Facebook</a>
+  <ul class="stories" id="stories" aria-label="Instagram stories"></ul>
+  <div class="fb-card glass reveal">
+    <div class="fb-head">
+      <span class="fb-logo"><img src="assets/brand/r-mark.svg" alt=""></span>
+      <span><b>THE RITZ CLINIC</b><small>facebook.com/theritzclinic</small></span>
+      <a class="btn-gold" href="https://www.facebook.com/theritzclinic" target="_blank" rel="noopener" data-t="fbFollow">Follow on Facebook</a>
     </div>
-    <ul class="ig-list">
-      <li><a href="https://www.instagram.com/theritzclinic_official/" target="_blank" rel="noopener"><b>@theritzclinic_official</b><span data-t="igMain">THE RITZ CLINIC</span></a></li>
-      <li><a href="https://www.instagram.com/theritz.lifting/" target="_blank" rel="noopener"><b>@theritz.lifting</b><span data-t="igLift">Lifting</span></a></li>
-      <li><a href="https://www.instagram.com/theritz.skinandlaser/" target="_blank" rel="noopener"><b>@theritz.skinandlaser</b><span data-t="igSkin">Skin and laser</span></a></li>
-      <li><a href="https://www.instagram.com/theritz.filler/" target="_blank" rel="noopener"><b>@theritz.filler</b><span data-t="igFiller">Filler and Botox</span></a></li>
-      <li><a href="https://www.instagram.com/resize_bytheritz/" target="_blank" rel="noopener"><b>@resize_bytheritz</b><span data-t="igResize">Body contouring</span></a></li>
-      <li><a href="https://www.instagram.com/theritz_hairremoval/" target="_blank" rel="noopener"><b>@theritz_hairremoval</b><span data-t="igHair">Hair removal</span></a></li>
-    </ul>
+    <ul class="fb-feed" id="fbFeed"></ul>
+    <p class="fb-note" id="fbNote"></p>
   </div>
 </section>
+
+<dialog class="story-viewer" id="storyViewer" aria-label="Story">
+  <div class="sv-frame">
+    <div class="sv-bars"></div>
+    <div class="sv-top"><b class="sv-who"></b><button type="button" class="sv-close" data-t="dClose">Close</button></div>
+    <div class="sv-media"></div>
+    <button type="button" class="sv-prev" aria-label="Previous"></button>
+    <button type="button" class="sv-next" aria-label="Next"></button>
+    <div class="sv-bottom"><p class="sv-note"></p><a class="btn-gold sv-link" href="#" target="_blank" rel="noopener" data-t="storyOpenIg">Open on Instagram</a></div>
+  </div>
+</dialog>
 
 </main>
 
@@ -297,9 +303,9 @@
   </div>
 </footer>
 
-<a class="float-line" href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener" aria-label="Chat with a doctor on LINE">
-  <span class="peek" aria-hidden="true"></span>
-  <span class="float-label" data-t="float">Ask a doctor</span>
+<a class="float-ask" href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener" aria-label="Ask Dr. Rueangrit Siripanich on LINE">
+  <img src="assets/site/doctors/founder-0.webp" alt="" width="400" height="600">
+  <span class="fa-pill"><b data-t="float">Ask a doctor</b><small data-t="floatName">Dr. Rueangrit Siripanich (56975)</small></span>
 </a>
 <!-- /shell:foot -->
 

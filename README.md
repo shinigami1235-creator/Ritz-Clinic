@@ -31,6 +31,16 @@ Every page keeps a saved copy in `js/data.js`, so nothing breaks if WordPress is
 
 He is the chibi from Gemini, cut into layers in `assets/chibi/rig/`: one head with the eyes and mouth painted out, a body per pose and two legs. `js/ritz-rig.js` draws his face live, so he blinks, looks at the cursor and changes expression on any pose. `js/ritz-buddy.js` is the same engine as Nong Tape on the Apex Slim site: he walks to the perch next to whatever you're reading, fidgets, yawns, falls asleep and floats off in a bubble, reacts to taps, and can be picked up and dropped. Pages tell him what happened with `ritzSay('card')` and similar.
 
+Drop him in the middle of the screen and he pulls out a mic and sings.
+
+## Stories and Facebook
+
+Facebook's own page window needs third-party cookies, which Chrome, Brave and in-app browsers block, so it shows blank for many visitors. The lounge draws the feed and an Instagram stories row in the site's own design instead. They read `data/social.json`, which `tools/social.py` writes from Meta's API once the clinic's admin connects the Facebook page and the six Instagram accounts (setup steps are at the top of the script). Until then both use the clinic's own website content and say so.
+
+## Maps
+
+Branches use the Google Maps embed, which needs no API key: the overview searches "THE RITZ CLINIC" and shows every branch as a pin, and picking a branch opens its Google place card with directions.
+
 ## Content from theritzclinic.com
 
 Every image and piece of content was copied from the clinic's public WordPress on 5 Nov 2026: 32 service articles, 17 doctors with their profile cards, 10 reviews, 335 before-and-after cards (split into before and after photos for the mirror), promotion posters, category banners, brand logos and 260 articles. The images are in `assets/site/`, the text in `data/`. `tools/media.py` is the script that converted them.

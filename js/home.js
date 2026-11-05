@@ -8,7 +8,8 @@ import { mountConcierge } from './concierge.js';
 import { mountDuty } from './duty.js';
 import { mountShelf } from './showroom.js';
 import { mountMirror } from './mirror.js';
-import { drawMap } from './branchmap.js';
+import { mountGmap } from './gmap.js';
+import { mountLounge } from './lounge.js';
 import { loadPosts, postHref, fmtDate } from './posts.js';
 
 const DAYS = t('days');
@@ -134,7 +135,7 @@ loadPosts().then(({ posts, total }) => {
 });
 
 /* ---------- directory ---------- */
-const map = drawMap($('#map'));
+const gmap = mountGmap($('#gmap'), $('#gmapAll'));
 const list = $('#branchList');
 $('#openNowLine').textContent = t('openNow', { t: hhmm(bangkokNow()), n: BRANCHES.filter(isOpen).length });
 list.innerHTML = BRANCHES.map((b) => `<li class="${isOpen(b) ? 'open' : ''}"><button type="button" data-id="${b.id}" aria-pressed="false"><span class="dot"></span><span><b>${bname(b)}</b><span class="meta">${b.open}${t('to')}${b.close} &nbsp; ${b.phone}</span></span></button></li>`).join('');
@@ -142,12 +143,11 @@ list.addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
   const on = b.getAttribute('aria-pressed') !== 'true';
   list.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(on && x === b)));
-  map.highlight(on ? b.dataset.id : null);
+  gmap.show(on ? BRANCHES.find((x) => x.id === b.dataset.id) : null);
   if (on) ritzSay('branch');
 });
 
-/* ---------- Facebook window: preview hosts block it ---------- */
-if (/claude|localhost|127\.0\.0\.1/.test(location.hostname)) { $('.fb-window iframe')?.remove(); $('.fb-demo').hidden = false; }
+mountLounge();
 
 /* ---------- 3D brass R ---------- */
 const canWebGL = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();

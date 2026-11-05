@@ -31,7 +31,7 @@ const EVENTS = {
   floor: { pose: 'point', expr: 'curious', ms: 1600, move: 'hop' },
   thinking: { pose: 'think', expr: 'happy', ms: 0 },
   card: { pose: 'card', expr: 'excited', ms: 3200, move: 'hop', line: L("Here's your key card.", 'นี่คีย์การ์ดของคุณครับ') },
-  sent: { pose: 'thumbs', expr: 'giggle', ms: 3000, move: 'boing', line: L('See you on LINE!', 'เจอกันใน LINE ครับ') },
+  sent: { pose: 'thumbs', expr: 'proud', ms: 3000, move: 'hop', line: L('See you on LINE!', 'เจอกันใน LINE ครับ') },
   doctor: { pose: 'welcome', expr: 'proud', ms: 1800, move: 'bob' },
   review: { pose: 'wai', expr: 'shy', ms: 1600 },
   mirror: { pose: 'idle', expr: 'surprised', ms: 1200 },
@@ -58,7 +58,7 @@ const PERCHES = [
   { sel: '.room-card', at: 'out-r', dx: 14, dy: 0, face: 'left', desk: true, bonus: 50 },
   { sel: '.vanity', at: 'out-r', dx: 18, dy: 0, face: 'left', desk: true, bonus: 60, arrive: { pose: 'idle', expr: 'curious', ms: 1400 } },
   { sel: '.br-map', at: 'in-br', dx: -8, dy: -6, face: 'left', bonus: 50, desk: true },
-  { sel: '.dir-grid .map', at: 'in-br', dx: -8, dy: -6, face: 'left', bonus: 40 },
+  { sel: '.dir-grid .gmap-wrap', at: 'in-br', dx: -8, dy: -6, face: 'left', bonus: 40 },
   { sel: '.founder-photo', at: 'out-r', dx: -60, dy: 0, face: 'left', desk: true, bonus: 40, arrive: { pose: 'welcome', expr: 'proud', ms: 1400 } },
   { sel: 'main section h2', at: 'text', dx: 16, dy: 2, face: 'left', all: true },
 ];
@@ -111,7 +111,7 @@ root.innerHTML = `<div class="buddy-turn"><button class="buddy-body" type="butto
   <button class="buddy-x" type="button" aria-label="${L('Hide', 'ซ่อน')} ${NAME}">×</button>`;
 document.body.append(root);
 const turn = root.querySelector('.buddy-turn'), body = root.querySelector('.buddy-body'), bubble = root.querySelector('.buddy-say'), hideBtn = root.querySelector('.buddy-x');
-const SIZE = () => (phone() ? 70 : 104);                 // width in px; height follows the drawing
+const SIZE = () => (phone() ? 80 : 124);                 // width in px; height follows the drawing
 const RATIO = 475 / 300;
 let rigSize = SIZE(), rig = createRitz(root.querySelector('.buddy-art'), rigSize);
 const W = () => SIZE(), H = () => SIZE() * RATIO;
@@ -176,7 +176,7 @@ function wakeByTap() {
   rig.set({ pose: 'welcome', expr: 'surprised', ms: 160 }); move('startle');
   busyUntil = Date.now() + 1900;
   actTimer = setTimeout(() => {
-    rig.set({ pose: 'wai', expr: 'giggle', ms: 260 }); move('giggle'); hehe(L('hehe!', 'อิอิ'));
+    rig.set({ pose: 'wai', expr: 'proud', ms: 260 }); move('bob');
     actTimer = setTimeout(() => { busyUntil = 0; rest(); }, 1200);
   }, 650);
 }
@@ -203,7 +203,8 @@ const FIDGETS = [
   [{ pose: 'card', expr: 'proud', ms: 1300 }, { pose: 'idle', expr: 'happy', ms: 300 }],
   [{ pose: 'wave', expr: 'happy', ms: 1300, move: 'wiggle' }],
   [{ pose: 'hop', expr: 'wink', ms: 450, move: 'hop' }, { pose: 'hop', expr: 'happy', ms: 450, move: 'hop' }],
-  [{ pose: 'think', expr: 'happy', ms: 1500 }, { pose: 'idle', expr: 'surprised', ms: 400 }, { pose: 'idle', expr: 'happy', ms: 300 }],
+  [{ pose: 'idle', expr: 'curious', look: [0.4, -0.6], ms: 1200 }, { pose: 'idle', expr: 'surprised', ms: 400 }, { pose: 'thumbs', expr: 'proud', ms: 900 }],
+  [{ pose: 'idle', expr: 'wink', ms: 900 }, { pose: 'idle', expr: 'happy', ms: 300 }],
   [{ pose: 'wai', expr: 'shy', ms: 1300 }, { pose: 'idle', expr: 'happy', ms: 300 }],
   [{ pose: 'welcome', expr: 'love', ms: 1300, move: 'bob' }],
   [{ pose: 'walkA', expr: 'happy', ms: 180 }, { pose: 'walkB', expr: 'happy', ms: 180 }, { pose: 'walkA', expr: 'happy', ms: 180 }, { pose: 'walkB', expr: 'happy', ms: 180 }, { pose: 'idle', expr: 'proud', ms: 300 }],
@@ -240,16 +241,20 @@ function playFidget(seq) {
 })();
 
 /* eyes and head follow the mouse on desktop */
+let near = false, nearT = 0;
 if (fine) addEventListener('pointermove', (e) => {
   lastInput = Date.now(); if (asleep || fidgeting) return;
   const dx = e.clientX - (pos.x + W() / 2), dy = e.clientY - (pos.y + H() * 0.28);
   const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 260);
   rig.look((dx / d) * k * facing, (dy / d) * k);
+  // he lights up when the cursor comes close
+  if (d < 150 && !near && mode === 'follow' && !held && Date.now() > busyUntil) { near = true; rig.set({ expr: 'excited' }); clearTimeout(nearT); nearT = setTimeout(() => { if (!held && !fidgeting) rig.set({ expr: base.expr }); }, 1100); }
+  else if (d > 240) near = false;
 }, { passive: true });
 
 /* taps: a different little reaction each time; tapping fast makes him dizzy, keep going and he gives a heart */
 const TAPS = [
-  { pose: 'wai', expr: 'giggle', ms: 1100, move: 'giggle', hehe: L('hehe', 'อิอิ') },
+  { pose: 'wai', expr: 'proud', ms: 1100, move: 'bob' },
   { pose: 'hop', expr: 'wink', ms: 700, move: 'hop' },
   { pose: 'idle', expr: 'excited', ms: 900, spin: true },
   { pose: 'thumbs', expr: 'excited', ms: 1000, move: 'boing' },
@@ -261,6 +266,7 @@ const TAPS = [
 ];
 let taps = [], lastTap = -1;
 body.addEventListener('click', () => {
+  if (mode === 'sing' && !grab.moved) { stopSinging(); return; }
   if (mode === 'float' && !grab.moved) { popFloat(); return; }
   if (grab.moved || mode !== 'follow') { grab.moved = false; return; }
   if (asleep) { wakeByTap(); return; }
@@ -268,7 +274,7 @@ body.addEventListener('click', () => {
   stopFidget(); clearTimeout(actTimer); lastInput = t;
   let r;
   if (taps.length >= 7) { taps = []; act('love'); hehe('♥'); return; }
-  if (taps.length >= 4) r = { pose: 'idle', expr: 'dizzy', ms: 1500, move: 'wobble' };
+  if (taps.length >= 4) r = { pose: 'idle', expr: 'oops', ms: 1400, move: 'wobble' };
   else { let i; do { i = Math.floor(Math.random() * TAPS.length); } while (i === lastTap); lastTap = i; r = TAPS[i]; }
   rig.set({ pose: r.pose, expr: r.expr }); move(r.move); if (r.hehe) hehe(r.hehe);
   if (r.spin && !reduce) { move('spin'); setTimeout(() => setFace(-facing), 260); setTimeout(() => setFace(-facing), 620); }
@@ -397,13 +403,14 @@ addEventListener('pointermove', (e) => {
   if (grab.id !== e.pointerId) return;
   if (!grab.moved && Math.hypot(e.clientX - grab.sx, e.clientY - grab.sy) < 7) return;
   if (!grab.moved) {                     // picked up
-    grab.moved = true; mode = 'drag'; run = null; flying = false; body.classList.remove('m-glide', 'm-run', 'm-sleep');
+    if (mode === 'sing') { clearInterval(mouthT); clearInterval(noteT); clearTimeout(singT); root.classList.remove('singing'); root.querySelector('.buddy-notes')?.remove(); }
+    grab.moved = true; mode = 'drag'; run = null; flying = false; body.classList.remove('m-glide', 'm-run', 'm-sleep', 'm-hops');
     if (asleep) popBubble();
     clearTimeout(bubbleT); root.classList.remove('bubbled');
     asleep = false; root.classList.remove('napping'); stopFidget(); clearTimeout(actTimer); busyUntil = Infinity; root.classList.remove('talking');
     rig.look(0, -0.6); rig.set({ pose: 'welcome', expr: 'surprised', ms: 200 }); move('startle');
     try { body.setPointerCapture(e.pointerId); } catch (err) {}
-    setTimeout(() => { if (mode === 'drag') rig.set({ pose: 'welcome', expr: Math.random() < 0.5 ? 'excited' : 'giggle' }); }, 900);
+    setTimeout(() => { if (mode === 'drag') rig.set({ pose: 'welcome', expr: Math.random() < 0.5 ? 'excited' : 'curious' }); }, 900);
   }
   const t = performance.now(), dt = Math.max(1, t - grab.lt);
   grab.vx = grab.vx * 0.7 + (((e.clientX - grab.lx) / dt) * 1000) * 0.3; grab.lx = e.clientX; grab.lt = t;
@@ -414,6 +421,8 @@ const drop = (e) => {
   grab.id = null;
   if (!grab.moved) return;
   vel.x = grab.vx * 0.25; vel.y = 0;
+  const cx = pos.x + W() / 2, cy = pos.y + H() / 2;
+  if (Math.abs(cx - innerWidth / 2) < innerWidth * 0.14 && Math.abs(cy - viewH() / 2) < viewH() * 0.18) { sing(); return; }
   if (pos.y > Math.min(lastTY, viewH() - H() - 6) + 4) {   // dropped below his level: he hops back up instead of falling
     mode = 'follow'; busyUntil = 0; rig.look(0, 0); rig.set({ pose: 'hop', expr: 'happy', ms: 200 }); return;
   }
@@ -432,9 +441,10 @@ function physics(dt, tx, ty) {
     if (pos.y >= floor) {                // landed on the perch's level
       pos.y = floor; const hard = vel.y > 900; vel.x = vel.y = 0; lean = 0;
       mode = 'run'; run = { phase: 'shake', until: performance.now() + (hard ? 900 : 550), style: pickRun() };
-      move('boing'); rig.look(0, 0); rig.set({ pose: 'idle', expr: hard ? 'dizzy' : 'oops', ms: 160 });
+      move('boing'); rig.look(0, 0); rig.set({ pose: 'idle', expr: hard ? 'surprised' : 'oops', ms: 160 });
     } else if (pos.y < floor - 400 && vel.y < 0) pos.y = floor - 400;
   } else if (mode === 'run') runStep(dt, tx, floor);
+  else if (mode === 'sing') { /* stays where he was dropped */ }
   else if (mode === 'float') {                // drifting inside the bubble, near his spot
     const t = (performance.now() - floatT0) / 1000, w = W(), vh = viewH();
     const fx = Math.max(10, Math.min(innerWidth - w - 40, tx + Math.sin(t * 0.21) * 150 + Math.sin(t * 0.07) * 60));
@@ -446,55 +456,54 @@ function physics(dt, tx, ty) {
   }
   draw();
 }
-function pickRun() { const r = Math.random(); return r < 0.3 ? 'dash' : r < 0.55 ? 'trip' : 'jog'; }
+function pickRun() { return 'hop'; }
+/* after a drop he hops back to his spot, one neat hop at a time */
 function runStep(dt, tx, floor) {
   const now = performance.now();
   pos.y += (floor - pos.y) * Math.min(1, dt * 10);
   if (run.phase === 'shake') {
     if (now < run.until) return;
-    run.phase = 'go'; run.start = pos.x; setFace(tx >= pos.x ? 1 : -1);
-    rig.set({ pose: 'walkA', expr: run.style === 'dash' ? 'excited' : 'happy', ms: 160 });
-    body.classList.add(run.style === 'dash' ? 'm-dash' : 'm-run');
-    if (run.style === 'trip') run.tripAt = Math.abs(tx - pos.x) > 120 ? 0.45 + Math.random() * 0.2 : 2;
+    run.phase = 'go'; setFace(tx >= pos.x ? 1 : -1);
+    rig.set({ pose: 'hop', expr: 'happy', ms: 160 }); body.classList.add('m-hops');
   }
-  if (run.phase === 'trip') {
-    if (now < run.until) return;
-    run.phase = 'go'; body.classList.remove('m-splat'); rig.set({ pose: 'walkA', expr: 'happy', ms: 160 }); body.classList.add('m-run');
-  }
-  if (run.phase !== 'go') return;
   const dx = tx - pos.x, dir = Math.sign(dx) || 1;
-  const speed = run.style === 'dash' ? 760 : 300;
   setFace(dir);
-  lean += (dir * (run.style === 'dash' ? 10 : 3) - lean) * Math.min(1, dt * 8);
-  const stride = run.style === 'dash' ? 0.09 : 0.15;
-  legT += dt; if (legT > stride) { legT = 0; rig.set({ pose: rig.pose === 'walkA' ? 'walkB' : 'walkA' }); }
-  if (run.style === 'dash') { windT += dt; if (windT > 0.06) { windT = 0; wind(dir); } }
-  pos.x += dir * Math.min(Math.abs(dx), speed * dt);
-  const total = Math.abs(tx - run.start) || 1, frac = 1 - Math.abs(tx - pos.x) / total;
-  if (run.style === 'trip' && frac > run.tripAt) {          // trips, laughs it off
-    run.tripAt = 2; run.phase = 'trip';
-    body.classList.remove('m-run'); body.classList.add('m-splat'); rig.set({ pose: 'welcome', expr: 'oops', ms: 200 });
-    setTimeout(() => { if (mode === 'run') rig.set({ expr: 'dizzy' }); }, 420);
-    setTimeout(() => { if (mode === 'run') { body.classList.remove('m-splat'); rig.set({ pose: 'wai', expr: 'giggle', ms: 300 }); move('giggle'); hehe(L('hehe', 'อิอิ')); } }, 950);
-    run.until = now + 1700;
-    return;
-  }
+  lean += (dir * 3 - lean) * Math.min(1, dt * 8);
+  legT += dt; if (legT > 0.21) { legT = 0; rig.set({ pose: rig.pose === 'walkA' ? 'walkB' : 'walkA' }); }
+  pos.x += dir * Math.min(Math.abs(dx), 260 * dt);
   if (Math.abs(tx - pos.x) < 3) {                          // home
-    body.classList.remove('m-run', 'm-dash'); mode = 'follow'; run = null; vel.x = vel.y = 0; lean = 0;
+    body.classList.remove('m-hops'); mode = 'follow'; run = null; vel.x = vel.y = 0; lean = 0;
     busyUntil = 0; arrivedAt = null; flying = false;
     setFace(perch && perch.face === 'left' ? -1 : 1);
     rig.set({ pose: 'thumbs', expr: 'proud', ms: 300 }); move('hop');
     clearTimeout(actTimer); actTimer = setTimeout(rest, 900);
   }
 }
-/* gold swirls behind him on a dash */
-function wind(dir) {
-  if (reduce) return;
-  const w = document.createElement('span'); w.className = 'buddy-wind';
-  w.style.left = pos.x + (dir > 0 ? -10 : W() - 18) + (Math.random() * 10 - 5) + 'px';
-  w.style.top = pos.y + H() * (0.45 + Math.random() * 0.35) + 'px';
-  w.innerHTML = `<svg viewBox="0 0 40 20" width="34" height="17"${dir < 0 ? ' style="transform:scaleX(-1)"' : ''}><path d="M2 12c8 0 12-9 20-9 6 0 8 5 4 7-3 2-6-1-4-3M6 17h16" fill="none" stroke="#DEBE73" stroke-width="2.4" stroke-linecap="round"/></svg>`;
-  document.body.append(w); setTimeout(() => w.remove(), 600);
+
+/* easter egg: drop him in the middle of the screen and he sings */
+const SONG = TH ? ['♪ ดูแลผิว ด้วยใจ ♪', '♪ ลา ลา ลา ♪'] : ['♪ Care with a smile ♪', '♪ La la la ♪'];
+let singT = 0, noteT = 0, mouthT = 0;
+function sing() {
+  mode = 'sing'; stopFidget(); clearTimeout(actTimer); busyUntil = Infinity; root.classList.add('singing');
+  setFace(1); lean = 0; draw(); rig.look(0, -0.2);
+  rig.set({ pose: 'sing', expr: 'sing', ms: 300 }); move('hop');
+  const notes = document.createElement('span'); notes.className = 'buddy-notes'; root.append(notes);
+  let open = true, line = 0;
+  mouthT = setInterval(() => { open = !open; rig.set({ expr: open ? 'sing' : 'singO' }); }, 380);
+  noteT = setInterval(() => {
+    if (reduce) return;
+    const n = document.createElement('i'); n.textContent = ['♪', '♫', '♩', '♬'][Math.floor(Math.random() * 4)];
+    n.style.setProperty('--x', `${(Math.random() * 2 - 1) * 60}px`); n.style.left = `${(Math.random() * 2 - 1) * 24}px`;
+    notes.append(n); setTimeout(() => n.remove(), 2400);
+  }, 420);
+  speak(SONG[0]); setTimeout(() => { if (mode === 'sing') speak(SONG[1]); }, 3600);
+  singT = setTimeout(stopSinging, 7400);
+}
+function stopSinging() {
+  clearInterval(mouthT); clearInterval(noteT); clearTimeout(singT);
+  root.classList.remove('singing'); root.querySelector('.buddy-notes')?.remove(); root.classList.remove('talking');
+  rig.set({ pose: 'wai', expr: 'proud', ms: 300 }); move('bob');
+  setTimeout(() => { if (mode === 'sing') { mode = 'fall'; vel.x = 0; vel.y = -80; rig.set({ pose: 'hop', expr: 'happy' }); } }, 1300);
 }
 
 /* events from the rest of the site */

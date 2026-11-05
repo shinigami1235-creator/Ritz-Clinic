@@ -9,13 +9,13 @@ const BASE = new URL('../assets/chibi/rig/', import.meta.url).href;
 const G = { w: 300, h: 475, neck: [160.5, 202.5], eyeL: [125, 143], eyeR: [195.5, 143], mouth: [160.5, 175], hipL: [135.5, 398], hipR: [185.5, 398] };
 
 // Poses drawn as a body image. 'full' poses are whole drawings with their own face.
-export const POSES = ['idle', 'wave', 'point', 'card', 'wai', 'thumbs', 'welcome', 'think', 'peek', 'walkA', 'walkB', 'hop', 'cheer'];
-const BODY = { idle: 'stand', wave: 'wave', point: 'point', card: 'card', wai: 'wai', thumbs: 'thumbs', welcome: 'welcome', walkA: 'stand', walkB: 'stand', hop: 'stand', cheer: 'welcome' };
+export const POSES = ['idle', 'wave', 'point', 'card', 'wai', 'thumbs', 'welcome', 'think', 'peek', 'walkA', 'walkB', 'hop', 'cheer', 'sing'];
+const BODY = { idle: 'stand', wave: 'wave', point: 'point', card: 'card', wai: 'wai', thumbs: 'thumbs', welcome: 'welcome', walkA: 'stand', walkB: 'stand', hop: 'stand', cheer: 'welcome', sing: 'wai' };
 const FULL = { think: 'think', peek: 'peek' };
 // legs: rotation of each leg in degrees, lift in px
 const LEGS = { walkA: [-12, 10, 0, -6], walkB: [10, -12, -6, 0], hop: [-6, 6, -4, -4] };
 
-export const EXPRESSIONS = ['happy', 'blink', 'wink', 'excited', 'proud', 'curious', 'surprised', 'shy', 'love', 'sleepy', 'oops', 'giggle', 'dizzy', 'worried'];
+export const EXPRESSIONS = ['happy', 'blink', 'wink', 'excited', 'proud', 'curious', 'surprised', 'shy', 'love', 'sleepy', 'oops', 'dizzy', 'worried', 'sing', 'singO'];
 
 /* ---------- face parts ---------- */
 const eyeOpen = ([x, y], s = 1) => `<g class="rz-eye"><ellipse cx="${x}" cy="${y}" rx="${9.5 * s}" ry="${12 * s}" fill="${INK}"/><circle cx="${x + 3.4 * s}" cy="${y - 4.6 * s}" r="${2.9 * s}" fill="#fff"/></g>`;
@@ -59,6 +59,8 @@ function faceSVG(expr) {
     case 'giggle': return eyeHappy(L) + eyeHappy(R) + blush + M.open;
     case 'dizzy': return eyeSpiral(L) + eyeSpiral(R) + M.wavy;
     case 'worried': return eyeUp(L) + eyeUp(R) + M.flat + sweat;
+    case 'sing': return eyeHappy(L) + eyeHappy(R) + blush + M.open;
+    case 'singO': return eyeHappy(L) + eyeHappy(R) + blush + M.o;
     default: return eyeOpen(L) + eyeOpen(R) + M.smile;   // happy
   }
 }
@@ -73,23 +75,26 @@ export function createRitz(host, size = 120) {
         <img class="rz-leg rz-leg-r" src="${BASE}leg-r.webp" alt="" draggable="false" style="transform-origin:${G.hipR[0]}px ${G.hipR[1]}px">
         <div class="rz-torso" style="transform-origin:${G.w / 2}px ${G.hipL[1]}px">
           <img class="rz-body" src="${BASE}body-stand.webp" alt="" draggable="false">
-          <img class="rz-body rz-body-b" src="${BASE}body-stand.webp" alt="" draggable="false">
+          <svg class="rz-mic rz-mic-handle" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><defs><linearGradient id="rzh" x1="0" x2="1"><stop offset="0" stop-color="#111"/><stop offset=".45" stop-color="#4a4a4a"/><stop offset="1" stop-color="#111"/></linearGradient></defs><path d="M156.8 205h7.4l-1.4 98h-4.6z" fill="url(#rzh)" stroke="${INK}" stroke-width="1.2"/></svg>
+          <img class="rz-mic rz-hands" src="${BASE}hands-wai.webp" alt="" draggable="false">
           <div class="rz-head" style="transform-origin:${G.neck[0]}px ${G.neck[1]}px">
             <img src="${BASE}head.webp" alt="" draggable="false">
             <svg class="rz-face" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><g class="rz-look"></g></svg>
           </div>
+          <svg class="rz-mic rz-mic-head" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><defs><radialGradient id="rzb" cx=".35" cy=".3"><stop offset="0" stop-color="#F4F4F4"/><stop offset=".55" stop-color="#9DA3AA"/><stop offset="1" stop-color="#4C5157"/></radialGradient><pattern id="rzm" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 0h3M0 0v3" stroke="#3A3E43" stroke-width=".5" opacity=".55"/></pattern></defs><rect x="154.5" y="205" width="12" height="7" rx="1.8" fill="#D9B566" stroke="${INK}" stroke-width="1"/><circle cx="160.5" cy="192" r="15" fill="url(#rzb)" stroke="${INK}" stroke-width="2"/><circle cx="160.5" cy="192" r="15" fill="url(#rzm)"/><circle cx="155" cy="185.5" r="3.4" fill="#fff" opacity=".8"/></svg>
         </div>
         <img class="rz-full" src="${BASE}full-think.webp" alt="" draggable="false" hidden>
       </div>
     </div>`;
   const $ = (s) => host.querySelector(s);
   const torso = $('.rz-torso'), head = $('.rz-head'), look = $('.rz-look'), full = $('.rz-full');
-  const bodies = [$('.rz-body'), $('.rz-body-b')];
+  const body = $('.rz-body');
   const legL = $('.rz-leg-l'), legR = $('.rz-leg-r');
-  let front = 0, curBody = 'stand';
+  let curBody = 'stand';
   // preload
   [...new Set(Object.values(BODY))].forEach((b) => { const i = new Image(); i.src = `${BASE}body-${b}.webp`; });
   Object.values(FULL).forEach((b) => { const i = new Image(); i.src = `${BASE}full-${b}.webp`; });
+  { const i = new Image(); i.src = `${BASE}hands-wai.webp`; }
 
   const state = { pose: 'idle', expr: 'happy', turn: 0 };
   let blinking = false, lookX = 0, lookY = 0;
@@ -101,10 +106,8 @@ export function createRitz(host, size = 120) {
   function setBody(name, ms) {
     if (name === curBody) return;
     curBody = name;
-    const next = bodies[1 - front];
-    next.src = `${BASE}body-${name}.webp`;
-    const swap = () => { next.style.opacity = 1; bodies[front].style.opacity = 0; front = 1 - front; };
-    if (next.complete) swap(); else next.onload = swap;
+    // one body image, swapped in place: every pose is preloaded, so there is never a second body on screen
+    body.src = `${BASE}body-${name}.webp`;
     // a quick squash sells the change of pose
     torso.animate([{ transform: 'scale(1,1)' }, { transform: 'scale(1.03,.96)' }, { transform: 'scale(.99,1.02)' }, { transform: 'scale(1,1)' }], { duration: Math.max(180, ms || 260), easing: 'ease-out' });
   }
@@ -116,11 +119,12 @@ export function createRitz(host, size = 120) {
       if (turn != null) { state.turn = turn; host.style.setProperty('--turn', turn); }
       if (pose && pose !== state.pose) {
         state.pose = pose;
-        if (FULL[pose]) { full.src = `${BASE}full-${FULL[pose]}.webp`; full.hidden = false; torso.style.visibility = 'hidden'; legL.style.visibility = legR.style.visibility = 'hidden'; }
+        if (FULL[pose]) { full.src = `${BASE}full-${FULL[pose]}.webp`; full.hidden = false; torso.style.display = 'none'; legL.style.display = legR.style.display = 'none'; }
         else {
-          full.hidden = true; torso.style.visibility = ''; legL.style.visibility = legR.style.visibility = '';
+          full.hidden = true; torso.style.display = ''; legL.style.display = legR.style.display = '';
           setBody(BODY[pose] || 'stand', ms);
         }
+        host.classList.toggle('rz-singing', pose === 'sing');
         const [l, r, ly, ry] = LEGS[pose] || [0, 0, 0, 0];
         legL.style.transform = `translateY(${ly}px) rotate(${l}deg)`;
         legR.style.transform = `translateY(${ry}px) rotate(${r}deg)`;
@@ -136,7 +140,6 @@ export function createRitz(host, size = 120) {
     },
     blink() { blinking = true; drawFace(); setTimeout(() => { blinking = false; drawFace(); }, 140); },
   };
-  bodies[1].style.opacity = 0;
   api.set({ pose: 'idle', expr: 'happy' });
   return api;
 }

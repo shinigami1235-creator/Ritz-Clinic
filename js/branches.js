@@ -1,8 +1,8 @@
 // Branches page: map plus a card for every branch with address, hours and doctors today.
 import { BRANCHES, ADDR, SCHEDULE } from './data.js';
 import { LANG, t, pick } from './i18n.js';
-import { $, $$, esc, bname, bangkokNow, hhmm, isOpen, doctors, todayIdx } from './core.js';
-import { drawMap } from './branchmap.js';
+import { $, $$, esc, bname, bangkokNow, hhmm, isOpen, doctors, todayIdx, ritzSay } from './core.js';
+import { mountGmap } from './gmap.js';
 
 const list = $('#brList');
 let picked = null;
@@ -31,17 +31,13 @@ function render() {
   }).join('');
 }
 render();
-setInterval(() => { render(); document.querySelectorAll('#map .pin').forEach((p) => p.classList.toggle('open', isOpen(BRANCHES.find((b) => b.id === p.dataset.id)))); }, 60000);
+setInterval(render, 60000);
 
-const map = drawMap($('#map'), {
-  onPick(id) {
-    picked = id;
-    map.highlight(id);
-    const el = $('#br-' + id);
-    $$('.br-card').forEach((c) => c.classList.toggle('on', c === el));
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    el.focus({ preventScroll: true });
-  },
-});
-// Hovering a card lights up its pin.
-list.addEventListener('mouseover', (e) => { const c = e.target.closest('.br-card'); if (c) map.highlight(c.id.slice(3)); });
+const gmap = mountGmap($('#gmap'), $('#gmapAll'));
+function choose(id) {
+  picked = id;
+  $$('.br-card').forEach((c) => c.classList.toggle('on', c.id === 'br-' + id));
+  gmap.show(id ? BRANCHES.find((b) => b.id === id) : null);
+  if (id) ritzSay('branch');
+}
+list.addEventListener('click', (e) => { const c = e.target.closest('.br-card'); if (c && !e.target.closest('a')) choose(c.id.slice(3)); });

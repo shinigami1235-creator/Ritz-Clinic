@@ -82,5 +82,3 @@ function dust(canvas) {
 applyStatic();
 $$('.page-sign, .lobby').forEach((el) => { const c = document.createElement('canvas'); c.className = 'dust'; el.prepend(c); dust(c); });
 reveal();
-const fl = $('.float-line');
-if (fl && !reduced) setTimeout(() => { fl.classList.add('hello'); setTimeout(() => fl.classList.remove('hello'), 3500); }, 6000);

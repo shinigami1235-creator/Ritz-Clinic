@@ -82,3 +82,13 @@
 }
 @media (prefers-reduced-motion: reduce) { .buddy-body, .buddy-body[class*=m-] { animation: none !important; } .buddy-nap b { animation: none; opacity: 1; } }
 @media print { .buddy, .buddy-peek { display: none; } }
+.rz-mic { display: none; position: absolute; left: 0; top: 0; width: 300px; height: 475px; pointer-events: none; }
+.rz-singing .rz-mic { display: block; }
+.rz-singing .rz-torso { animation: rz-sway 1.1s ease-in-out infinite; transform-origin: 150px 470px; }
+@keyframes rz-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+.buddy-notes { position: absolute; left: 50%; top: 10%; width: 0; height: 0; pointer-events: none; }
+.buddy-notes i { position: absolute; left: 0; top: 0; font-style: normal; font: 700 22px/1 serif; color: #C9A55C; text-shadow: 0 0 8px rgba(233,207,142,.9), 0 2px 4px rgba(18,31,56,.4); animation: buddy-note 2.4s ease-out forwards; }
+@keyframes buddy-note { 0% { opacity: 0; transform: translate(0, 10px) scale(.6) rotate(-10deg); } 15% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--x), -110px) scale(1.15) rotate(12deg); } }
+.buddy.singing .buddy-say { font-style: italic; }
+.buddy-body.m-hops { animation: buddy-hops .42s cubic-bezier(.3,.7,.4,1) infinite; }
+@keyframes buddy-hops { 0%, 100% { transform: translateY(0) scale(1.04, .96); } 45% { transform: translateY(-18px) scale(.97, 1.03); } }
