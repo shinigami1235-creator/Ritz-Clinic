@@ -403,6 +403,9 @@ section { padding: clamp(72px, 10vw, 130px) clamp(16px, 5vw, 64px); scroll-margi
 .fb-logo img { width: 26px; }
 .fb-head b { display: block; font-family: var(--display); font-weight: 400; font-size: 19px; color: var(--navy); letter-spacing: .08em; }
 .fb-head small { color: var(--muted); font-size: 13px; }
+.fb-embeds { display: flex; gap: 18px; align-items: flex-start; overflow-x: auto; scroll-snap-type: x mandatory; padding: 18px 2px 12px; margin: 0 -2px; scrollbar-width: thin; scrollbar-color: rgba(201,165,92,.6) transparent; }
+.fb-cell { flex: 0 0 auto; scroll-snap-align: start; background: #fff; border-radius: 14px; overflow: hidden; border: 1px solid rgba(201,165,92,.25); min-height: 200px; }
+.fb-cell .fb-post, .fb-cell iframe { display: block; }
 .fb-feed { list-style: none; padding: 0; margin: 18px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .fb-feed a { display: block; text-decoration: none; border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid rgba(201,165,92,.25); height: 100%; transition: transform .4s var(--spring); }
 .fb-feed a:hover { transform: translateY(-4px); }

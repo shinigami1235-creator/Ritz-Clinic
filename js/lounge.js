@@ -72,12 +72,55 @@ export async function mountLounge() {
   dlg.addEventListener('close', () => cancelAnimationFrame(timer));
   dlg.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') next(); if (e.key === 'ArrowLeft') prev(); });
 
-  /* the feed: live Facebook posts, or the newest news from the website */
+  /* the feed: live API posts first, then the clinic's real posts embedded from Facebook
+     (data/facebook.json, same as CICM), and the website's own news if Facebook is blocked */
   const feed = $('#fbFeed');
-  const items = data?.facebook?.length
-    ? data.facebook.slice(0, 4).map((p) => ({ img: p.full_picture, text: (p.message || '').slice(0, 160), date: p.created_time, link: p.permalink_url }))
-    : posts.slice(0, 4).map((p) => ({ img: p.image, text: p.title, date: p.date, link: postHref(p) }));
-  feed.innerHTML = items.map((p) => `<li><a href="${esc(p.link)}"${data?.facebook ? ' target="_blank" rel="noopener"' : ''}>
-    ${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : ''}<span><time>${p.date ? fmtDate(p.date) : ''}</time><b>${esc(p.text)}</b></span></a></li>`).join('');
-  $('#fbNote').textContent = data?.facebook?.length ? '' : t('feedPreview');
+  const native = (items, note) => {
+    feed.hidden = false;
+    feed.innerHTML = items.map((p) => `<li><a href="${esc(p.link)}"${/facebook\.com/.test(p.link) ? ' target="_blank" rel="noopener"' : ''}>
+      ${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : ''}<span><time>${p.date ? fmtDate(p.date) : ''}</time><b>${esc(p.text)}</b></span></a></li>`).join('');
+    $('#fbNote').textContent = note;
+  };
+  if (data?.facebook?.length) {
+    native(data.facebook.slice(0, 4).map((p) => ({ img: p.full_picture, text: (p.message || '').slice(0, 160), date: p.created_time, link: p.permalink_url })), '');
+    return;
+  }
+  const site = () => native(posts.slice(0, 4).map((p) => ({ img: p.image, text: p.title, date: p.date, link: postHref(p) })), t('feedPreview'));
+  let fb = null;
+  try { const r = await fetch('data/facebook.json', { cache: 'no-store' }); if (r.ok) fb = await r.json(); } catch {}
+  if (!fb?.posts?.length) { site(); return; }
+  embedFacebook(fb, site);
+}
+
+function embedFacebook(fb, fallback) {
+  const card = $('.fb-card'), strip = $('#fbEmbeds');
+  if (!card || !strip) { fallback(); return; }
+  let started = false;
+  const go = () => {
+    const w = Math.min(380, Math.max(280, Math.floor(strip.clientWidth) - 24));
+    strip.innerHTML = fb.posts.slice(0, 6).map((u) => `<div class="fb-cell"><div class="fb-post" data-href="${esc(u)}" data-width="${w}" data-show-text="true"></div></div>`).join('');
+    strip.hidden = false;
+    $('#fbFeed').hidden = true;
+    $('#fbNote').textContent = '';
+    if (!$('#fb-root')) { const r = document.createElement('div'); r.id = 'fb-root'; document.body.appendChild(r); }
+    const fail = () => { strip.hidden = true; strip.innerHTML = ''; fallback(); };
+    if (window.FB?.XFBML) window.FB.XFBML.parse(strip);
+    else {
+      const sc = document.createElement('script');
+      sc.async = true; sc.crossOrigin = 'anonymous';
+      sc.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v25.0';
+      sc.onerror = fail;
+      document.body.appendChild(sc);
+    }
+    // Facebook answers with an empty frame when the browser blocks it, so check for real height too
+    setTimeout(() => {
+      const ok = [...strip.querySelectorAll('iframe')].some((f) => f.offsetHeight > 120);
+      if (!ok) fail();
+    }, 10000);
+  };
+  const near = () => {
+    if (started || card.getBoundingClientRect().top > innerHeight + 600) return;
+    started = true; removeEventListener('scroll', near); go();
+  };
+  addEventListener('scroll', near, { passive: true }); near();
 }
