@@ -318,8 +318,55 @@ function spotFor(p, el, vh) {
   if (y < 70 || y + h > vh - 6) return null;                        // only perches fully on screen
   return { x, y };
 }
-let perch = null, perchEl = null;
+/* he only stands where nothing is: sample his footprint and refuse any spot over text, a picture,
+   a button or a field. Containers and backgrounds don't count. */
+const SOLID = /^(IMG|VIDEO|IFRAME|CANVAS|INPUT|BUTTON|SELECT|TEXTAREA|PICTURE|svg)$/i;
+function hitsText(el, x, y) {
+  for (const n of el.childNodes) {
+    if (n.nodeType !== 3 || !n.textContent.trim()) continue;
+    const r = document.createRange(); r.selectNodeContents(n);
+    for (const b of r.getClientRects()) if (x >= b.left - 4 && x <= b.right + 4 && y >= b.top - 2 && y <= b.bottom + 2) return true;
+  }
+  return false;
+}
+function isClear(x, y) {
+  const w = W(), h = H();
+  for (const fx of [0.3, 0.5, 0.7]) for (const fy of [0.12, 0.35, 0.6, 0.85]) {
+    const px = x + w * fx, py = y + h * fy;
+    for (const el of document.elementsFromPoint(px, py)) {
+      if (root.contains(el)) continue;
+      const cs = getComputedStyle(el);
+      if (cs.pointerEvents === 'none' && el.tagName === 'CANVAS') continue;   // the gold dust
+      if (SOLID.test(el.tagName) || el.closest('svg') || el.closest('.float-ask')) return false;
+      if (hitsText(el, px, py)) return false;
+      if (/url\("?(?!data:)/.test(cs.backgroundImage)) return false;   // photos, not the deco pattern
+      break;                                                              // a plain box: look no deeper
+    }
+  }
+  return true;
+}
+let perch = null, perchEl = null, lastPick = 0, picked = null;
 function choose(vh) {
+  // a full search (with the emptiness check) runs a few times a second; between runs he tracks the same perch
+  const now = performance.now();
+  if (now - lastPick < 140 && picked !== undefined) {
+    if (!picked) return null;
+    if (!picked.p) return picked;
+    const s = spotFor(picked.p, picked.el, vh);
+    return s ? { ...picked, s } : null;
+  }
+  lastPick = now;
+  picked = search(vh);
+  return picked;
+}
+// no perch is free: try the screen edges, and if those are covered too, tuck in at the left edge
+function corner(vh) {
+  const w = W(), h = H(), room = innerWidth - w - 8;
+  const spots = [[8, vh - h - 16], [8, vh * 0.5 - h / 2], [room, vh * 0.5 - h / 2], [8, 80]];
+  for (const [x, y] of spots) if (isClear(x, y)) return { p: null, el: null, s: { x, y } };
+  return { p: null, el: null, s: { x: -w * 0.72, y: vh - h - 16 }, tucked: true };
+}
+function search(vh) {
   const line = vh * 0.42, h = H();
   let best = null, bestScore = Infinity, cur = null;
   for (const p of PERCHES) {
@@ -328,13 +375,14 @@ function choose(vh) {
     for (const el of els) {
       if (!el) continue;
       const s = spotFor(p, el, vh); if (!s) continue;
+      if (!isClear(s.x, s.y)) continue;
       const score = Math.abs(s.y + h / 2 - line) - (p.bonus || 0);
       if (el === perchEl) cur = { p, el, s, score };
       if (score < bestScore) { bestScore = score; best = { p, el, s, score }; }
     }
   }
   if (cur && best && best.el !== cur.el && cur.score - best.score < 60) best = cur;   // stay put unless clearly better
-  return best;
+  return best || corner(vh);
 }
 
 /* ---------- motion: a damped spring toward the perch, every frame ---------- */

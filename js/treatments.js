@@ -16,22 +16,92 @@ mountShelf($('#shelf'));
 mountPromos($('#placards'));
 
 const catName = (c) => (LANG === 'en' ? c.en : c.th);
+const narrow = matchMedia('(max-width: 900px)');
 
-/* ---------- programmes: the clinic's own category banners ---------- */
-$('#programs').innerHTML = CATS.filter((c) => CAT_BANNERS[c.id]).map((c) => `<button type="button" class="program" data-cat="${c.id}"><img src="${CAT_BANNERS[c.id]}" alt="" loading="lazy"><span>${esc(catName(c))}</span></button>`).join('');
-$('#programs').addEventListener('click', (e) => {
-  const b = e.target.closest('.program'); if (!b) return;
-  const g = $(`.lb-group[data-cat="${b.dataset.cat}"]`);
-  const first = SERVICES.find((s) => s.cat === b.dataset.cat);
-  $('#directory').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
-  if (first) setTimeout(() => select(first.id), 400);
-  g?.classList.add('flash'); setTimeout(() => g?.classList.remove('flash'), 1600);
+/* ---------- programmes: a corridor of eight panels. One stands open with its banner, its
+   treatments and their machines; the rest are closed doors you can open. It moves on by
+   itself every few seconds until someone touches it. ---------- */
+const SHORT = { lift: ['Lifting', 'ยกกระชับ'], laser: ['Laser', 'เลเซอร์'], design: ['Facial design', 'ปรับรูปหน้า'], boost: ['Boosters', 'บำรุงผิว'], bio: ['Collagen', 'คอลลาเจน'], body: ['Body', 'รูปร่าง'], hair: ['Hair removal', 'กำจัดขน'], well: ['Wellness', 'เวลเนส'] };
+const progCats = CATS.filter((c) => CAT_BANNERS[c.id]);
+const progEl = $('#programs');
+progEl.innerHTML = progCats.map((c, i) => {
+  const list = SERVICES.filter((s) => s.cat === c.id);
+  const kit = list.map((s) => renderOf(s.id)).filter((r) => r && r.kind === 'product').slice(0, 4);
+  const no = String(i + 1).padStart(2, '0');
+  return `<div class="pg" data-cat="${c.id}" style="--i:${i}">
+    <button type="button" class="pg-door" aria-expanded="false" aria-controls="pg-${c.id}">
+      <span class="pg-strip"><img src="${CAT_BANNERS[c.id]}" alt="" loading="lazy"></span>
+      <span class="pg-tag"><small>${no}</small><b>${esc(SHORT[c.id]?.[LANG === 'en' ? 0 : 1] || catName(c))}</b></span>
+    </button>
+    <div class="pg-room" id="pg-${c.id}">
+      <div class="pg-banner"><img src="${CAT_BANNERS[c.id]}" alt="${esc(catName(c))}" loading="lazy"><i class="pg-sheen"></i></div>
+      <div class="pg-info">
+        <p class="pg-no">${t('progNo', { n: no })}</p>
+        <h3>${esc(catName(c))}</h3>
+        <p class="pg-count">${t('progCount', { n: list.length })}</p>
+        <div class="pg-kit">${kit.map((r, k) => `<img src="${r.src}" alt="" loading="lazy" style="--k:${k}">`).join('')}</div>
+        <button type="button" class="btn-gold pg-go" data-cat="${c.id}">${t('progGo')}</button>
+      </div>
+    </div>
+    <i class="pg-timer"></i>
+  </div>`;
+}).join('');
+
+const pgs = $$('.pg', progEl);
+let pgOpen = -1, pgAuto = 0, pgUser = false;
+function openPg(i, focus) {
+  if (i === pgOpen) return;
+  pgOpen = (i + pgs.length) % pgs.length;
+  pgs.forEach((p, k) => { p.classList.toggle('open', k === pgOpen); $('.pg-door', p).setAttribute('aria-expanded', String(k === pgOpen)); });
+  if (focus) $('.pg-go', pgs[pgOpen]).focus({ preventScroll: true });
+  sizePg();
+}
+function sizePg() {
+  // the open panel's banner keeps its own width while it opens, so it slides into view instead of squashing
+  const gaps = (pgs.length - 1) * 8, w = progEl.clientWidth;
+  if (!w) return;
+  if (narrow.matches) progEl.style.removeProperty('--open-w');
+  else progEl.style.setProperty('--open-w', `${Math.round(((w - gaps) / (pgs.length + 6)) * 7)}px`);
+  if (narrow.matches) pgs.forEach((p) => { p.style.height = p.classList.contains('open') ? `${$('.pg-room', p).scrollHeight}px` : ''; });
+}
+function stopAuto() { pgUser = true; clearInterval(pgAuto); progEl.classList.add('held'); }
+function startAuto() {
+  if (reduced || pgUser) return;
+  clearInterval(pgAuto);
+  pgAuto = setInterval(() => { if (!document.hidden) openPg(pgOpen + 1); }, 5200);
+}
+progEl.addEventListener('click', (e) => {
+  const go = e.target.closest('.pg-go');
+  if (go) {
+    const g = $(`.lb-group[data-cat="${go.dataset.cat}"]`);
+    const first = SERVICES.find((s) => s.cat === go.dataset.cat);
+    $('#directory').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+    if (first) setTimeout(() => select(first.id), 400);
+    g?.classList.add('flash'); setTimeout(() => g?.classList.remove('flash'), 1600);
+    return;
+  }
+  const door = e.target.closest('.pg-door');
+  if (door) { stopAuto(); openPg(pgs.indexOf(door.closest('.pg')), true); ritzSay('floor'); }
 });
+progEl.addEventListener('keydown', (e) => {
+  const k = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+  if (!k || !e.target.closest('.pg')) return;
+  e.preventDefault(); stopAuto(); openPg(pgOpen + k); $('.pg-door', pgs[pgOpen]).focus();
+});
+progEl.addEventListener('pointerenter', () => { if (!pgUser) clearInterval(pgAuto); });
+progEl.addEventListener('pointerleave', () => startAuto());
+addEventListener('resize', sizePg);
+narrow.addEventListener('change', () => { pgs.forEach((p) => { p.style.height = ''; }); sizePg(); });
+openPg(0);
+// the doors swing open one after another the first time the corridor comes into view
+new IntersectionObserver((es, io) => {
+  if (!es[0].isIntersecting) return;
+  io.disconnect(); progEl.classList.add('in'); startAuto();
+}, { threshold: 0.25 }).observe(progEl);
 
 /* ---------- directory board ---------- */
 const board = $('#letterboard');
 const card = $('#roomCard');
-const narrow = matchMedia('(max-width: 900px)');
 let services = [...SERVICES];
 let current = null;
 const floorTag = (s) => (s.floor ? t('dirFloor', { n: s.floor }) : s.cat === 'lift' ? t('dirNoFloor') : '');
