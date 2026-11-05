@@ -1,6 +1,6 @@
 # THE RITZ CLINIC website concept
 
-A redesign concept for theritzclinic.com, built as a grand hotel. The lobby has a flip board, the clinic's machines stand on lit plinths in a showroom booth (tap one and the camera moves in), treatments live on five floors of an elevator, real before-and-after cases sit in a vanity mirror, doctors wear brass name plates and Dr. Ritz walks around every page as a chibi concierge you can tap, pick up and drop.
+A redesign concept for theritzclinic.com, built as a grand hotel. The lobby has a flip board, the clinic's machines stand in a 3D showroom, one room per programme (tap one and the camera moves in), treatments live on five floors of an elevator, real before-and-after cases sit in a vanity mirror, doctors wear brass name plates and Dr. Ritz walks around every page as a chibi concierge you can tap, pick up and drop.
 
 English for now. To switch to Thai, open `js/i18n.js` and change `LANG` to `'th'`.
 
