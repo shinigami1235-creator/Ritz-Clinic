@@ -82,7 +82,7 @@ function room(c, b) {
   const frame = (s, style) => slotBtn(s, `<i class="pic-light"></i><span class="frame"><img src="${renderOf(s.id).src}" alt="" loading="lazy" draggable="false"></span><span class="plate">${esc(s.name)}</span>`, 'portrait', style);
   const wing = (side) => {
     const list = side === 'l' ? photos.slice(0, per) : photos.slice(per, per * 2);
-    const xs = list.length === 1 ? [190] : [100, 290];
+    const xs = list.length === 1 ? [215] : [150, 305];   // kept off the outer edge so the frames never touch the room's sides
     return `<div class="rwall wing wing-${side}"><i class="trim"></i><i class="dado"></i><i class="led"></i>
       ${list.length ? list.map((s, i) => frame(s, `left:${side === 'l' ? xs[i] : 520 - 140 - xs[i]}px;top:226px`)).join('') : '<span class="emblem"><img src="assets/brand/r-mark.svg" alt=""></span>'}
     </div>`;
