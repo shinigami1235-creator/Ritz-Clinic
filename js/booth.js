@@ -12,6 +12,7 @@ import { $, $$, esc, renderOf, ritzSay, reduced, sendToLine } from './core.js';
 const FACE = { 682515: 'F', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'R', 509437: 'F', 557783: 'L', 515783: 'L', 4211: 'L' };
 // machines with no readable lettering can be mirrored; the rest carry their names and stay as shot
 const FLIP_OK = new Set([509619, 516098, 515783]);   // Elite 4D's lettering is too small to read mirrored
+const TALL = { 557783: 1.12, 4341: 1.06 };              // arms rebuilt to full height, so these stand a little taller
 // boxes, vials and small hand pieces stand on slim columns at eye level instead of floor plinths
 const SMALL = new Set([395323, 395880, 395018, 557139, 746481, 746484, 746486, 746488]);
 // angles around the half circle for 1 to 5 pieces, 0 is the back middle
@@ -69,7 +70,7 @@ function room(c, b) {
     const x = 600 + 360 * Math.sin(r), z = -200 + 240 * (1 - Math.cos(r)), cos = Math.cos(r);
     const w = small ? 92 : 180, d = small ? 92 : 130;
     const h = Math.round(small ? 150 + 80 * cos : 46 + 100 * cos * cos);
-    const ih = small ? 140 : 228, iw = small ? 160 : 260;
+    const ih = Math.round((small ? 140 : 228) * (TALL[s.id] || 1)), iw = small ? 160 : 260;
     const top = FLOOR_Y - 18 - h;                       // the dais lifts everything 18
     return `<i class="cone" style="left:${x - 150}px;top:-120px;height:${top - ih + 150}px;transform:translateZ(${z}px)"></i>
       <span class="stand" style="left:${x - w / 2}px;top:${top}px;transform:translateZ(${z}px) rotateY(${(-deg * 0.55).toFixed(1)}deg)">${box({ w, d, h, cls: small ? 'col' : '', front: `<span class="plate">${esc(s.name)}</span>` })}</span>
