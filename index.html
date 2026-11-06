@@ -20,15 +20,16 @@
 <div class="topline">
   <span data-t="topHours">Open daily 10:00 to 20:30</span>
   <span data-t="topBranches">12 branches in Bangkok and nearby</span>
-  <a href="tel:0888922666">Call Center 088-892-2666</a>
+  <a href="tel:0888922666"><span data-t="callCenter">Call Center</span> 088-892-2666</a>
+  <span class="lang-switch" role="group" aria-label="Language" data-ta="langLabel"><button type="button" data-lang="th" lang="th">ไทย</button><button type="button" data-lang="en" lang="en">EN</button></span>
 </div>
 
 <header class="masthead">
-  <a class="brand" href="index.html" aria-label="THE RITZ CLINIC home">
+  <a class="brand" href="index.html" aria-label="THE RITZ CLINIC home" data-ta="ariaHome">
     <img src="assets/brand/r-mark.svg" alt="" width="34" height="40">
     <span class="brand-word">THE RITZ<small>CLINIC</small></span>
   </a>
-  <nav class="nav" aria-label="Main menu">
+  <nav class="nav" aria-label="Main menu" data-ta="ariaMenu">
     <a href="treatments.html" data-t="navTreat">Treatments</a>
     <a href="doctors.html" data-t="navDoctors">Doctors</a>
     <a href="reviews.html" data-t="navReviews">Reviews</a>
@@ -73,7 +74,7 @@
       <footer data-t="founder">Founded by Dr. Rueangrit Siripanich (Dr. Ritz), medical licence 56975</footer>
     </blockquote>
     <div class="desk reveal" style="--d:.15s">
-      <button class="desk-bell" id="deskBell" type="button" aria-label="Ring the bell for Dr. Ritz">
+      <button class="desk-bell" id="deskBell" type="button" aria-label="Ring the bell for Dr. Ritz" data-ta="deskNote">
         <svg viewBox="0 0 64 44" aria-hidden="true"><defs><linearGradient id="bellg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#F3EAD9"/><stop offset=".5" stop-color="#AC9359"/><stop offset="1" stop-color="#E0CDAB"/></linearGradient></defs><path d="M14 36a18 18 0 0 1 36 0z" fill="url(#bellg)"/><path d="M6 37h52v4H6z" fill="url(#bellg)"/><circle cx="32" cy="15" r="3" fill="url(#bellg)"/></svg>
       </button>
       <p class="desk-note" data-t="deskNote">Ring the bell for Dr. Ritz</p>
@@ -104,7 +105,7 @@
       <p class="lift-plaque"><span>The Ritz</span><small data-t="liftPlaque">Floor directory</small></p>
       <div class="dial-housing"><svg class="dial" id="dial" viewBox="0 0 240 146" aria-hidden="true"></svg></div>
       <p class="lift-readout" aria-hidden="true"><b id="liftNo">1</b><span id="liftName"></span></p>
-      <div class="lift-buttons" id="liftButtons" role="tablist" aria-label="Choose a floor"></div>
+      <div class="lift-buttons" id="liftButtons" role="tablist" aria-label="Choose a floor" data-ta="ariaFloor"></div>
     </div>
     <div class="lift-shaft">
       <div class="lift-room" id="liftRoom" role="tabpanel" aria-live="polite">
@@ -180,7 +181,7 @@
     <h2 id="duty-title" data-t="dutyTitle">Doctors on duty</h2>
     <p data-t="dutyLede">From the November 2026 doctor schedule. Schedules can change, so please confirm with the branch before your visit.</p>
   </div>
-  <div class="days" id="days" role="tablist" aria-label="Choose a day"></div>
+  <div class="days" id="days" role="tablist" aria-label="Choose a day" data-ta="ariaDay"></div>
   <div class="duty-board glass-dark" id="dutyBoard"></div>
   <a class="more more-dark" href="doctors.html" data-t="seeDoctors">Meet the doctors</a>
 </section>
@@ -260,7 +261,7 @@
       <span><b>THE RITZ CLINIC</b><small>facebook.com/theritzclinic</small></span>
       <a class="btn-gold" href="https://www.facebook.com/theritzclinic" target="_blank" rel="noopener" data-t="fbFollow">Follow on Facebook</a>
     </div>
-    <div class="fb-embeds" id="fbEmbeds" hidden tabindex="0" aria-label="Latest Facebook posts"></div>
+    <div class="fb-embeds" id="fbEmbeds" hidden tabindex="0" aria-label="Latest Facebook posts" data-ta="ariaFb"></div>
     <ul class="fb-feed" id="fbFeed"></ul>
     <p class="fb-note" id="fbNote"></p>
   </div>
@@ -286,8 +287,8 @@
     <div>
       <p class="foot-brand foil">THE RITZ CLINIC</p>
       <p data-t="address">Head office: 345/6 Headquarters Ekkamai-Ladprao, Soi Ladprao 94 (Panjamit), Phlapphla, Wang Thonglang, Bangkok 10310</p>
-      <p>Call Center <a href="tel:0888922666">088-892-2666</a> &nbsp; LINE <a href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener">@theritzclinic</a></p>
-      <nav class="foot-nav" aria-label="Footer menu">
+      <p><span data-t="callCenter">Call Center</span> <a href="tel:0888922666">088-892-2666</a> &nbsp; LINE <a href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener">@theritzclinic</a></p>
+      <nav class="foot-nav" aria-label="Footer menu" data-ta="ariaFootMenu">
         <a href="index.html" data-t="navHome">Lobby</a>
         <a href="treatments.html" data-t="navTreat">Treatments</a>
         <a href="doctors.html" data-t="navDoctors">Doctors</a>
@@ -301,7 +302,7 @@
   </div>
 </footer>
 
-<a class="float-ask" href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener" aria-label="Ask Dr. Rueangrit Siripanich on LINE">
+<a class="float-ask" href="https://line.me/ti/p/@theritzclinic" target="_blank" rel="noopener" aria-label="Ask Dr. Rueangrit Siripanich on LINE" data-ta="ariaFloat">
   <img src="assets/site/doctors/founder-0.webp" alt="" width="400" height="600">
   <span class="fa-pill"><b data-t="float">Ask a doctor</b><small data-t="floatName">Dr. Rueangrit Siripanich (56975)</small></span>
 </a>

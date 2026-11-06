@@ -1,8 +1,24 @@
-// Change LANG to 'th' to switch the whole site to Thai.
-export const LANG = 'en';
+// The language comes from ?lang=th or ?lang=en, then the visitor's last choice, then English.
+const KEY = 'ritz-lang';
+const pickLang = () => {
+  try {
+    const q = new URLSearchParams(location.search).get('lang');
+    if (q === 'th' || q === 'en') { localStorage.setItem(KEY, q); return q; }
+    return localStorage.getItem(KEY);
+  } catch { return null; }
+};
+export const LANG = typeof location !== 'undefined' && pickLang() === 'th' ? 'th' : 'en';
+
+// switching reloads the page so every section redraws in the new language
+export function setLang(l) {
+  if (l === LANG) return;
+  try { localStorage.setItem(KEY, l); } catch {}
+  const u = new URL(location.href); u.searchParams.set('lang', l); location.replace(u);
+}
 
 export const STR = {
   en: {
+    callCenter: 'Call Center', langLabel: 'Language', ariaHome: 'THE RITZ CLINIC home', ariaMenu: 'Main menu', ariaFootMenu: 'Footer menu', ariaFloat: 'Ask Dr. Rueangrit Siripanich on LINE', ariaFloor: 'Choose a floor', ariaDay: 'Choose a day', ariaFb: 'Latest Facebook posts', founderName: 'Dr. Rueangrit Siripanich <span>(Dr. Ritz)</span>',
     skip: 'Skip to content', topHours: 'Open daily 10:00 to 20:30', topBranches: '12 branches in Bangkok and nearby',
     navHome: 'Lobby', navTreat: 'Treatments', navDoctors: 'Doctors', navReviews: 'Reviews', navJournal: 'Articles', navBranches: 'Branches',
     lineBtn: 'Ask a doctor on LINE', boardSub: 'Aesthetic clinic', bhType: 'Type', bhDetail: 'Details', bhStatus: 'Status',
@@ -66,6 +82,7 @@ export const STR = {
     bOpenNowShort: 'Open now', bClosedNow: 'Closed now', bHours: 'Hours', bPhone: 'Phone', bGetThere: 'Getting there', bMaps: 'Open in Google Maps', bDocsToday: 'Doctors today', bCall: 'Call {p}',
   },
   th: {
+    callCenter: 'คอลเซ็นเตอร์', langLabel: 'ภาษา', ariaHome: 'หน้าแรก THE RITZ CLINIC', ariaMenu: 'เมนูหลัก', ariaFootMenu: 'เมนูท้ายหน้า', ariaFloat: 'ปรึกษาหมอริททาง LINE', ariaFloor: 'เลือกชั้น', ariaDay: 'เลือกวัน', ariaFb: 'โพสต์ล่าสุดบน Facebook', founderName: 'นพ.เรืองฤทธิ์ ศิริพานิช <span>(หมอริท)</span>',
     skip: 'ข้ามไปยังเนื้อหา', topHours: 'เปิดทุกวัน 10:00 ถึง 20:30', topBranches: '12 สาขาในกรุงเทพฯ และปริมณฑล',
     navHome: 'ล็อบบี้', navTreat: 'ทรีตเมนต์', navDoctors: 'แพทย์', navReviews: 'รีวิว', navJournal: 'บทความ', navBranches: 'สาขา',
     lineBtn: 'ถามหมอทาง LINE', boardSub: 'เดอะริทซ์ คลินิก', bhType: 'หมวด', bhDetail: 'รายละเอียด', bhStatus: 'สถานะ',
@@ -83,7 +100,7 @@ export const STR = {
     days: ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์'],
     daysShort: ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.'],
     specialsKicker: 'โปรโมชั่นเดือนนี้', baht: 'บาท',
-    gbTitle: 'Friends of The Ritz', gbLede: 'รีวิวจากผู้ที่ไว้วางใจ THE RITZ CLINIC', prev: 'ก่อนหน้า', next: 'ถัดไป',
+    gbTitle: 'เพื่อนของ The Ritz', gbLede: 'รีวิวจากผู้ที่ไว้วางใจ THE RITZ CLINIC', prev: 'ก่อนหน้า', next: 'ถัดไป',
     journalTitle: 'บทความล่าสุด', journalLede: 'เขียนโดยทีมแพทย์ THE RITZ CLINIC', more: 'อ่านบทความทั้งหมด',
     dirTitle: '12 สาขา', openNow: 'ตอนนี้ {t} น. เปิดอยู่ {n} สาขา', mapNote: 'แผนที่โดยประมาณ', to: ' ถึง ',
     loungeTitle: 'ติดตามเรา', loungeLede: 'สตอรี่และโพสต์จาก Instagram และ Facebook ของคลินิก อัปเดตเอง', fbFollow: 'ติดตามบน Facebook', storyOpen: 'สตอรี่', storyOpenIg: 'เปิดใน Instagram', storyPreview: 'ตัวอย่างจากเว็บไซต์คลินิก สตอรี่จริงจะแสดงเมื่อเชื่อมบัญชีแล้ว', feedPreview: 'แสดงโพสต์ล่าสุดจากเว็บไซต์ โพสต์ Facebook จะแสดงเมื่อเชื่อมเพจแล้ว', mapAll: 'ทุกสาขา', fbFallback: 'เปิดเพจ THE RITZ บน Facebook',
@@ -103,7 +120,7 @@ export const STR = {
     dFloor: 'ทีมงาน', dTitle: 'ทีมแพทย์', dLede: 'แพทย์ 17 ท่านใน 12 สาขา เลือกแพทย์เพื่อดูว่าสัปดาห์นี้ประจำสาขาไหน',
     dToday: 'วันนี้อยู่ที่ {b}', dOff: 'วันนี้ไม่มีตาราง', dAppt: 'นัดหมายล่วงหน้า', dWeek: 'สัปดาห์นี้', liftPlaque: 'ผังชั้นผิว', dZoom: 'แตะที่โปรไฟล์เพื่ออ่านแบบเต็มขนาด', dBook: 'จองคิว{n}ทาง LINE',
     dFounderNote: 'ผู้ก่อตั้ง THE RITZ CLINIC', dBookMsg: 'สวัสดีครับ ต้องการจองคิว{n}', dClose: 'ปิด',
-    rFloor: 'สมุดเยี่ยม', rTitle: 'Friends of The Ritz', rLede: 'สิบเสียงจากผู้ที่กลับมาทำซ้ำ',
+    rFloor: 'สมุดเยี่ยม', rTitle: 'เพื่อนของ The Ritz', rLede: 'สิบเสียงจากผู้ที่กลับมาทำซ้ำ',
     rAll: 'ทั้งหมด', rCardNo: 'บัตรแขกที่ {n}', rSigned: 'ลงชื่อ', mirrorTitle: 'ก่อนและหลัง', mirrorLede: 'ลากที่จับบนกระจกเพื่อเปรียบเทียบ ตัวอย่างนี้ใช้หมอริทเวอร์ชันการ์ตูน',
     mirrorDemo: 'ตัวอย่างเท่านั้น เคสจริงจะแสดงเมื่อคลินิกส่งภาพที่ได้รับอนุญาตโฆษณาแล้ว', before: 'ก่อน', after: 'หลัง', handle: 'ลากเพื่อเปรียบเทียบก่อนและหลัง',
     jFloor: 'ห้องอ่านหนังสือ', jTitle: 'บทความ', jLede: 'ความรู้และข่าวสารจากทีมแพทย์ THE RITZ CLINIC บทความใหม่ขึ้นที่นี่ทันทีที่โพสต์',
@@ -137,4 +154,9 @@ export function applyStatic() {
   document.documentElement.lang = LANG;
   document.querySelectorAll('[data-t]').forEach((el) => { el.innerHTML = t(el.dataset.t); });
   document.querySelectorAll('[data-tp]').forEach((el) => { el.placeholder = t(el.dataset.tp); });
+  document.querySelectorAll('[data-ta]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.ta)); });
+  document.querySelectorAll('.lang-switch button').forEach((b) => {
+    b.setAttribute('aria-pressed', String(b.dataset.lang === LANG));
+    b.addEventListener('click', () => setLang(b.dataset.lang));
+  });
 }
