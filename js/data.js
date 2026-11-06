@@ -59,7 +59,7 @@ export const T = {
 export const FLOORS = [
   { n: 1, th: 'ผิวชั้นนอก', en: 'Skin surface', note: 'จุดด่างดำ ฝ้า กระ และสีผิวไม่สม่ำเสมอ', noteEn: 'Dark spots, melasma, freckles and uneven skin tone', items: ['pico', 'picoSmooth', 'picoVario'] },
   { n: 2, th: 'ผิวชั้นหนังแท้', en: 'Dermis', note: 'คอลลาเจน ความชุ่มชื้น รูขุมขน รอยแดงและสิว', noteEn: 'Collagen, hydration, pores, redness and acne', items: ['thermage', 'oligio', 'rejuran', 'exion', 'glow', 'belotero', 'vbeam', 'accure', 'elite', 'moveo'] },
-  { n: 3, th: 'ชั้นไขมัน', en: 'Fat layer', note: 'ไขมันส่วนเกินและการเติมเต็มมิติใบหน้า', noteEn: 'Excess fat, and volume to restore the shape of the face', items: ['filler', 'sculptra', 'radiesse', 'cool'] },
+  { n: 3, th: 'ชั้นไขมัน', en: 'Fat layer', note: 'ไขมันส่วนเกินและการเติมเต็มมิติใบหน้า', noteEn: 'Excess fat and lost volume in the face', items: ['filler', 'sculptra', 'radiesse', 'cool'] },
   { n: 4, th: 'ชั้นพังผืด SMAS', en: 'SMAS', note: 'ชั้นเดียวกับที่ศัลยแพทย์ยกในการผ่าตัดดึงหน้า', noteEn: 'The same layer a surgeon lifts in a facelift', items: ['ulthera', 'mpt'] },
   { n: 5, th: 'ชั้นกล้ามเนื้อ', en: 'Muscle', note: 'ริ้วรอยจากการขยับหน้าและกรอบหน้า', noteEn: 'Expression lines and the jawline', items: ['botox', 'emface'] },
 ];
@@ -153,7 +153,7 @@ export const SERVICES = [
   { id: 4372, cat: 'lift', floor: 4, name: 'Ulthera SPT', en: 'Focused ultrasound that lifts at the SMAS layer, the layer a surgical facelift works on.', th: 'อัลตราซาวด์โฟกัสยกกระชับที่ชั้น SMAS', url: '' },
   { id: 4221, cat: 'lift', floor: 2, name: 'New Thermage FLX', en: 'Radiofrequency that heats the dermis to firm sagging skin.', th: 'คลื่นวิทยุกระชับผิวหย่อนคล้อย', url: '' },
   { id: 4378, cat: 'lift', floor: 4, name: 'Ultraformer MPT', en: 'A 3-in-1 lift: tightens, reduces facial fat and nourishes the skin, with less pain.', th: 'ยกกระชับ สลายไขมัน บำรุงผิว เจ็บน้อย', url: '' },
-  { id: 682515, cat: 'lift', floor: 2, name: 'Oligio X', en: 'The 2025 lifting technology: cool, lifting and long-lasting.', th: 'เทคโนโลยียกกระชับรุ่นใหม่ 2025 เย็น ยก ยุบ นาน', url: '' },
+  { id: 682515, cat: 'lift', floor: 2, name: 'Oligio X', en: 'Radiofrequency lifting with built-in cooling, new in 2025.', th: 'เทคโนโลยียกกระชับรุ่นใหม่ 2025 เย็น ยก ยุบ นาน', url: '' },
   { id: 515967, cat: 'lift', floor: 5, name: 'EMFACE', en: 'Lifts the face with no needles and no numbing cream.', th: 'ยกกระชับหน้าโดยไม่ใช้เข็ม ไม่ใช้ยาชา', url: '' },
   { id: 509619, cat: 'lift', floor: 0, name: 'Advanced Personal Lifting', en: 'A lifting plan designed for one person, combining the machines that suit your face.', th: 'โปรแกรมยกกระชับที่ออกแบบเฉพาะบุคคล', url: '' },
   { id: 516098, cat: 'lift', floor: 2, name: 'EXION Body', en: 'EXION for the skin on your body: firmer, smoother skin.', th: 'EXION สำหรับผิวพรรณทั่วเรือนร่าง', url: '' },

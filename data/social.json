@@ -1,0 +1,5 @@
+{
+  "note": "tools/social.py fills this in from Meta's API once the clinic connects its Instagram and Facebook accounts. Until then the lounge shows posts from the clinic website.",
+  "instagram": null,
+  "facebook": null
+}

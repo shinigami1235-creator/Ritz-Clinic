@@ -7,6 +7,17 @@ import { ritzSay } from './ritz-buddy.js';
 export { ritzSay };
 export const $ = (s, r = document) => r.querySelector(s);
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+// article HTML from WordPress: drop images pasted as browser blob: links (they never load anywhere) and load the clinic's images over https
+export function cleanHtml(html) {
+  const tpl = document.createElement('template'); tpl.innerHTML = html;   // a template is inert, so nothing loads before it is cleaned
+  const box = tpl.content;
+  box.querySelectorAll('img[src^="blob:"]').forEach((img) => {
+    const wrap = img.closest('figure, p'); img.remove();
+    if (wrap && !wrap.textContent.trim() && !wrap.querySelector('img, video, iframe')) wrap.remove();
+  });
+  box.querySelectorAll('img[src^="http://"]').forEach((img) => { img.src = img.getAttribute('src').replace(/^http:/, 'https:'); });
+  return tpl.innerHTML;
+}
 export const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 export const bname = (b) => (LANG === 'en' ? b.en : b.th);

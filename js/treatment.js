@@ -1,7 +1,7 @@
 // One treatment: the render on its plinth, the clinic's full article, real results and related treatments.
 import { SERVICES, CATS, FLOORS } from './data.js';
 import { LANG, t } from './i18n.js';
-import { $, $$, esc, renderOf, sendToLine } from './core.js';
+import { $, $$, esc, renderOf, sendToLine, cleanHtml } from './core.js';
 import { mountMirror } from './mirror.js';
 import { mountShelf } from './showroom.js';
 import { fmtDate } from './posts.js';
@@ -34,15 +34,26 @@ function contents() {
   }, { passive: true });
 }
 
+function notFound() {
+  document.title = `${t('tNotFound')} | THE RITZ CLINIC`;
+  $('#page-title').textContent = t('tNotFound');
+  $('.t-crumb').hidden = true;
+  $('.pd-actions').innerHTML = `<a class="btn-gold" href="treatments.html">${t('seeAllTreat')}</a>`;
+  ['#about', '#results'].forEach((q) => { $(q).hidden = true; });
+}
 async function article() {
   try {
-    const d = await (await fetch(`data/services/${id}.json`)).json();
+    if (!id) throw new Error('no id');
+    const res = await fetch(`data/services/${id}.json`);
+    if (!res.ok) throw new Error(res.status);
+    const d = await res.json();
     if (!s) { $('#page-title').textContent = d.title; document.title = `${d.title} | THE RITZ CLINIC`; }
-    $('#tArticle').innerHTML = d.html;
+    $('#tArticle').innerHTML = cleanHtml(d.html);
     contents();
     $('#tMeta').innerHTML = `${t('tUpdated', { d: fmtDate(d.modified) })}${t('tThaiNote') ? ` · <span class="lang-note">${t('tThaiNote')}</span>` : ''}`;
   } catch {
-    $('#tArticle').innerHTML = `<p>${t('tNotFound')}</p>`;
+    if (s) $('#tArticle').innerHTML = `<p>${t('tNotFound')}</p>`;
+    else notFound();
   }
 }
 
@@ -59,7 +70,7 @@ if (s) {
   $('#tAsk').addEventListener('click', () => sendToLine(t('lineMsg', { c: s.name, list: s.name }), $('#tCopied')));
 }
 article();
-mountMirror($('[data-mirror]'), { service: id });
+if (s || id) mountMirror($('[data-mirror]'), { service: id });
 
 // related: the rest of the same programme on the showroom shelf
 const shelf = $('#shelf');
