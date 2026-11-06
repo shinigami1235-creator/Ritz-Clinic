@@ -10,7 +10,7 @@ const G = { w: 300, h: 475, neck: [160.5, 202.5], eyeL: [125, 143], eyeR: [195.5
 
 // Poses drawn as a body image. 'full' poses are whole drawings with their own face.
 export const POSES = ['idle', 'wave', 'point', 'card', 'wai', 'thumbs', 'welcome', 'think', 'peek', 'walkA', 'walkB', 'hop', 'cheer', 'sing'];
-const BODY = { idle: 'stand', wave: 'wave', point: 'point', card: 'card', wai: 'wai', thumbs: 'thumbs', welcome: 'welcome', walkA: 'stand', walkB: 'stand', hop: 'stand', cheer: 'welcome', sing: 'wai' };
+const BODY = { idle: 'stand', wave: 'wave', point: 'point', card: 'card', wai: 'wai', thumbs: 'thumbs', welcome: 'welcome', walkA: 'stand', walkB: 'stand', hop: 'stand', cheer: 'welcome', sing: 'sing' };
 const FULL = { think: 'think', peek: 'peek' };
 // legs: rotation of each leg in degrees, lift in px
 const LEGS = { walkA: [-12, 10, 0, -6], walkB: [10, -12, -6, 0], hop: [-6, 6, -4, -4] };
@@ -76,7 +76,7 @@ export function createRitz(host, size = 120) {
         <div class="rz-torso" style="transform-origin:${G.w / 2}px ${G.hipL[1]}px">
           <img class="rz-body" src="${BASE}body-stand.webp" alt="" draggable="false">
           <svg class="rz-mic rz-mic-handle" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><defs><linearGradient id="rzh" x1="0" x2="1"><stop offset="0" stop-color="#111"/><stop offset=".45" stop-color="#4a4a4a"/><stop offset="1" stop-color="#111"/></linearGradient></defs><path d="M156.8 205h7.4l-1.4 98h-4.6z" fill="url(#rzh)" stroke="${INK}" stroke-width="1.2"/></svg>
-          <img class="rz-mic rz-hands" src="${BASE}hands-wai.webp" alt="" draggable="false">
+          <img class="rz-mic rz-hands" src="${BASE}hands-mic.webp" alt="" draggable="false">
           <div class="rz-head" style="transform-origin:${G.neck[0]}px ${G.neck[1]}px">
             <img src="${BASE}head.webp" alt="" draggable="false">
             <svg class="rz-face" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><g class="rz-look"></g></svg>
@@ -94,7 +94,7 @@ export function createRitz(host, size = 120) {
   // preload
   [...new Set(Object.values(BODY))].forEach((b) => { const i = new Image(); i.src = `${BASE}body-${b}.webp`; });
   Object.values(FULL).forEach((b) => { const i = new Image(); i.src = `${BASE}full-${b}.webp`; });
-  { const i = new Image(); i.src = `${BASE}hands-wai.webp`; }
+  { const i = new Image(); i.src = `${BASE}hands-mic.webp`; }
 
   const state = { pose: 'idle', expr: 'happy', turn: 0 };
   let blinking = false, lookX = 0, lookY = 0;
