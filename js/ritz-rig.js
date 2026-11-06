@@ -75,13 +75,11 @@ export function createRitz(host, size = 120) {
         <img class="rz-leg rz-leg-r" src="${BASE}leg-r.webp" alt="" draggable="false" style="transform-origin:${G.hipR[0]}px ${G.hipR[1]}px">
         <div class="rz-torso" style="transform-origin:${G.w / 2}px ${G.hipL[1]}px">
           <img class="rz-body" src="${BASE}body-stand.webp" alt="" draggable="false">
-          <svg class="rz-mic rz-mic-handle" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><defs><linearGradient id="rzh" x1="0" x2="1"><stop offset="0" stop-color="#111"/><stop offset=".45" stop-color="#4a4a4a"/><stop offset="1" stop-color="#111"/></linearGradient></defs><path d="M156.8 205h7.4l-1.4 98h-4.6z" fill="url(#rzh)" stroke="${INK}" stroke-width="1.2"/></svg>
-          <img class="rz-mic rz-hands" src="${BASE}hands-mic.webp" alt="" draggable="false">
           <div class="rz-head" style="transform-origin:${G.neck[0]}px ${G.neck[1]}px">
             <img src="${BASE}head.webp" alt="" draggable="false">
             <svg class="rz-face" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><g class="rz-look"></g></svg>
           </div>
-          <svg class="rz-mic rz-mic-head" viewBox="0 0 ${G.w} ${G.h}" aria-hidden="true"><defs><radialGradient id="rzb" cx=".35" cy=".3"><stop offset="0" stop-color="#F4F4F4"/><stop offset=".55" stop-color="#9DA3AA"/><stop offset="1" stop-color="#4C5157"/></radialGradient><pattern id="rzm" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 0h3M0 0v3" stroke="#3A3E43" stroke-width=".5" opacity=".55"/></pattern></defs><rect x="154.5" y="205" width="12" height="7" rx="1.8" fill="#D9B566" stroke="${INK}" stroke-width="1"/><circle cx="160.5" cy="192" r="15" fill="url(#rzb)" stroke="${INK}" stroke-width="2"/><circle cx="160.5" cy="192" r="15" fill="url(#rzm)"/><circle cx="155" cy="185.5" r="3.4" fill="#fff" opacity=".8"/></svg>
+          <img class="rz-mic rz-micover" src="${BASE}mic-over.webp" alt="" draggable="false">
         </div>
         <img class="rz-full" src="${BASE}full-think.webp" alt="" draggable="false" hidden>
       </div>
@@ -94,7 +92,7 @@ export function createRitz(host, size = 120) {
   // preload
   [...new Set(Object.values(BODY))].forEach((b) => { const i = new Image(); i.src = `${BASE}body-${b}.webp`; });
   Object.values(FULL).forEach((b) => { const i = new Image(); i.src = `${BASE}full-${b}.webp`; });
-  { const i = new Image(); i.src = `${BASE}hands-mic.webp`; }
+  { const i = new Image(); i.src = `${BASE}mic-over.webp`; }
 
   const state = { pose: 'idle', expr: 'happy', turn: 0 };
   let blinking = false, lookX = 0, lookY = 0;
