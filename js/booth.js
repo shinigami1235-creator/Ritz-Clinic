@@ -9,7 +9,7 @@ import { LANG, t } from './i18n.js';
 import { $, $$, esc, renderOf, ritzSay, reduced, sendToLine } from './core.js';
 
 // which way each machine faces in its picture: F front, L turned to the viewer's left, R to the right
-const FACE = { 682515: 'F', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'R', 509437: 'F', 557783: 'F', 515783: 'L', 4211: 'L' };
+const FACE = { 682515: 'F', 509619: 'F', 516098: 'F', 4341: 'R', 562000: 'R', 509437: 'F', 557783: 'L', 515783: 'L', 4211: 'L' };
 // machines with no readable lettering can be mirrored; the rest carry their names and stay as shot
 const FLIP_OK = new Set([509619, 516098, 515783]);   // Elite 4D's lettering is too small to read mirrored
 // boxes, vials and small hand pieces stand on slim columns at eye level instead of floor plinths
