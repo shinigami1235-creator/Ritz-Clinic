@@ -101,12 +101,9 @@
   </div>
   <div class="elevator reveal">
     <div class="lift-panel">
-      <svg class="dial" viewBox="0 0 220 124" aria-hidden="true">
-        <path d="M14 116 A96 96 0 0 1 206 116" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <g id="dialTicks"></g>
-        <line id="needle" x1="110" y1="116" x2="110" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="110" cy="116" r="7" fill="currentColor"/>
-      </svg>
+      <p class="lift-plaque"><span>The Ritz</span><small data-t="liftPlaque">Floor directory</small></p>
+      <div class="dial-housing"><svg class="dial" id="dial" viewBox="0 0 240 146" aria-hidden="true"></svg></div>
+      <p class="lift-readout" aria-hidden="true"><b id="liftNo">1</b><span id="liftName"></span></p>
       <div class="lift-buttons" id="liftButtons" role="tablist" aria-label="Choose a floor"></div>
     </div>
     <div class="lift-shaft">
