@@ -31,7 +31,9 @@ export function mountElevator(root = document) {
     $('#roomFloor', root).textContent = t('floorOf', { n: f.n });
     $('#roomTitle', root).innerHTML = LANG === 'en' ? f.en : `${f.th}<small>${f.en}</small>`;
     $('#roomNote', root).textContent = pick(f, 'note');
-    $('#roomKeys', root).innerHTML = f.items.map((k, i) => `<li style="transition-delay:${140 + i * 60}ms"><a href="${T[k].url}"><span class="thumb">${renderImg(T[k].id)}</span><b>${T[k].name}</b></a></li>`).join('');
+    const keys = $('#roomKeys', root), cols = Math.max(3, Math.ceil(f.items.length / 2));
+    keys.style.setProperty('--cols', cols); keys.classList.toggle('dense', cols > 4);   // never more than two rows, so the busy floor stays as short as the rest
+    keys.innerHTML = f.items.map((k, i) => `<li style="transition-delay:${140 + i * 60}ms"><a href="${T[k].url}"><span class="thumb">${renderImg(T[k].id)}</span><b>${T[k].name}</b></a></li>`).join('');
     [...$('#layers', root).children].forEach((el, i) => el.classList.toggle('on', i === n - 1));
     [...btnWrap.children].forEach((b) => b.setAttribute('aria-selected', String(+b.dataset.n === n)));
     $('#needle', root).style.transform = `rotate(${ANG(n)}deg)`;
@@ -45,6 +47,18 @@ export function mountElevator(root = document) {
       setTimeout(() => { shaft.classList.add('open'); moving = false; }, reduced ? 0 : 1000);
     }, reduced || !floor ? 0 : 900);
   }
+  // every floor gets the height of the tallest one, so the lift never changes size between floors
+  const room = $('.lift-room', root);
+  function settle() {
+    room.style.minHeight = '';
+    let max = 0;
+    FLOORS.forEach((f) => { renderFloor(f.n); max = Math.max(max, room.scrollHeight); });
+    room.style.minHeight = shaft.style.minHeight = `${max}px`;
+    renderFloor(floor || 1);
+  }
+  settle();
+  document.fonts?.ready.then(settle);
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(settle, 200); });
   new IntersectionObserver((es, o) => {
     if (es[0].isIntersecting) { goFloor(1); o.disconnect(); }
   }, { threshold: 0.35 }).observe(shaft);

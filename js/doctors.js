@@ -52,12 +52,16 @@ function openDoc(d) {
   $('#docWeek').innerHTML = w.map((at, i) => `<li class="${i === todayIdx() ? 'today' : ''}${at.length ? '' : ' off'}"><abbr title="${DAYS[i]}">${SHORT[i]}</abbr><span>${at.length ? at.map(bname).join(', ') : '–'}</span></li>`).join('');
   $('#docBook').textContent = t('dBook', { n: nameOf(d) });
   $('#docCopied').textContent = '';
+  $('.dlg-profile').classList.remove('big');
   dlg.showModal();
+  $('.dlg-card').scrollTop = 0;
   ritzSay('doctor');
 }
 $('#staffGrid').addEventListener('click', (e) => { const b = e.target.closest('.doc'); if (b) openDoc(doctors.find((d) => String(d.id) === b.dataset.id)); });
 $('#founderProfile').addEventListener('click', () => openDoc(founder));
 $('#docClose').addEventListener('click', () => dlg.close());
+// tap the profile sheet to see it at full size
+$('#docImg').addEventListener('click', () => { if (innerWidth < 1420) $('.dlg-profile').classList.toggle('big'); });
 dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
 $('#docBook').addEventListener('click', () => sendToLine(t('dBookMsg', { n: nameOf(open) }), $('#docCopied')));
 

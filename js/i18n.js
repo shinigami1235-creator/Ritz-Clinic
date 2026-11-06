@@ -40,7 +40,7 @@ export const STR = {
     newFromSite: 'New on the website', thaiOnly: 'In Thai',
     // doctors page
     dFloor: 'The staff', dTitle: 'Our doctors', dLede: '17 doctors across 12 branches. Pick a doctor to see where they work this week.',
-    dToday: 'Today at {b}', dOff: 'Not on the schedule today', dAppt: 'By appointment', dWeek: 'This week', dBook: 'Book with {n} on LINE',
+    dToday: 'Today at {b}', dOff: 'Not on the schedule today', dAppt: 'By appointment', dWeek: 'This week', dZoom: 'Tap the profile to read it at full size', dBook: 'Book with {n} on LINE',
     dFounderNote: 'Founder of THE RITZ CLINIC', dBookMsg: 'Hello, I would like to book with {n}.', dClose: 'Close',
     // reviews page
     rFloor: 'Guest book', rTitle: 'Friends of The Ritz', rLede: 'Ten guests on the treatments they came back for. Translated from Thai.',
@@ -101,7 +101,7 @@ export const STR = {
     dirFloor: 'ชั้น {n}', dirNoFloor: 'เฉพาะบุคคล', layerLabel: 'ทำงานที่', layerNone: 'แพทย์วางแผนเฉพาะคุณ', readGuide: 'อ่านรายละเอียดทั้งหมด', askThis: 'ถามเรื่องนี้ทาง LINE',
     newFromSite: 'ใหม่บนเว็บไซต์', thaiOnly: 'ภาษาไทย',
     dFloor: 'ทีมงาน', dTitle: 'ทีมแพทย์', dLede: 'แพทย์ 17 ท่านใน 12 สาขา เลือกแพทย์เพื่อดูว่าสัปดาห์นี้ประจำสาขาไหน',
-    dToday: 'วันนี้อยู่ที่ {b}', dOff: 'วันนี้ไม่มีตาราง', dAppt: 'นัดหมายล่วงหน้า', dWeek: 'สัปดาห์นี้', dBook: 'จองคิว{n}ทาง LINE',
+    dToday: 'วันนี้อยู่ที่ {b}', dOff: 'วันนี้ไม่มีตาราง', dAppt: 'นัดหมายล่วงหน้า', dWeek: 'สัปดาห์นี้', dZoom: 'แตะที่โปรไฟล์เพื่ออ่านแบบเต็มขนาด', dBook: 'จองคิว{n}ทาง LINE',
     dFounderNote: 'ผู้ก่อตั้ง THE RITZ CLINIC', dBookMsg: 'สวัสดีครับ ต้องการจองคิว{n}', dClose: 'ปิด',
     rFloor: 'สมุดเยี่ยม', rTitle: 'Friends of The Ritz', rLede: 'สิบเสียงจากผู้ที่กลับมาทำซ้ำ',
     rAll: 'ทั้งหมด', rCardNo: 'บัตรแขกที่ {n}', rSigned: 'ลงชื่อ', mirrorTitle: 'ก่อนและหลัง', mirrorLede: 'ลากที่จับบนกระจกเพื่อเปรียบเทียบ ตัวอย่างนี้ใช้หมอริทเวอร์ชันการ์ตูน',
